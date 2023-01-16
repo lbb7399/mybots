@@ -16,7 +16,8 @@ for i in range(stepsiter):
     p.stepSimulation()
     backLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("BackLeg")
     time.sleep(1/60)
-filename = '/Users/lindsaybogar/gitrep/data/backlegsensor.npy'
+filename = 'data/backlegsensor.npy'
+#filename = '/Users/lindsaybogar/gitrep/data/backlegsensor.npy'
 numpy.save(filename, backLegSensorValues)
 print(backLegSensorValues)
 p.disconnect()
