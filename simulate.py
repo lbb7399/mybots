@@ -12,22 +12,23 @@ planeId = p.loadURDF("plane.urdf")
 robotId = p.loadURDF("body.urdf")
 p.loadSDF("world.sdf")
 pyrosim.Prepare_To_Simulate(robotId)
+
 stepsiter = 1000
+
 backLegSensorValues = np.zeros(stepsiter)
 frontLegSensorValues = np.zeros(stepsiter)
 x = np.linspace(0, 2*np.pi, stepsiter)
 targetAngles = np.sin(x)*np.pi/4
 #np.save('data/targetAngles.npy', targetAngles)
-exit()
 for i in range(stepsiter):
     p.stepSimulation()
     backLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("BackLeg")
     frontLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("FrontLeg")
     
-    pyrosim.Set_Motor_For_Joint(bodyIndex = robotId, jointName = "Torso_BackLeg", controlMode = p.POSITION_CONTROL, targetPosition = np.pi*(random.random()-0.5), maxForce = 50)
-    pyrosim.Set_Motor_For_Joint(bodyIndex = robotId, jointName = "Torso_FrontLeg", controlMode = p.POSITION_CONTROL, targetPosition = np.pi*(random.random()-0.5), maxForce = 50)
+    pyrosim.Set_Motor_For_Joint(bodyIndex = robotId, jointName = "Torso_BackLeg", controlMode = p.POSITION_CONTROL, targetPosition = targetAngles[i], maxForce = 50)
+    pyrosim.Set_Motor_For_Joint(bodyIndex = robotId, jointName = "Torso_FrontLeg", controlMode = p.POSITION_CONTROL, targetPosition = targetAngles[i], maxForce = 50)
     
-    time.sleep(1/60)
+    time.sleep(1/240)
 backfilename = 'data/backLegSensorValues.npy'
 np.save(backfilename, backLegSensorValues)
 frontfilename = 'data/frontLegSensorValues.npy'
