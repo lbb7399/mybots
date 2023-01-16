@@ -14,12 +14,15 @@ p.loadSDF("world.sdf")
 pyrosim.Prepare_To_Simulate(robotId)
 
 stepsiter = 1000
-
+amplitude = np.pi/4
+frequency = 10
+phaseOffset = 0
 backLegSensorValues = np.zeros(stepsiter)
 frontLegSensorValues = np.zeros(stepsiter)
-x = np.linspace(0, 2*np.pi, stepsiter)
-targetAngles = np.sin(x)*np.pi/4
+
+targetAngles = amplitude * np.sin(frequency * np.linspace(0, 2*np.pi, stepsiter) + phaseOffset)
 #np.save('data/targetAngles.npy', targetAngles)
+#exit()
 for i in range(stepsiter):
     p.stepSimulation()
     backLegSensorValues[i] = pyrosim.Get_Touch_Sensor_Value_For_Link("BackLeg")
