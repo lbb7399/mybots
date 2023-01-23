@@ -48,10 +48,15 @@ class SOLUTION:
         pyrosim.Send_Motor_Neuron( name = 3 , jointName = "Torso_BackLeg")
         pyrosim.Send_Motor_Neuron( name = 4 , jointName = "Torso_FrontLeg")
         
-        sensorNeuronNames = [0, 1, 2]
-        motorNeuronNames = [3,4]
-        for currentRow, sensor in enumerate(sensorNeuronNames):
-            for currentColumn, motor in enumerate(motorNeuronNames):
+        self.sensorNeuronNames = [0, 1, 2]
+        self.motorNeuronNames = [3,4]
+        for currentRow, sensor in enumerate(self.sensorNeuronNames):
+            for currentColumn, motor in enumerate(self.motorNeuronNames):
                 pyrosim.Send_Synapse(sourceNeuronName = sensor , targetNeuronName = motor , weight = self.weights[currentRow][currentColumn])
 
         pyrosim.End()
+        
+    def Mutate(self):
+        randRow = random.randint(0, len(self.weights) - 1)
+        randCol = random.randint(0, len(self.weights[0]) - 1)
+        self.weights[randRow,randCol] = 2*random.random()-1
