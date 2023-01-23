@@ -22,10 +22,10 @@ class HILL_CLIMBER:
         
     def Mutate(self):
         self.child.Mutate()
-        print("Parent:")
-        print(self.parent.weights)
-        print("Child:")
-        print(self.child.weights)
+#        print("Parent:")
+#        print(self.parent.weights)
+#        print("Child:")
+#        print(self.child.weights)
     
     def Select(self):
         if self.child.fitness > self.parent.fitness:
