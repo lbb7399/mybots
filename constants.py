@@ -1,5 +1,5 @@
 import numpy as np
-stepsiter = 100
+stepsiter = 500
 
 amplitudeBack = 4*np.pi/16
 frequencyBack = 10
@@ -12,5 +12,5 @@ phaseOffsetFront = 0
 maxForceFront = 30
 
 
-numberOfGenerations = 2
+numberOfGenerations = 10
 
