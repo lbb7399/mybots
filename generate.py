@@ -1,5 +1,4 @@
 import pyrosim.pyrosim as pyrosim
-from pyrosim.neuralNetwork import NEURAL_NETWORK
 import random
 
 def Create_World():
@@ -41,7 +40,6 @@ def Generate_Brain():
         for motor in motorNeuronNames:
             weighted = 2*(random.random()-0.5)
             pyrosim.Send_Synapse(sourceNeuronName = sensor , targetNeuronName = motor , weight = weighted )
-
 
     pyrosim.End()
     return
