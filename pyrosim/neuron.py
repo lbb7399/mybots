@@ -122,8 +122,23 @@ class NEURON:
 
         self.value = math.tanh(self.value)
         
+## Added by me
     def Update_Sensor_Neuron(self):
         self.value = pyrosim.Get_Touch_Sensor_Value_For_Link(self.Get_Link_Name())
     
-    def Update_Hidden_Or_Motor_Neuron(self):
-            self.value = math.pi/4
+    def Update_Hidden_Or_Motor_Neuron(self, neurons, synapses):
+            self.value = 0
+            
+            for synapse_key in synapses:
+                if synapse_key[1] == self.Get_Name():
+                    print(neurons[synapse_key[1]].Get_Value())
+                    synWeight = synapses[synapse_key].Get_Weight()
+                    preNeuronValue = neurons[synapse_key[0]].Get_Value()
+                    self.Allow_Presynaptic_Neuron_To_Influence_Me(synWeight, preNeuronValue)
+            print(neurons[self.Get_Name()].Get_Value())
+            exit()
+                
+    def Allow_Presynaptic_Neuron_To_Influence_Me(self, synWeight, preNeuronValue):
+        weighted = synWeight*preNeuronValue
+        self.Add_To_Value(weighted)
+                   
