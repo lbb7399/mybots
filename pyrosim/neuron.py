@@ -135,7 +135,7 @@ class NEURON:
                     preNeuronValue = neurons[synapse_key[0]].Get_Value()
                     self.Allow_Presynaptic_Neuron_To_Influence_Me(synWeight, preNeuronValue)
                     self.Threshold()
-                    print(neurons[synapse_key[1]].Get_Value())
+                    #print(neurons[synapse_key[1]].Get_Value())
                 
     def Allow_Presynaptic_Neuron_To_Influence_Me(self, synWeight, preNeuronValue):
         weighted = synWeight*preNeuronValue
