@@ -22,7 +22,6 @@ class ROBOT:
         self.motors = {}
         for jointName in pyrosim.jointNamesToIndices:
             self.motors[jointName] = MOTOR(jointName)
-            self.motors[jointName].Prepare_To_Act()
             
     def Act(self, iter):
         for neuronName in self.nn.Get_Neuron_Names():
