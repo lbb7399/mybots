@@ -25,8 +25,15 @@ class ROBOT:
             self.motors[jointName].Prepare_To_Act()
             
     def Act(self, iter):
-        for key in self.motors:
-            self.motors[key].Set_Value(self.robotId, iter)
+        for neuronName in self.nn.Get_Neuron_Names():
+            if self.nn.Is_Motor_Neuron(neuronName):
+                jointName = self.nn.Get_Motor_Neurons_Joint(neuronName)
+                desiredAngle = self.nn.Get_Value_Of(neuronName)
+                self.motors[jointName].Set_Value(self.robotId, desiredAngle)
+                print(f"Neuron Name: {neuronName}, Joint Name: {jointName}, Desired Angle: {desiredAngle}")
+                
+        #for key in self.motors:
+            #self.motors[key].Set_Value(self.robotId, iter)
             
     def Think(self):
         self.nn.Update()
