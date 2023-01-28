@@ -2,6 +2,7 @@ import numpy as np
 import pyrosim.pyrosim as pyrosim
 import random
 import os
+import time
 
 class SOLUTION:
     def __init__(self, myID):
@@ -10,14 +11,31 @@ class SOLUTION:
         self.weights = 2*self.weights-1
 
         
-    def Evaluate(self, directOrGUIEv):
+#    def Evaluate(self, directOrGUIEv):
+#        self.Create_World()
+#        self.Generate_Body()
+#        self.Generate_Brain()
+#
+#        os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} &")
+#        while not os.path.exists(f"fitness{str(self.myID)}.txt"):
+#            time.sleep(0.01)
+#        f = open(f"fitness{str(self.myID)}.txt", "r")
+#        self.fitness = float(f.read())
+        
+        
+    def Start_Simulation(self, directOrGUIEv):
         self.Create_World()
         self.Generate_Body()
         self.Generate_Brain()
-
         os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} &")
-        f = open("fitness.txt", "r")
+        
+    def Wait_For_Simulation_To_End(self):
+        while not os.path.exists(f"fitness{str(self.myID)}.txt"):
+            time.sleep(0.01)
+        f = open(f"fitness{str(self.myID)}.txt", "r")
         self.fitness = float(f.read())
+        os.system(f"rm fitness{self.myID}.txt")
+        #print(f"FITNESS: {self.fitness}")
         
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf")
@@ -61,7 +79,7 @@ class SOLUTION:
                 pyrosim.Send_Synapse(sourceNeuronName = sensor , targetNeuronName = motor , weight = self.weights[currentRow][currentColumn])
 
         pyrosim.End()
-        while not os.path.exists("brain.nndf"):
+        while not os.path.exists(f"brain{self.myID}.nndf"):
             time.sleep(0.01)
         
     def Mutate(self):
