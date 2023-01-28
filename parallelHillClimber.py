@@ -7,7 +7,7 @@ class PARALLEL_HILL_CLIMBER:
         self.nextAvailableID = 0
         for i in range(c.populationSize):
             self.parents[i] = SOLUTION(self.nextAvailableID)
-                self.nextAvailableID = self.nextAvailableID + 1
+            self.nextAvailableID = self.nextAvailableID + 1
 
     
     def Evolve(self):
