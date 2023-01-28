@@ -10,6 +10,7 @@ class ROBOT:
         self.robotId = p.loadURDF("body.urdf")
         self.nn = NEURAL_NETWORK(f"brain{solutionID}.nndf")
         os.system(f"rm brain{solutionID}.nndf")
+        self.solutionID = solutionID
         
     def Prepare_To_Sense(self):
         self.sensors = {}
@@ -47,7 +48,7 @@ class ROBOT:
         #print(stateOfLinkZero)
         #print(positionOfLinkZero)
         #print(xCoordinateOfLinkZero)
-        f = open("fitness.txt", "w")
+        f = open(f"tmp{self.solutionID}.txt", "w")
         f.write(str(xCoordinateOfLinkZero))
         f.close()
-            
+        os.system(f"mv tmp{self.solutionID}.txt fitness{self.solutionID}.txt")
