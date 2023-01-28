@@ -54,6 +54,8 @@ class NEURAL_NETWORK:
     def Get_Value_Of(self, neuronName):
         return self.neurons[neuronName].Get_Value()
         
+    
+        
 
 # ---------------- Private methods --------------------------------------
 
