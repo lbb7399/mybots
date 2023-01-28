@@ -4,7 +4,8 @@ import random
 import os
 
 class SOLUTION:
-    def __init__(self):
+    def __init__(self, myID):
+        self.myID = myID
         self.weights = np.random.rand(3,2)
         self.weights = 2*self.weights-1
 
@@ -13,7 +14,7 @@ class SOLUTION:
         self.Create_World()
         self.Generate_Body()
         self.Generate_Brain()
-        os.system(f"python3 simulate.py {directOrGUIEv}")
+        os.system(f"python3 simulate.py {directOrGUIEv} &")
         f = open("fitness.txt", "r")
         self.fitness = float(f.read())
         
@@ -27,6 +28,8 @@ class SOLUTION:
         z = 0.5
         pyrosim.Send_Cube(name= "Box", pos=[x,y,z] , size=[length,width,height])
         pyrosim.End()
+        while not os.path.exists("world.sdf"):
+            time.sleep(0.01)
         
     def Generate_Body(self):
         length = 1
@@ -39,6 +42,8 @@ class SOLUTION:
         pyrosim.Send_Joint( name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" , type = "revolute", position = [2,0,1])
         pyrosim.Send_Cube(name= "FrontLeg", pos=[0.5,0,-0.5] , size=[length,width,height])
         pyrosim.End()
+        while not os.path.exists("body.urdf"):
+            time.sleep(0.01)
         
     def Generate_Brain(self):
         pyrosim.Start_NeuralNetwork("brain.nndf")
@@ -55,8 +60,14 @@ class SOLUTION:
                 pyrosim.Send_Synapse(sourceNeuronName = sensor , targetNeuronName = motor , weight = self.weights[currentRow][currentColumn])
 
         pyrosim.End()
+        while not os.path.exists("brain.nndf"):
+            time.sleep(0.01)
         
     def Mutate(self):
         randRow = random.randint(0, len(self.weights) - 1)
         randCol = random.randint(0, len(self.weights[0]) - 1)
         self.weights[randRow,randCol] = 2*random.random()-1
+        
+    def SET_ID(self, nextAvID):
+        self.myID = nextAvID
+        
