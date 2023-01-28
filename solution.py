@@ -9,11 +9,11 @@ class SOLUTION:
         self.weights = 2*self.weights-1
 
         
-    def Evaluate(self):
+    def Evaluate(self, directOrGUIEv):
         self.Create_World()
         self.Generate_Body()
         self.Generate_Brain()
-        os.system("python3 simulate.py")
+        os.system(f"python3 simulate.py {directOrGUIEv}")
         f = open("fitness.txt", "r")
         self.fitness = float(f.read())
         
