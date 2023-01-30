@@ -27,7 +27,7 @@ class SOLUTION:
         self.Create_World()
         self.Generate_Body()
         self.Generate_Brain()
-        os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} &")
+        os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} 2&>1 &")
         
     def Wait_For_Simulation_To_End(self):
         while not os.path.exists(f"fitness{str(self.myID)}.txt"):
