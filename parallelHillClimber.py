@@ -3,6 +3,7 @@ import constants as c
 import copy
 import os
 import time
+import random
 class PARALLEL_HILL_CLIMBER:
     def __init__(self):
         
@@ -11,10 +12,31 @@ class PARALLEL_HILL_CLIMBER:
         os.system("rm ballfitness*.txt")
         
         
+        # define body dimensions
+        self.dimensions = [0.8,0.15,0.15,1,0.5,0.3]
+        self.goalZPos = self.dimensions[0]
+        self.lDim = self.dimensions[1:3]
+        self.tDim = self.dimensions[3:6]
+        
+#        self.goalZPos = random.random()*1.5 + 0.5
+#
+#        llength = random.random()/10 + 0.1
+#        lwidth = random.random()/10 + 0.1
+#
+#        self.lDim = [llength,lwidth]
+#
+#        tlength = random.random()*1.5 + 0.5
+#        twidth = random.random()/2 + 0.3
+#        theight = random.random()*3/4 + 0.25
+#
+#        self.tDim = [tlength,twidth,theight]
+        
+
+        
         self.parents = {}
         self.nextAvailableID = 0
         for i in range(c.populationSize):
-            self.parents[i] = SOLUTION(self.nextAvailableID)
+            self.parents[i] = SOLUTION(self.nextAvailableID, self.goalZPos, self.lDim, self.tDim)
             self.nextAvailableID = self.nextAvailableID + 1
 
     
@@ -97,5 +119,10 @@ class PARALLEL_HILL_CLIMBER:
             else:
                 pass
         self.parents[bestfitkey].Start_Simulation("GUI")
+        self.bestFitSolution = self.parents[bestfitkey]
         print(f"Best fit: {bestfit}")
+        print(f"\nDimensions:")
+        print(f"Goal Torso Height: {self.goalZPos}")
+        print(f"Leg Dim: {self.lDim}")
+        print(f"Torso Dim: {self.tDim}")
         
