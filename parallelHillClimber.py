@@ -2,11 +2,13 @@ from solution import SOLUTION
 import constants as c
 import copy
 import os
+import time
 class PARALLEL_HILL_CLIMBER:
     def __init__(self):
         
         os.system("rm brain*.nndf")
         os.system("rm fitness*.txt")
+        os.system("rm ballfitness*.txt")
         
         
         self.parents = {}
@@ -60,6 +62,9 @@ class PARALLEL_HILL_CLIMBER:
             
         for i in range(c.populationSize):
             solutions[i].Wait_For_Simulation_To_End()
+        
+        
+        
             
     def Print(self):
         print(f"\n")
@@ -70,17 +75,19 @@ class PARALLEL_HILL_CLIMBER:
     
     def Select(self):
         for key in self.parents:
-            if self.children[key].fitness < self.parents[key].fitness:
+#            if self.children[key].fitness < self.parents[key].fitness:
+#                self.parents[key] = self.children[key]
+            
+            if self.children[key].ballFitness > self.parents[key].ballFitness:
                 self.parents[key] = self.children[key]
             
     def Show_Best(self):
-#        self.parent.Evaluate("GUI")
 
         for i, key in enumerate(self.parents.keys()):
             if i == 0:
                 bestfit = self.parents[key].fitness
                 bestfitkey = key
-            if self.parents[key].fitness < bestfit:
+            if self.parents[key].ballFitness > bestfit:
                 bestfit = self.parents[key].fitness
                 bestfitkey = key
             else:
