@@ -26,7 +26,7 @@ class SOLUTION:
         
     def Start_Simulation(self, directOrGUIEv):
         self.Create_World()
-        self.Generate_Ball()
+#        self.Generate_Ball()
         self.Generate_Body()
         self.Generate_Brain()
         os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} 2&>1 &")
@@ -53,16 +53,17 @@ class SOLUTION:
         x = -2
         y = 2
         z = 0.5
-        #pyrosim.Send_Cube(name= "Box", pos=[x,y,z] , size=[length,width,height])
+
         pyrosim.Send_Sphere(name="Ball" , pos=[c.ballInitialX,c.ballInitialY,0.1] , size=[0.1])
+        #pyrosim.Send_Cube(name= "Box", pos=[x,y,z] , size=[length,width,height])
         pyrosim.End()
         while not os.path.exists("world.sdf"):
             time.sleep(0.01)
             
-    def Generate_Ball(self):
-        pyrosim.Start_URDF("ball.urdf")
-        pyrosim.Send_Sphere(name="Ball" , pos=[c.ballInitialX,c.ballInitialY,0.1] , size=[0.1])
-        pyrosim.End()
+#    def Generate_Ball(self):
+#        pyrosim.Start_URDF("ball.urdf")
+#        pyrosim.Send_Sphere(name="Ball" , pos=[c.ballInitialX,c.ballInitialY,0.1] , size=[0.1])
+#        pyrosim.End()
         
     def Generate_Body(self):
         goalZPos = 0.8
