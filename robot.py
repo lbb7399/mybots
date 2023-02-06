@@ -4,6 +4,7 @@ import pybullet as p
 import pybullet_data
 import pyrosim.pyrosim as pyrosim
 from pyrosim.neuralNetwork import NEURAL_NETWORK
+import math
 import os
 import constants as c
 class ROBOT:
@@ -46,11 +47,17 @@ class ROBOT:
         basePositionAndOrientation = p.getBasePositionAndOrientation(self.robotId)
         basePosition = basePositionAndOrientation[0]
         xPosition = basePosition[0]
-        #print(stateOfLinkZero)
-        #print(positionOfLinkZero)
-        #print(xCoordinateOfLinkZero)
         f = open(f"tmp{self.solutionID}.txt", "w")
         f.write(str(xPosition))
         f.close()
         os.system(f"mv tmp{self.solutionID}.txt fitness{self.solutionID}.txt")
+        
+        ballId = p.loadURDF("ball.urdf")
+        ballBasePositionAndOrientation = p.getBasePositionAndOrientation(ballId)
+        ballBasePosition = ballBasePositionAndOrientation[0]
+        ballMagnitude = math.sqrt((ballBasePosition[0]-c.ballInitialX)**2+(ballBasePosition[1]-c.ballInitialY)**2)
+        g = open(f"balltmp{self.solutionID}.txt", "w")
+        g.write(str(ballMagnitude))
+        g.close()
+        os.system(f"mv balltmp{self.solutionID}.txt ballfitness{self.solutionID}.txt")
         
