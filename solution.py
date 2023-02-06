@@ -48,7 +48,7 @@ class SOLUTION:
         y = 2
         z = 0.5
         #pyrosim.Send_Cube(name= "Box", pos=[x,y,z] , size=[length,width,height])
-        pyrosim.Send_Sphere(name="BowlingBall" , pos=[-3,+3,0.5] , size=[0.1])
+        pyrosim.Send_Sphere(name="BowlingBall" , pos=[-2,0,0.05] , size=[0.1])
         pyrosim.End()
         while not os.path.exists("world.sdf"):
             time.sleep(0.01)
@@ -71,29 +71,29 @@ class SOLUTION:
         pyrosim.Send_Joint( name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" , type = "revolute", position = [tlength/2,-(twidth/2 - lwidth/2),tzPos-theight/2], jointAxis = "0 1 0")
         pyrosim.Send_Cube(name= "BackLeg", pos=[llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
 
-        pyrosim.Send_Joint( name = "BackLeg_BackLegLower" , parent= "BackLeg" , child = "BackLegLower" , type = "revolute", position = [0,0,-lheight], jointAxis = "0 1 0")
-        pyrosim.Send_Cube(name= "BackLegLower", pos=[llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
+        pyrosim.Send_Joint( name = "BackLeg_BackLegLower" , parent= "BackLeg" , child = "BackLegLower" , type = "revolute", position = [llength,0,-lheight], jointAxis = "0 1 0")
+        pyrosim.Send_Cube(name= "BackLegLower", pos=[-llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
 
 
         pyrosim.Send_Joint( name = "Torso_FrontLeg" , parent= "Torso" , child = "FrontLeg" , type = "revolute", position = [-tlength/2,-(twidth/2 - lwidth/2),tzPos-theight/2], jointAxis = "0 1 0")
         pyrosim.Send_Cube(name= "FrontLeg", pos=[-llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
 
-        pyrosim.Send_Joint( name = "FrontLeg_FrontLegLower" , parent= "FrontLeg" , child = "FrontLegLower" , type = "revolute", position = [-llength,0,-lheight], jointAxis = "0 1 0")
-        pyrosim.Send_Cube(name= "FrontLegLower", pos=[llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
+        pyrosim.Send_Joint( name = "FrontLeg_FrontLegLower" , parent= "FrontLeg" , child = "FrontLegLower" , type = "revolute", position = [0,0,-lheight], jointAxis = "0 1 0")
+        pyrosim.Send_Cube(name= "FrontLegLower", pos=[-llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
 
 
         pyrosim.Send_Joint( name = "Torso_LeftLeg" , parent= "Torso" , child = "LeftLeg" , type = "revolute", position = [-tlength/2,(twidth/2 - lwidth/2),tzPos-theight/2], jointAxis = "0 1 0")
         pyrosim.Send_Cube(name= "LeftLeg", pos=[-llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
         
-        pyrosim.Send_Joint( name = "LeftLeg_LeftLegLower" , parent= "LeftLeg" , child = "LeftLegLower" , type = "revolute", position = [-llength,0,-lheight], jointAxis = "0 1 0")
-        pyrosim.Send_Cube(name= "LeftLegLower", pos=[llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
+        pyrosim.Send_Joint( name = "LeftLeg_LeftLegLower" , parent= "LeftLeg" , child = "LeftLegLower" , type = "revolute", position = [0,0,-lheight], jointAxis = "0 1 0")
+        pyrosim.Send_Cube(name= "LeftLegLower", pos=[-llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
         
         
         pyrosim.Send_Joint( name = "Torso_RightLeg" , parent= "Torso" , child = "RightLeg" , type = "revolute", position = [tlength/2,(twidth/2 - lwidth/2),tzPos-theight/2], jointAxis = "0 1 0")
         pyrosim.Send_Cube(name= "RightLeg", pos=[llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
         
-        pyrosim.Send_Joint( name = "RightLeg_RightLegLower" , parent= "RightLeg" , child = "RightLegLower" , type = "revolute", position = [0,0,-lheight], jointAxis = "0 1 0")
-        pyrosim.Send_Cube(name= "RightLegLower", pos=[llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
+        pyrosim.Send_Joint( name = "RightLeg_RightLegLower" , parent= "RightLeg" , child = "RightLegLower" , type = "revolute", position = [llength,0,-lheight], jointAxis = "0 1 0")
+        pyrosim.Send_Cube(name= "RightLegLower", pos=[-llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
         
         pyrosim.End()
         while not os.path.exists("body.urdf"):
