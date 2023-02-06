@@ -8,11 +8,13 @@ import math
 import os
 import constants as c
 class ROBOT:
-    def __init__(self, solutionID):
+    def __init__(self, solutionID, world):
         self.robotId = p.loadURDF("body.urdf")
         self.nn = NEURAL_NETWORK(f"brain{solutionID}.nndf")
         os.system(f"rm brain{solutionID}.nndf")
         self.solutionID = solutionID
+        self.world = world
+
         
     def Prepare_To_Sense(self):
         self.sensors = {}
@@ -52,10 +54,12 @@ class ROBOT:
         f.close()
         os.system(f"mv tmp{self.solutionID}.txt fitness{self.solutionID}.txt")
         
-        ballId = p.loadURDF("ball.urdf")
-        ballBasePositionAndOrientation = p.getBasePositionAndOrientation(ballId)
-        ballBasePosition = ballBasePositionAndOrientation[0]
-        ballMagnitude = math.sqrt((ballBasePosition[0]-c.ballInitialX)**2+(ballBasePosition[1]-c.ballInitialY)**2)
+        ballPosition = self.world.Get_Ball_Position()
+        print(ballPosition)
+        ballMagnitude = math.sqrt((ballPosition[0]-c.ballInitialX)**2+(ballPosition[1]-c.ballInitialY)**2)
+        if ballMagnitude < 0.01:
+            ballMagnitude = 0
+        
         g = open(f"balltmp{self.solutionID}.txt", "w")
         g.write(str(ballMagnitude))
         g.close()
