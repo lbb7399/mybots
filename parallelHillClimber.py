@@ -26,12 +26,15 @@ class PARALLEL_HILL_CLIMBER:
 #            self.parents[i].Wait_For_Simulation_To_End()
 
         # instead:
+        
         self.Evaluate(self.parents)
         
         
         for currentGeneration in range(c.numberOfGenerations):
+            start_time = time.time()
             self.currentGen = currentGeneration
             self.Evolve_For_One_Generation()
+            print(time.time()-start_time)
 
             
     def Evolve_For_One_Generation(self):
@@ -70,7 +73,8 @@ class PARALLEL_HILL_CLIMBER:
         print(f"\n")
         print(f"Generation {self.currentGen}")
         for key in self.parents:
-            print(f"ID: {key} Parent fit: {self.parents[key].fitness} Child fit: {self.children[key].fitness}")
+            print(f"ID: {key} Parent fit: {self.parents[key].ballFitness} Child fit: {self.children[key].ballFitness}")
+            #print(f"ID: {key} Parent ball fit: {self.parents[key].ballFitness} Parent fit: {self.children[key].fitness}")
         print(f"\n")
     
     def Select(self):
@@ -85,10 +89,10 @@ class PARALLEL_HILL_CLIMBER:
 
         for i, key in enumerate(self.parents.keys()):
             if i == 0:
-                bestfit = self.parents[key].fitness
+                bestfit = self.parents[key].ballFitness
                 bestfitkey = key
             if self.parents[key].ballFitness > bestfit:
-                bestfit = self.parents[key].fitness
+                bestfit = self.parents[key].ballFitness
                 bestfitkey = key
             else:
                 pass
