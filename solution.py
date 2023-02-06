@@ -35,7 +35,8 @@ class SOLUTION:
             time.sleep(0.01)
         f = open(f"fitness{str(self.myID)}.txt", "r")
         self.fitness = float(f.read())
-        os.system(f"rm fitness{self.myID}.txt")
+        
+        #os.system(f"rm fitness{self.myID}.txt")
         #print(f"FITNESS: {self.fitness}")
         
     def Create_World(self):
@@ -68,9 +69,9 @@ class SOLUTION:
         pyrosim.Send_Cube(name= "Torso", pos=[0,0,tzPos] , size=[tlength,twidth,theight])
         
         pyrosim.Send_Joint( name = "Torso_BackLeg" , parent= "Torso" , child = "BackLeg" , type = "revolute", position = [tlength/2,-(twidth/2 - lwidth/2),tzPos-theight/2], jointAxis = "0 1 0")
-        pyrosim.Send_Cube(name= "BackLeg", pos=[-llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
+        pyrosim.Send_Cube(name= "BackLeg", pos=[llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
 
-        pyrosim.Send_Joint( name = "BackLeg_BackLegLower" , parent= "BackLeg" , child = "BackLegLower" , type = "revolute", position = [-llength,0,-lheight], jointAxis = "0 1 0")
+        pyrosim.Send_Joint( name = "BackLeg_BackLegLower" , parent= "BackLeg" , child = "BackLegLower" , type = "revolute", position = [0,0,-lheight], jointAxis = "0 1 0")
         pyrosim.Send_Cube(name= "BackLegLower", pos=[llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
 
 
@@ -89,9 +90,9 @@ class SOLUTION:
         
         
         pyrosim.Send_Joint( name = "Torso_RightLeg" , parent= "Torso" , child = "RightLeg" , type = "revolute", position = [tlength/2,(twidth/2 - lwidth/2),tzPos-theight/2], jointAxis = "0 1 0")
-        pyrosim.Send_Cube(name= "RightLeg", pos=[-llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
+        pyrosim.Send_Cube(name= "RightLeg", pos=[llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
         
-        pyrosim.Send_Joint( name = "RightLeg_RightLegLower" , parent= "RightLeg" , child = "RightLegLower" , type = "revolute", position = [-llength,0,-lheight], jointAxis = "0 1 0")
+        pyrosim.Send_Joint( name = "RightLeg_RightLegLower" , parent= "RightLeg" , child = "RightLegLower" , type = "revolute", position = [0,0,-lheight], jointAxis = "0 1 0")
         pyrosim.Send_Cube(name= "RightLegLower", pos=[llength/2,0,-lheight/2] , size=[llength,lwidth,lheight])
         
         pyrosim.End()
