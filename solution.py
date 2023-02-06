@@ -26,6 +26,7 @@ class SOLUTION:
         
     def Start_Simulation(self, directOrGUIEv):
         self.Create_World()
+        self.Generate_Ball()
         self.Generate_Body()
         self.Generate_Brain()
         os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} 2&>1 &")
@@ -35,9 +36,14 @@ class SOLUTION:
             time.sleep(0.01)
         f = open(f"fitness{str(self.myID)}.txt", "r")
         self.fitness = float(f.read())
-        
-        #os.system(f"rm fitness{self.myID}.txt")
+        os.system(f"rm fitness{self.myID}.txt")
         #print(f"FITNESS: {self.fitness}")
+
+        while not os.path.exists(f"ballfitness{str(self.myID)}.txt"):
+            time.sleep(0.01)
+        g = open(f"ballfitness{str(self.myID)}.txt", "r")
+        self.ballFitness = float(g.read())
+        os.system(f"rm ballfitness{self.myID}.txt")
         
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf")
@@ -48,10 +54,15 @@ class SOLUTION:
         y = 2
         z = 0.5
         #pyrosim.Send_Cube(name= "Box", pos=[x,y,z] , size=[length,width,height])
-        pyrosim.Send_Sphere(name="BowlingBall" , pos=[-2,0,0.05] , size=[0.1])
+        pyrosim.Send_Sphere(name="Ball" , pos=[c.ballInitialX,c.ballInitialY,0.1] , size=[0.1])
         pyrosim.End()
         while not os.path.exists("world.sdf"):
             time.sleep(0.01)
+            
+    def Generate_Ball(self):
+        pyrosim.Start_URDF("ball.urdf")
+        pyrosim.Send_Sphere(name="Ball" , pos=[c.ballInitialX,c.ballInitialY,0.1] , size=[0.1])
+        pyrosim.End()
         
     def Generate_Body(self):
         goalZPos = 0.8
