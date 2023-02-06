@@ -12,11 +12,15 @@ phaseOffsetFront = 0
 maxForceFront = 30
 
 
-numberOfGenerations = 10
-populationSize = 10
+numberOfGenerations = 1
+populationSize = 1
 
 numSensorNeurons = 9
 numMotorNeurons = 8
 
 motorJointRange = 1
+
+ballInitialX = -2
+ballInitialY = 0
+
 
