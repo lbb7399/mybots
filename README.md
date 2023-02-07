@@ -11,7 +11,7 @@ The creature begins with randomly generated dimensions, within bounds, for its t
 
 ## Running the code
 
-Run ```search.py``` and the final output will be the evolved creature. 
+Run ```python3 search.py``` and the final output will be the evolved creature. 
 
 The only variables you should/would change are the population and generation sizes in ```constants.py```. 
 
