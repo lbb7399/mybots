@@ -17,7 +17,7 @@ class SIMULATION:
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.setGravity(0,0,-9.8)
         self.world = WORLD()
-        self.robot = ROBOT(solutionID)
+        self.robot = ROBOT(solutionID, self.world)
         pyrosim.Prepare_To_Simulate(self.robot.robotId)
         self.robot.Prepare_To_Sense()
         self.robot.Prepare_To_Act()
