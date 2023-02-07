@@ -4,19 +4,38 @@ import copy
 import os
 import time
 import random
+import numpy as np
 class PARALLEL_HILL_CLIMBER:
-    def __init__(self):
+    def __init__(self, bodyID):
         
         os.system("rm brain*.nndf")
         os.system("rm fitness*.txt")
         os.system("rm ballfitness*.txt")
         
+        self.bodyID = bodyID
         
         # define body dimensions
-        self.dimensions = [0.8,0.15,0.15,1,0.5,0.3]
-        self.goalZPos = self.dimensions[0]
-        self.lDim = self.dimensions[1:3]
-        self.tDim = self.dimensions[3:6]
+#        self.dimensions = [0.8,0.15,0.15,1,0.5,0.3]
+#        self.goalZPos = self.dimensions[0]
+#        self.lDim = self.dimensions[1:3]
+#        self.tDim = self.dimensions[3:6]
+        
+#        self.goalZPos = 0.8
+#        self.lDim = [0.15,0.15,0]
+#        self.tDim = [1,0.5,0.3]
+
+        self.goalZPos = random.random()*1.5 + 0.5
+        self.lDim = [0,0,0]
+        self.tDim = [0,0,0]
+
+        self.lDim[0] = random.random()/10 + 0.1
+        self.lDim[1] = random.random()/10 + 0.1
+        self.tDim[0] = random.random()*1.5 + 0.5
+        self.tDim[1] = random.random()/2 + 0.3
+        self.tDim[2] = random.random()*3/4 + 0.25
+            
+        self.lDim[2] = ((self.goalZPos-self.tDim[2]/2)/np.sqrt(2)) - self.lDim[0]
+
         
 #        self.goalZPos = random.random()*1.5 + 0.5
 #
@@ -36,7 +55,7 @@ class PARALLEL_HILL_CLIMBER:
         self.parents = {}
         self.nextAvailableID = 0
         for i in range(c.populationSize):
-            self.parents[i] = SOLUTION(self.nextAvailableID, self.goalZPos, self.lDim, self.tDim)
+            self.parents[i] = SOLUTION(self.nextAvailableID, self.bodyID)
             self.nextAvailableID = self.nextAvailableID + 1
 
     
@@ -66,7 +85,7 @@ class PARALLEL_HILL_CLIMBER:
         self.Evaluate(self.children)
     
 #        print(f"Parent fit: {self.parent.fitness}, Child fit: {self.child.fitness}")
-        self.Print()
+#        self.Print()
         self.Select()
         
     
@@ -83,7 +102,7 @@ class PARALLEL_HILL_CLIMBER:
             
     def Evaluate(self, solutions):
         for i in range(c.populationSize):
-            solutions[i].Start_Simulation("DIRECT")
+            solutions[i].Start_Simulation("DIRECT", self.goalZPos, self.lDim, self.tDim)
             
         for i in range(c.populationSize):
             solutions[i].Wait_For_Simulation_To_End()
@@ -95,7 +114,7 @@ class PARALLEL_HILL_CLIMBER:
         print(f"\n")
         print(f"Generation {self.currentGen}")
         for key in self.parents:
-            print(f"ID: {key} Parent fit: {self.parents[key].ballFitness} Child fit: {self.children[key].ballFitness}")
+            print(f"ID: {self.bodyID}{key} Parent fit: {self.parents[key].ballFitness} Child fit: {self.children[key].ballFitness}")
             #print(f"ID: {key} Parent ball fit: {self.parents[key].ballFitness} Parent fit: {self.children[key].fitness}")
         print(f"\n")
     
@@ -106,23 +125,51 @@ class PARALLEL_HILL_CLIMBER:
             
             if self.children[key].ballFitness > self.parents[key].ballFitness:
                 self.parents[key] = self.children[key]
-            
-    def Show_Best(self):
-
+                
+    def Get_Best_Solution(self):
         for i, key in enumerate(self.parents.keys()):
             if i == 0:
-                bestfit = self.parents[key].ballFitness
+                self.bestfit = self.parents[key].ballFitness
                 bestfitkey = key
-            if self.parents[key].ballFitness > bestfit:
-                bestfit = self.parents[key].ballFitness
+            if self.parents[key].ballFitness > self.bestfit:
+                self.bestfit = self.parents[key].ballFitness
                 bestfitkey = key
             else:
                 pass
-        self.parents[bestfitkey].Start_Simulation("GUI")
+        self.bestfitkey = bestfitkey
         self.bestFitSolution = self.parents[bestfitkey]
-        print(f"Best fit: {bestfit}")
+        
+#    def Get_Best_Fitness(self):
+#        self.Get_Best_Solution()
+#        return self.bestFitSolution
+            
+    def Show_Best(self):
+        
+        self.Get_Best_Solution()
+
+        self.bestFitSolution.Start_Simulation("GUI", self.goalZPos, self.lDim, self.tDim)
+
+        print(f"Best fit: {self.bestfit}")
         print(f"\nDimensions:")
         print(f"Goal Torso Height: {self.goalZPos}")
         print(f"Leg Dim: {self.lDim}")
         print(f"Torso Dim: {self.tDim}")
         
+        
+    def Mutate_Body(self, delta):
+        
+        if delta == 0:
+            self.goalZPos = random.random()*1.5 + 0.5
+        if delta == 1:
+            self.lDim[0] = random.random()/10 + 0.1
+        if delta == 2:
+            self.lDim[1] = random.random()/10 + 0.1
+        if delta == 3:
+            self.tDim[0] = random.random()*1.5 + 0.5
+        if delta == 4:
+            self.tDim[1] = random.random()/2 + 0.3
+        if delta == 5:
+            self.tDim[2] = random.random()*3/4 + 0.25
+        
+        self.lDim[2] = ((self.goalZPos-self.tDim[2]/2)/np.sqrt(2)) - self.lDim[0]
+
