@@ -12,10 +12,10 @@ phaseOffsetFront = 0
 maxForceFront = 30
 
 
-numberOfGenerations = 1
-populationSize = 1
-bodyPopulation = 1
-bodyGenerations = 1
+numberOfGenerations = 10
+populationSize = 10
+bodyPopulation = 2
+bodyGenerations = 2
 
 numSensorNeurons = 9
 numMotorNeurons = 8
