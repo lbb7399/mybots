@@ -1,14 +1,17 @@
-from parallelHillClimber import PARALLEL_HILL_CLIMBER
+#from parallelHillClimber import PARALLEL_HILL_CLIMBER
+from bodyHillClimber import BODY_HILL_CLIMBER
 import time
 import constants as c
 
 start_time = time.time()
-phcs = {}
-for i in range(c.bodyGen):
-    phcs[i] = PARALLEL_HILL_CLIMBER()
-    phcs[i].Evolve()
-    phcs[i].Show_Best()
-
+#phcs = {}
+#for i in range(c.bodyGen):
+#    phcs[i] = PARALLEL_HILL_CLIMBER()
+#    phcs[i].Evolve()
+#    phcs[i].Show_Best()
+bhc = BODY_HILL_CLIMBER()
+bhc.Evolve()
+bhc.Show_Best()
 
 end_time = time.time()
 
