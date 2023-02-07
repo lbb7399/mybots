@@ -14,6 +14,8 @@ maxForceFront = 30
 
 numberOfGenerations = 1
 populationSize = 1
+bodyPopulation = 1
+bodyGenerations = 1
 
 numSensorNeurons = 9
 numMotorNeurons = 8
