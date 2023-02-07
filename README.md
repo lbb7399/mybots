@@ -11,7 +11,9 @@ The creature begins with randomly generated dimensions, within bounds, for its t
 
 ## Running the code
 
-Run search.py and the final output will be the evolved creature. The only variables you should/would change are the population and generation sizes in constants.py. 
+Run ```search.py``` and the final output will be the evolved creature. 
 
-numberOfGenerations refers to the number of iterations parallel hill climber will do in one pass, populationSize is the number of creatures analyzed and evolved each generation of parallel hill climber. bodyPopulation refers to the number of parallel hill climbers that are run in body hill climber in each generation and bodyGenerations refers to how many times a creature's body evolves.
+The only variables you should/would change are the population and generation sizes in ```constants.py```. 
+
+```numberOfGenerations``` refers to the number of iterations parallel hill climber will do in one pass, ```populationSize``` is the number of creatures analyzed and evolved each generation of parallel hill climber. ```bodyPopulation``` refers to the number of parallel hill climbers that are run in body hill climber in each generation and ```bodyGenerations``` refers to how many times a creature's body evolves.
 
