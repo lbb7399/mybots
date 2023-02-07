@@ -6,13 +6,14 @@ import time
 import constants as c
 
 class SOLUTION:
-    def __init__(self, myID, goalZPos, lDim, tDim):
+    def __init__(self, myID, bodyID):
         self.myID = myID
+        self.bodyID = bodyID
+        self.solID = f"{bodyID}{myID}"
+        
+        
         self.weights = np.random.rand(c.numSensorNeurons,c.numMotorNeurons)
         self.weights = 2*self.weights-1
-        self.goalZPos = goalZPos
-        self.lDim = lDim
-        self.tDim = tDim
 
         
 #    def Evaluate(self, directOrGUIEv):
@@ -27,26 +28,30 @@ class SOLUTION:
 #        self.fitness = float(f.read())
         
         
-    def Start_Simulation(self, directOrGUIEv):
+    def Start_Simulation(self, directOrGUIEv, goalZPos, lDim, tDim):
+        self.goalZPos = goalZPos
+        self.lDim = lDim
+        self.tDim = tDim
+        
         self.Create_World()
 #        self.Generate_Ball()
         self.Generate_Body()
         self.Generate_Brain()
-        os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} 2&>1 &")
+        os.system(f"python3 simulate.py {directOrGUIEv} {self.solID} 2&>1 &")
         
     def Wait_For_Simulation_To_End(self):
-        while not os.path.exists(f"fitness{str(self.myID)}.txt"):
+        while not os.path.exists(f"fitness{self.solID}.txt"):
             time.sleep(0.01)
-        f = open(f"fitness{str(self.myID)}.txt", "r")
+        f = open(f"fitness{self.solID}.txt", "r")
         self.fitness = float(f.read())
-        os.system(f"rm fitness{self.myID}.txt")
+        os.system(f"rm fitness{self.solID}.txt")
         #print(f"FITNESS: {self.fitness}")
 
-        while not os.path.exists(f"ballfitness{str(self.myID)}.txt"):
+        while not os.path.exists(f"ballfitness{self.solID}.txt"):
             time.sleep(0.01)
-        g = open(f"ballfitness{str(self.myID)}.txt", "r")
+        g = open(f"ballfitness{self.solID}.txt", "r")
         self.ballFitness = float(g.read())
-        os.system(f"rm ballfitness{self.myID}.txt")
+        os.system(f"rm ballfitness{self.solID}.txt")
         
     def Create_World(self):
         pyrosim.Start_SDF("world.sdf")
@@ -76,9 +81,9 @@ class SOLUTION:
 #        self.tDim = [tlength, twidth, theight]
 #        llength = 0.15
 #        lwidth = 0.15
-        lheight = ((self.goalZPos-self.tDim[2]/2)/np.sqrt(2)) - self.lDim[0]
+        #lheight = ((self.goalZPos-self.tDim[2]/2)/np.sqrt(2)) - self.lDim[0]
 #        self.lDim = [llength, lwidth, lheight]
-        self.lDim.append(lheight)
+        #self.lDim.append(lheight)
         
         tzPos = 2*self.lDim[2] + self.tDim[2]/2
         
@@ -119,7 +124,7 @@ class SOLUTION:
     
         
     def Generate_Brain(self):
-        pyrosim.Start_NeuralNetwork(f"brain{self.myID}.nndf")
+        pyrosim.Start_NeuralNetwork(f"brain{self.solID}.nndf")
         pyrosim.Send_Sensor_Neuron(name = 0 , linkName = "Torso")
         pyrosim.Send_Sensor_Neuron(name = 1 , linkName = "BackLeg")
         pyrosim.Send_Sensor_Neuron(name = 2 , linkName = "FrontLeg")
@@ -146,7 +151,7 @@ class SOLUTION:
         
 
         pyrosim.End()
-        while not os.path.exists(f"brain{self.myID}.nndf"):
+        while not os.path.exists(f"brain{self.solID}.nndf"):
             time.sleep(0.01)
         
         
@@ -157,4 +162,5 @@ class SOLUTION:
         
     def SET_ID(self, nextAvID):
         self.myID = nextAvID
+        self.solID = f"{self.bodyID}{self.myID}"
         
