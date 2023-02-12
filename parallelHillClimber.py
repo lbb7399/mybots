@@ -25,6 +25,7 @@ class PARALLEL_HILL_CLIMBER:
 
         # instead:
         self.Evaluate(self.parents)
+
         
         
         for currentGeneration in range(c.numberOfGenerations):
@@ -55,11 +56,15 @@ class PARALLEL_HILL_CLIMBER:
             self.children[key].Mutate()
             
     def Evaluate(self, solutions):
+        
+        
         for i in range(c.populationSize):
             solutions[i].Start_Simulation("DIRECT")
+        
             
         for i in range(c.populationSize):
             solutions[i].Wait_For_Simulation_To_End()
+        print("eval")
             
     def Print(self):
         print(f"\n")

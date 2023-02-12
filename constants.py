@@ -15,8 +15,8 @@ maxForceFront = 30
 numberOfGenerations = 1
 populationSize = 1
 
-numSensorNeurons = 2
-numMotorNeurons = 1
+#numSensorNeurons = 2
+#numMotorNeurons = 1
 
 motorJointRange = 0.2
 

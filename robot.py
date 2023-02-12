@@ -13,6 +13,7 @@ class ROBOT:
         os.system(f"rm brain{solutionID}.nndf")
         self.solutionID = solutionID
         
+        
     def Prepare_To_Sense(self):
         self.sensors = {}
         for linkName in pyrosim.linkNamesToIndices:
