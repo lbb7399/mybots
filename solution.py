@@ -8,15 +8,15 @@ import constants as c
 class SOLUTION:
     def __init__(self, myID):
         self.myID = myID
-
+        self.Generate_Random_Body_and_Brain()
+        self.Create_Weights()
 
         
         
         
     def Start_Simulation(self, directOrGUIEv):
         self.Create_World()
-        self.Generate_Random_Body_and_Brain()
-        self.Create_Weights()
+
         self.Generate_Body()
         self.Generate_Brain()
         os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)}")
@@ -48,6 +48,7 @@ class SOLUTION:
         self.numBlocks = random.randint(3,12)
         
         self.blocks = {}
+        self.dims = {}
         self.numSensors = 0
         self.numMotors = 0
         self.sensorLinkNames = []
@@ -90,6 +91,15 @@ class SOLUTION:
 #                    self.numMotors +=2
             
             self.blocks[i] = [color,joint1, joint2, numJoints]
+            
+            # random dimensions
+            length = random.random()/2 + 0.1
+            width = random.random()/2 + 0.1
+            height = random.random()/2 + 0.1
+            
+            self.dims[i] = [length,width,height]
+
+ 
     
     def Create_Weights(self):
         self.weights = np.random.rand(self.numSensors,self.numMotors)
@@ -105,60 +115,53 @@ class SOLUTION:
         midZpos = 0.3
         
         for i in range(self.numBlocks):
-        
-            # random dimensions
-            length = random.random()/2 + 0.1
-            width = random.random()/2 + 0.1
-            height = random.random()/2 + 0.1
             
             
             if i == 0:
 
-                pyrosim.Send_Cube(name=f"{i}", pos=[0,0,midZpos] , size=[length,width,height], colorString=self.blocks[i][0])
+                pyrosim.Send_Cube(name=f"{i}", pos=[0,0,midZpos] , size=self.dims[i], colorString=self.blocks[i][0])
                 
             elif i == 1:
                 if self.blocks[i][3] == 1:
                 
-                    pyrosim.Send_Joint( name = f"{i-1}_{i}" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width/2,midZpos], jointAxis = self.blocks[i][1])
+                    pyrosim.Send_Joint( name = f"{i-1}_{i}" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,self.dims[i-1][1]/2,midZpos], jointAxis = self.blocks[i][1])
                     self.motorJointNames.append(f"{i-1}_{i}")
                     
-                elif self.blocks[i][3] == 2:
-                
-                    pyrosim.Send_Joint( name = f"{i-1}_{i}1" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width/2,midZpos], jointAxis = self.blocks[i][1])
-                    self.motorJointNames.append(f"{i-1}_{i}1")
-                    
-                    pyrosim.Send_Joint( name = f"{i-1}_{i}2" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width/2,midZpos], jointAxis = self.blocks[i][2])
-                    self.motorJointNames.append(f"{i-1}_{i}2")
+#                elif self.blocks[i][3] == 2:
+#
+#                    pyrosim.Send_Joint( name = f"{i-1}_{i}1" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width/2,midZpos], jointAxis = self.blocks[i][1])
+#                    self.motorJointNames.append(f"{i-1}_{i}1")
+#
+#                    pyrosim.Send_Joint( name = f"{i-1}_{i}2" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width/2,midZpos], jointAxis = self.blocks[i][2])
+#                    self.motorJointNames.append(f"{i-1}_{i}2")
                     
                 else:
                     print("too many joints system exit")
                     exit()
                     
-                pyrosim.Send_Cube(name=f"{i}", pos=[0,width/2,0] , size=[length,width,height], colorString=self.blocks[i][0])
+                pyrosim.Send_Cube(name=f"{i}", pos=[0,self.dims[i][1]/2,0] , size=self.dims[i], colorString=self.blocks[i][0])
             else:
                 if self.blocks[i][3] == 1:
                 
-                    pyrosim.Send_Joint( name = f"{i-1}_{i}" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width0,0], jointAxis = self.blocks[i][1])
+                    pyrosim.Send_Joint( name = f"{i-1}_{i}" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,self.dims[i-1][1],0], jointAxis = self.blocks[i][1])
                     self.motorJointNames.append(f"{i-1}_{i}")
                     
-                elif self.blocks[i][3] == 2:
-                
-                    pyrosim.Send_Joint( name = f"{i-1}_{i}1" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width0,0], jointAxis = self.blocks[i][1])
-                    self.motorJointNames.append(f"{i-1}_{i}1")
-                    
-                    pyrosim.Send_Joint( name = f"{i-1}_{i}2" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width0,0], jointAxis = self.blocks[i][2])
-                    self.motorJointNames.append(f"{i-1}_{i}2")
+#                elif self.blocks[i][3] == 2:
+#
+#                    pyrosim.Send_Joint( name = f"{i-1}_{i}1" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width0,0], jointAxis = self.blocks[i][1])
+#                    self.motorJointNames.append(f"{i-1}_{i}1")
+#
+#                    pyrosim.Send_Joint( name = f"{i-1}_{i}2" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width0,0], jointAxis = self.blocks[i][2])
+#                    self.motorJointNames.append(f"{i-1}_{i}2")
                     
                 else:
                     print("too many joints system exit")
                     exit()
                     
-                pyrosim.Send_Cube(name=f"{i}", pos=[0,width/2,0] , size=[length,width,height], colorString=self.blocks[i][0])
+                pyrosim.Send_Cube(name=f"{i}", pos=[0,self.dims[i][1]/2,0] , size=self.dims[i], colorString=self.blocks[i][0])
         
         
-            length0 = length
-            width0 = width
-            height0 = height
+
         print(self.blocks)
         print(f"Number of Sensors: {self.numSensors}")
         print(f"Number of Sensors List: {len(self.sensorLinkNames)}")
