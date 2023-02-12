@@ -19,7 +19,7 @@ class SOLUTION:
 
         self.Generate_Body()
         self.Generate_Brain()
-        os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)}")
+        os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} 2&>1 &")
         
     def Wait_For_Simulation_To_End(self):
         while not os.path.exists(f"fitness{str(self.myID)}.txt"):
@@ -98,6 +98,12 @@ class SOLUTION:
             height = random.random()/2 + 0.1
             
             self.dims[i] = [length,width,height]
+        
+        # there needs to be at least one sensor
+        if self.numSensors == 0:
+            sensBlock = random.randint(0,self.numBlocks-1)
+            self.blocks[sensBlock][0] = 'green'
+            self.numSensors += 1
 
  
     
@@ -204,7 +210,7 @@ class SOLUTION:
         randRow = random.randint(0, self.numSensors - 1)
         randCol = random.randint(0, self.numMotors - 1)
         self.weights[randRow,randCol] = 2*random.random()-1
-        print("mutated")
+        
         
     def SET_ID(self, nextAvID):
         self.myID = nextAvID

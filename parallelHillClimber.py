@@ -64,7 +64,7 @@ class PARALLEL_HILL_CLIMBER:
             
         for i in range(c.populationSize):
             solutions[i].Wait_For_Simulation_To_End()
-        print("eval")
+        
             
     def Print(self):
         print(f"\n")
