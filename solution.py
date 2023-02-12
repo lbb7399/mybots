@@ -75,7 +75,7 @@ class SOLUTION:
                 joint = random.randint(1,2)
                 
                 if joint == 1:
-                    joint1 = "0 1 0"
+                    joint1 = "1 0 0"
                     joint2 = 0
                     numJoints = 1
                     self.numMotors +=1
