@@ -80,7 +80,7 @@ class SOLUTION:
                     numJoints = 1
                     self.numMotors +=1
                 if joint == 2:
-                    joint1 = "0 1 0"
+                    joint1 = "0 0 1"
                     joint2 = 0
                     numJoints = 1
                     self.numMotors +=1
