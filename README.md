@@ -1,24 +1,28 @@
-# Assignment 6: 1D Creature
+# Assignment 7: Random 3D Creature
 
-This code creates a randomly generated 1D snake.
 
-## Snake Body Options
 
-All links in the chain of the snake are rectangular prisms. There can be as many as 12 or as few as 3 links in a snake. The dimensions of each link are randomly assigned, ranging from 0.1 to 0.6. The first link in the chain lies at the origin with a height of 0.3 and the subsequent links grow in the -y direction also centered at 0.3. Each link randomly generates whether it will have a sensor (green) or not (blue). If no sensor is randomly generated, a sensor is randomly assigned to a block in the chain as the motors require a sensor for the code to run smoothly. Each block, except for the first, generates a joint type to connect it to the previous block. This can either be a horizontal joint in the x direction or a veritcal joint in the z direction.
+## Creature Body Options
 
-![alt text](https://i.imgur.com/dUjpQRj.jpg)
+- Shape: cube or sphere
+- Branching: 0, 1, or 2 new branches (if zero then that line stops) for 5 rounds (will make parameter in constants for easy change)
+- Branch direction: can branch in 1 of the five other directions. For now, have this only happen in the center of each of these planes
+- random dimension between 0.1 and 0.6 (maybe place this in constants as well in the form of two constants)
+- Sensor: yes or no
+- joint: 1 of 2 directions 
+
+
+![alt text]()
 
 ## Snake Brain Options
 
-Currently, all sensor neurons are connected to all motor neurons directly through synaptic randomly generated synaptic weights.
 
 ## Required Installation
 
 This code requires the ```pybullet``` package. Download using ```pip3 install pybullet```.
 
 ## Running the Code
-
-Use the command ```python3 search.py``` in your terminal to run the code. Once it has run, it will display a simulation of the randomly generated creature. 
+ 
 
 
 ## Credit
