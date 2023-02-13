@@ -20,3 +20,7 @@ populationSize = 1
 
 motorJointRange = 0.2
 
+
+numGenBody = 4
+numChildLow = 1
+numChildHigh = 2

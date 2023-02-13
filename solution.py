@@ -8,7 +8,8 @@ import constants as c
 class SOLUTION:
     def __init__(self, myID):
         self.myID = myID
-        self.Generate_Random_Body_and_Brain()
+        #self.Generate_Random_Body_and_Brain()
+        self.Generate_Random_Body_and_Brain_3D()
         self.Create_Weights()
 
         
@@ -42,6 +43,86 @@ class SOLUTION:
         while not os.path.exists("world.sdf"):
             time.sleep(0.01)
             
+    def Generate_Random_Body_and_Brain_3D(self):
+        
+        self.links = {}
+
+        
+
+
+        branching = [0]*(c.numGenBody)
+        numChildren = random.randint(c.numChildLow,c.numChildHigh)
+        branching[0] = numChildren
+
+        branchNames = [0]*(c.numGenBody)
+
+
+        for i in range(c.numGenBody-1):
+            if isinstance(branching[i], int):
+                childrenthisgen = branching[i]
+            else:
+                childrenthisgen = sum(branching[i])
+            
+            print(childrenthisgen)
+            childrenPerGen = [0]*childrenthisgen
+            for j in range(childrenthisgen):
+                numChildren = random.randint(c.numChildLow,c.numChildHigh)
+                childrenPerGen[j]=numChildren
+            #print(j)
+
+
+            branching[i+1] = childrenPerGen
+
+
+
+
+
+
+        for i, parents in enumerate(branching[:(c.numGenBody-1)]):
+
+            
+            if isinstance(parents, int):
+                namesChildrenthisgen = [0]*parents
+                #childrenPerGen = [0]*parents
+                for j in range(parents):
+                    
+                    if i == 0:
+                        namesChildrenthisgen[j] = str(j+1)
+                    else:
+                        
+                        namesChildrenthisgen[j] = f"{branchNames[i][0]}{j+1}"
+                    print(namesChildrenthisgen)
+                    #numChildren = random.randint(1,2)
+                    #childrenPerGen[j]=numChildren
+
+
+            else:
+                namesChildrenthisgen = [0]*sum(parents)
+                #childrenPerGen = [0]*sum(parents)
+                count = 0
+                for j, children in enumerate(parents):
+                    
+                    for k in range(children):
+                        namesChildrenthisgen[count] = branchNames[i][j] + str(k+1)
+                        
+                        #numChildren = random.randint(1,2)
+                        #childrenPerGen[count]=numChildren
+                        count += 1
+                    
+
+
+            #branching[i+1] = childrenPerGen
+            branchNames[i+1] = namesChildrenthisgen
+                        
+        print(branchNames)
+        print(branching)
+ 
+         
+                
+        
+            
+        exit()
+        
     def Generate_Random_Body_and_Brain(self):
         
         # how many blocks? 3 - 12
@@ -156,13 +237,13 @@ class SOLUTION:
                 pyrosim.Send_Cube(name=f"{i}", pos=[0,self.dims[i][1]/2,0] , size=self.dims[i], colorString=self.blocks[i][0])
         
 
-        print(self.blocks)
-        print(f"Number of Sensors: {self.numSensors}")
-        print(f"Number of Sensors List: {len(self.sensorLinkNames)}")
-        print(self.sensorLinkNames)
-        print(f"Number of Motors: {self.numMotors}")
-        print(f"Number of Motors List: {len(self.motorJointNames)}")
-        print(self.motorJointNames)
+#        print(self.blocks)
+#        print(f"Number of Sensors: {self.numSensors}")
+#        print(f"Number of Sensors List: {len(self.sensorLinkNames)}")
+#        print(self.sensorLinkNames)
+#        print(f"Number of Motors: {self.numMotors}")
+#        print(f"Number of Motors List: {len(self.motorJointNames)}")
+#        print(self.motorJointNames)
         
         
         pyrosim.End()
