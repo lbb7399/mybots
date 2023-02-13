@@ -4,6 +4,7 @@ import random
 import os
 import time
 import constants as c
+from link import LINK
 
 class SOLUTION:
     def __init__(self, myID):
@@ -43,31 +44,47 @@ class SOLUTION:
         while not os.path.exists("world.sdf"):
             time.sleep(0.01)
             
+            
     def Generate_Random_Body_and_Brain_3D(self):
+        self.Create_Branching()
+        self.Define_Shapes()
+        self.Define_Dimensions()
+        self.Define_Sensors()
+        self.Define_Direction()
+        self.Define_Joint_Axis()
+        self.Define_Joint_Position()
+        
+    
+    
+    def Create_Branching(self):
         
         self.links = {}
-
-        
-
 
         branching = [0]*(c.numGenBody)
         numChildren = random.randint(c.numChildLow,c.numChildHigh)
         branching[0] = numChildren
 
         branchNames = [0]*(c.numGenBody)
+        self.branchNames1 =[0]
+        linkcount = 0
+        self.links[0] = LINK(branchNames[0], "none", numChildren)
+        linkcount +=1
 
-
+        # determines branching through generations
         for i in range(c.numGenBody-1):
             if isinstance(branching[i], int):
                 childrenthisgen = branching[i]
             else:
                 childrenthisgen = sum(branching[i])
             
-            print(childrenthisgen)
+            
             childrenPerGen = [0]*childrenthisgen
             for j in range(childrenthisgen):
-                numChildren = random.randint(c.numChildLow,c.numChildHigh)
-                childrenPerGen[j]=numChildren
+                if i == c.numGenBody -2:
+                    childrenPerGen[j] = 0
+                else:
+                    numChildren = random.randint(c.numChildLow,c.numChildHigh)
+                    childrenPerGen[j]=numChildren
             #print(j)
 
 
@@ -75,9 +92,7 @@ class SOLUTION:
 
 
 
-
-
-
+        # assigns names to each link
         for i, parents in enumerate(branching[:(c.numGenBody-1)]):
 
             
@@ -87,41 +102,113 @@ class SOLUTION:
                 for j in range(parents):
                     
                     if i == 0:
-                        namesChildrenthisgen[j] = str(j+1)
+                        namelink = str(j+1)
+                        namesChildrenthisgen[j] = namelink
+                        self.branchNames1.append(namelink)
+                        if isinstance(branching[i+1], int):
+                            self.links[namelink] = LINK(namelink, 0, branching[i+1])
+                        else:
+                            self.links[namelink] = LINK(namelink, 0, branching[i+1][j])
+                        linkcount +=1
                     else:
-                        
-                        namesChildrenthisgen[j] = f"{branchNames[i][0]}{j+1}"
-                    print(namesChildrenthisgen)
-                    #numChildren = random.randint(1,2)
-                    #childrenPerGen[j]=numChildren
-
+                        namelink = f"{branchNames[i][0]}{j+1}"
+                        namesChildrenthisgen[j] = namelink
+                        self.branchNames1.append(namelink)
+                        if isinstance(branching[i+1], int):
+                            self.links[namelink] = LINK(namelink,f"{branchNames[i][0]}", branching[i+1])
+                        else:
+                            self.links[namelink] = LINK(namelink,f"{branchNames[i][0]}", branching[i+1][j])
+                        linkcount += 1
 
             else:
                 namesChildrenthisgen = [0]*sum(parents)
-                #childrenPerGen = [0]*sum(parents)
+                
                 count = 0
                 for j, children in enumerate(parents):
                     
                     for k in range(children):
-                        namesChildrenthisgen[count] = branchNames[i][j] + str(k+1)
-                        
-                        #numChildren = random.randint(1,2)
-                        #childrenPerGen[count]=numChildren
+                        namelink = branchNames[i][j] + str(k+1)
+                        namesChildrenthisgen[count] = namelink
+                        self.branchNames1.append(namelink)
+                        self.links[namelink] = LINK(namelink, branchNames[i][j], branching[i+1][count])
                         count += 1
+                        linkcount += 1
                     
 
 
-            #branching[i+1] = childrenPerGen
             branchNames[i+1] = namesChildrenthisgen
                         
         print(branchNames)
-        print(branching)
- 
-         
-                
+#        print(branching)
+#        for i in self.links:
+#            print(self.links[i].linkID, self.links[i].parentID, self.links[i].numChildren)
+#            print(f"\n")
+#        print(self.branchNames1)
         
+        
+                
+    def Define_Shapes(self):
+            
+        for i, linkname in enumerate(self.branchNames1):
+            if self.links[linkname].Is_Origin(linkname):
+                self.links[linkname].Set_Shape("none")
+            else:
+                parentID = self.links[linkname].parentID
+                parentLink = self.links[parentID]
+                parentShape = parentLink.shape
+                self.links[linkname].Set_Shape(parentShape)
+                        
+    
+    def Define_Dimensions(self):
+            
+        for i, linkname in enumerate(self.branchNames1):
+            if self.links[linkname].Is_Origin(linkname):
+                self.links[linkname].Set_Dimensions("none")
+            else:
+                parentID = self.links[linkname].parentID
+                parentLink = self.links[parentID]
+                parentDims = parentLink.dims
+                self.links[linkname].Set_Dimensions(parentDims)
+            
+    def Define_Sensors(self):
+        for i,linkname in enumerate(self.links):
+            self.links[linkname].Set_Sensor()
+            
+    def Define_Direction(self):
+
+        for i, linkname in enumerate(self.branchNames1):
+            if self.links[linkname].Is_Origin(linkname):
+                direction = "none"
+                self.links[linkname].Set_Direction(direction,"none")
+            else:
+                parentID = self.links[linkname].parentID
+                parentLink = self.links[parentID]
+                parentDirection = parentLink.direction
+                count = 0
+                while count < 1:
+                    direction = random.randint(1,6)
+                    if self.Check_Direction(parentDirection,direction):
+                        self.links[linkname].Set_Direction(direction,parentDirection)
+                        count = 1
+    
+    def Define_Joint_Axis(self):
+        for i,linkname in enumerate(self.links):
+            self.links[linkname].Set_Joint_Axis()
+                
+    def Define_Joint_Position(self):
+        
+        for i, linkname in enumerate(self.branchNames1):
+            if self.links[linkname].Is_Origin(linkname):
+                self.links[linkname].Set_Joint_Position()
+            else:
+                self.links[linkname].Set_Joint_Position()
+            
+
+  # for define link position, skip over origin
             
         exit()
+        
+    
         
     def Generate_Random_Body_and_Brain(self):
         
@@ -151,10 +238,7 @@ class SOLUTION:
                 joint2 = 0
                 numJoints = 0
             else:
-            
-#                joint = random.randint(1,3)
                 joint = random.randint(1,2)
-                
                 if joint == 1:
                     joint1 = "1 0 0"
                     joint2 = 0
@@ -165,11 +249,6 @@ class SOLUTION:
                     joint2 = 0
                     numJoints = 1
                     self.numMotors +=1
-#                if joint == 3:
-#                    joint1 = "1 0 0"
-#                    joint2 = "0 1 0"
-#                    numJoints = 2
-#                    self.numMotors +=2
             
             self.blocks[i] = [color,joint1, joint2, numJoints]
             
@@ -283,4 +362,18 @@ class SOLUTION:
         
     def SET_ID(self, nextAvID):
         self.myID = nextAvID
+        
+    def Check_Direction(self, parentDirection, direction):
+        if parentDirection == "none":
+            return True
+        else:
+            if (parentDirection % 2) == 0:
+                badDirection = parentDirection - 1
+            else:
+                badDirection = parentDirection + 1
+            
+            if badDirection == direction:
+                return False
+            else:
+                return True
         

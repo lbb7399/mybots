@@ -20,7 +20,16 @@ populationSize = 1
 
 motorJointRange = 0.2
 
+# body dimension random parameters (0.1 to 0.6)
+multiRandom = 0.5
+addRandom = 0.1
 
 numGenBody = 4
 numChildLow = 1
 numChildHigh = 2
+
+# Starting coordinates
+x = 0
+y = 0
+z = 2
+coord = [x,y,z]
