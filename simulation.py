@@ -10,9 +10,11 @@ class SIMULATION:
         #self.physicsClient = p.connect(p.DIRECT)
         if directOrGUI == "DIRECT":
             self.physicsClient = p.connect(p.DIRECT)
+
             
         else:
             self.physicsClient = p.connect(p.GUI)
+            pybullet.configureDebugVisualizer(pybullet.COV_ENABLE_GUI,0)
         
         
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
