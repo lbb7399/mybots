@@ -106,7 +106,8 @@ def Prepare_To_Simulate(bodyID):
 
     Prepare_Joint_Dictionary(bodyID)
 
-def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1],colorString='<color rgba="0 1.0 1.0 1.0"/>'):
+def Send_Link(name,pos,size,objectType,colorString):
+
 
     global availableLinkIndex
 
@@ -118,7 +119,7 @@ def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1],colorString='<color rgba="
 
         Start_Model(name,pos)
 
-        link = LINK_SDF(name,pos,size)
+        link = LINK_SDF(name,pos,size,objectType)
 
         links.append(link)
     else:
@@ -135,6 +136,16 @@ def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1],colorString='<color rgba="
     linkNamesToIndices[name] = availableLinkIndex
 
     availableLinkIndex = availableLinkIndex + 1
+    
+    
+def Send_Cube(name="default",pos=[0,0,0],size=[1,1,1],colorString='<color rgba="0 1.0 1.0 1.0"/>'):
+
+    Send_Link(name,pos,size,"box",colorString)
+
+def Send_Sphere(name="default",pos=[0,0,0],size=[0.5],colorString='<color rgba="0 1.0 1.0 1.0"/>'):
+
+    Send_Link(name,pos,size,"sphere",colorString)
+    
 
 def Send_Joint(name,parent,child,type,position, jointAxis):
 
