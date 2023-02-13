@@ -120,6 +120,7 @@ class SOLUTION:
         
         midZpos = 0.3
         
+        
         for i in range(self.numBlocks):
             
             
@@ -133,13 +134,7 @@ class SOLUTION:
                     pyrosim.Send_Joint( name = f"{i-1}_{i}" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,self.dims[i-1][1]/2,midZpos], jointAxis = self.blocks[i][1])
                     self.motorJointNames.append(f"{i-1}_{i}")
                     
-#                elif self.blocks[i][3] == 2:
-#
-#                    pyrosim.Send_Joint( name = f"{i-1}_{i}1" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width/2,midZpos], jointAxis = self.blocks[i][1])
-#                    self.motorJointNames.append(f"{i-1}_{i}1")
-#
-#                    pyrosim.Send_Joint( name = f"{i-1}_{i}2" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width/2,midZpos], jointAxis = self.blocks[i][2])
-#                    self.motorJointNames.append(f"{i-1}_{i}2")
+
                     
                 else:
                     print("too many joints system exit")
@@ -152,20 +147,13 @@ class SOLUTION:
                     pyrosim.Send_Joint( name = f"{i-1}_{i}" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,self.dims[i-1][1],0], jointAxis = self.blocks[i][1])
                     self.motorJointNames.append(f"{i-1}_{i}")
                     
-#                elif self.blocks[i][3] == 2:
-#
-#                    pyrosim.Send_Joint( name = f"{i-1}_{i}1" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width0,0], jointAxis = self.blocks[i][1])
-#                    self.motorJointNames.append(f"{i-1}_{i}1")
-#
-#                    pyrosim.Send_Joint( name = f"{i-1}_{i}2" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,width0,0], jointAxis = self.blocks[i][2])
-#                    self.motorJointNames.append(f"{i-1}_{i}2")
+
                     
                 else:
                     print("too many joints system exit")
                     exit()
                     
                 pyrosim.Send_Cube(name=f"{i}", pos=[0,self.dims[i][1]/2,0] , size=self.dims[i], colorString=self.blocks[i][0])
-        
         
 
         print(self.blocks)
