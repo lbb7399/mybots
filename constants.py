@@ -24,7 +24,7 @@ motorJointRange = 0.2
 multiRandom = 0.5
 addRandom = 0.1
 
-numGenBody = 4
+numGenBody = 3
 numChildLow = 1
 numChildHigh = 2
 
@@ -33,3 +33,5 @@ x = 0
 y = 0
 z = 2
 coord = [x,y,z]
+
+

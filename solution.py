@@ -53,6 +53,7 @@ class SOLUTION:
         self.Define_Direction()
         self.Define_Joint_Axis()
         self.Define_Joint_Position()
+        self.Define_Link_Position()
         
     
     
@@ -171,29 +172,38 @@ class SOLUTION:
                 self.links[linkname].Set_Dimensions(parentDims)
             
     def Define_Sensors(self):
+        self.sensorNames = []
         for i,linkname in enumerate(self.links):
             self.links[linkname].Set_Sensor()
+            if self.links[linkname].sensor is True:
+                self.sensorNames.append(linkname)
             
     def Define_Direction(self):
 
         for i, linkname in enumerate(self.branchNames1):
             if self.links[linkname].Is_Origin(linkname):
                 direction = "none"
-                self.links[linkname].Set_Direction(direction,"none")
+                parentInline = "none"
+                self.links[linkname].Set_Direction(direction,"none","none",parentInline)
             else:
                 parentID = self.links[linkname].parentID
                 parentLink = self.links[parentID]
                 parentDirection = parentLink.direction
+                gparentDirection = parentLink.parentDirection
+                parentInline = parentLink.inline
                 count = 0
                 while count < 1:
                     direction = random.randint(1,6)
                     if self.Check_Direction(parentDirection,direction):
-                        self.links[linkname].Set_Direction(direction,parentDirection)
+                        self.links[linkname].Set_Direction(direction,parentDirection,gparentDirection,parentInline)
                         count = 1
     
     def Define_Joint_Axis(self):
+        self.motorJointNames = []
         for i,linkname in enumerate(self.links):
             self.links[linkname].Set_Joint_Axis()
+            if i != 0:
+                self.motorJointNames.append(self.links[linkname].joint_name)
                 
     def Define_Joint_Position(self):
         
@@ -204,9 +214,10 @@ class SOLUTION:
                 self.links[linkname].Set_Joint_Position()
             
 
-  # for define link position, skip over origin
+    def Define_Link_Position(self):
+        for i,linkname in enumerate(self.links):
+            self.links[linkname].Set_Link_Position()
             
-        exit()
         
     
         
@@ -276,17 +287,15 @@ class SOLUTION:
     def Generate_Body(self):
         pyrosim.Start_URDF("body.urdf")
         
-        self.motorJointNames = []
-        
-        midZpos = 0.3
         
         
-        for i in range(self.numBlocks):
+        
+        for i,linkname in enumerate(self.links):
             
             
             if i == 0:
 
-                pyrosim.Send_Cube(name=f"{i}", pos=[0,0,midZpos] , size=self.dims[i], colorString=self.blocks[i][0])
+                self.links[linkname].Send_Object()
                 
             elif i == 1:
                 if self.blocks[i][3] == 1:

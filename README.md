@@ -1,6 +1,6 @@
 # Assignment 7: Random 3D Creature
 
-
+MAKE SURE SIDEBARS ARE DISABLED
 
 ## Creature Body Options
 
