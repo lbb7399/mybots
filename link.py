@@ -1,5 +1,6 @@
 import constants as c
 import random
+import pyrosim.pyrosim as pyrosim
 
 class LINK:
     def __init__(self,linkID, parentID, numChildren):
@@ -22,7 +23,8 @@ class LINK:
     def Set_Shape(self, parentShape):
         self.parentShape = parentShape
     
-        flip = random.randint(1,2)
+#        flip = random.randint(1,2)
+        flip = 1
         if flip == 1:
             self.shape = "box"
         if flip == 2:
@@ -216,9 +218,16 @@ class LINK:
             self.link_position = link_position
             
     def Send_Object(self):
-        if self.shape 9s "sphere":
+        if self.shape is "box":
+            if self.Is_Origin(self.linkID):
+                pyrosim.Send_Cube(name=str(self.linkID), pos=self.link_position , size=self.dims, colorString=self.color)
+            else:
+                pyrosim.Send_Cube(name=self.linkID, pos=self.link_position , size=self.dims, colorString=self.color)
+        elif self.shape is "sphere":
+            pass
             
-                    
+    def Send_Joint(self):
+        pyrosim.Send_Joint( name = f"{self.parentID}_{self.linkID}" , parent= f"{self.parentID}" , child = self.linkID , type = "revolute", position = self.joint_position, jointAxis = self.joint_axis)
             
 
 

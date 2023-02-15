@@ -18,19 +18,3 @@ destroy semaphore
 semaphore destroyed
 destroy main semaphore
 main semaphore destroyed
-Traceback (most recent call last):
-  File "simulate.py", line 9, in <module>
-    simulation.Run()
-  File "/Users/lindsaybogar/gitrep/simulation.py", line 40, in Run
-    self.robot.Act(i)
-  File "/Users/lindsaybogar/gitrep/robot.py", line 36, in Act
-    self.motors[jointName].Set_Value(self.robotId, desiredAngle)
-  File "/Users/lindsaybogar/gitrep/motor.py", line 12, in Set_Value
-    pyrosim.Set_Motor_For_Joint(bodyIndex = robotId, jointName = self.jointName, controlMode = p.POSITION_CONTROL, targetPosition = desiredAngle, maxForce = c.maxForceBack)
-  File "/Users/lindsaybogar/gitrep/pyrosim/pyrosim.py", line 171, in Set_Motor_For_Joint
-    p.setJointMotorControl2(
-pybullet.error: Not connected to physics server.
-Exception ignored in: <function SIMULATION.__del__ at 0x7fa9b14e9670>
-Traceback (most recent call last):
-  File "/Users/lindsaybogar/gitrep/simulation.py", line 48, in __del__
-pybullet.error: Not connected to physics server.

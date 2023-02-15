@@ -177,6 +177,8 @@ class SOLUTION:
             self.links[linkname].Set_Sensor()
             if self.links[linkname].sensor is True:
                 self.sensorNames.append(linkname)
+        
+        self.numSensors = len(self.sensorNames)
             
     def Define_Direction(self):
 
@@ -204,6 +206,8 @@ class SOLUTION:
             self.links[linkname].Set_Joint_Axis()
             if i != 0:
                 self.motorJointNames.append(self.links[linkname].joint_name)
+        
+        self.numMotors = len(self.motorJointNames)
                 
     def Define_Joint_Position(self):
         
@@ -287,64 +291,27 @@ class SOLUTION:
     def Generate_Body(self):
         pyrosim.Start_URDF("body.urdf")
         
-        
-        
-        
         for i,linkname in enumerate(self.links):
-            
             
             if i == 0:
 
                 self.links[linkname].Send_Object()
                 
-            elif i == 1:
-                if self.blocks[i][3] == 1:
-                
-                    pyrosim.Send_Joint( name = f"{i-1}_{i}" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,self.dims[i-1][1]/2,midZpos], jointAxis = self.blocks[i][1])
-                    self.motorJointNames.append(f"{i-1}_{i}")
-                    
-
-                    
-                else:
-                    print("too many joints system exit")
-                    exit()
-                    
-                pyrosim.Send_Cube(name=f"{i}", pos=[0,self.dims[i][1]/2,0] , size=self.dims[i], colorString=self.blocks[i][0])
             else:
-                if self.blocks[i][3] == 1:
-                
-                    pyrosim.Send_Joint( name = f"{i-1}_{i}" , parent= f"{i-1}" , child = f"{i}" , type = "revolute", position = [0,self.dims[i-1][1],0], jointAxis = self.blocks[i][1])
-                    self.motorJointNames.append(f"{i-1}_{i}")
-                    
-
-                    
-                else:
-                    print("too many joints system exit")
-                    exit()
-                    
-                pyrosim.Send_Cube(name=f"{i}", pos=[0,self.dims[i][1]/2,0] , size=self.dims[i], colorString=self.blocks[i][0])
-        
-
-#        print(self.blocks)
-#        print(f"Number of Sensors: {self.numSensors}")
-#        print(f"Number of Sensors List: {len(self.sensorLinkNames)}")
-#        print(self.sensorLinkNames)
-#        print(f"Number of Motors: {self.numMotors}")
-#        print(f"Number of Motors List: {len(self.motorJointNames)}")
-#        print(self.motorJointNames)
-        
+                self.links[linkname].Send_Joint()
+                self.links[linkname].Send_Object()
         
         pyrosim.End()
         while not os.path.exists("body.urdf"):
             time.sleep(0.01)
-            
+
     
         
     def Generate_Brain(self):
         pyrosim.Start_NeuralNetwork(f"brain{self.myID}.nndf")
         
-        for i, lName in enumerate(self.sensorLinkNames):
-            pyrosim.Send_Sensor_Neuron(name = i , linkName = lName)
+        for i, lName in enumerate(self.sensorNames):
+            pyrosim.Send_Sensor_Neuron(name = i , linkName = f"{lName}")
         
         for j, jName in enumerate(self.motorJointNames):
             mName = j+self.numSensors
