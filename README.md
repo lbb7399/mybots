@@ -6,7 +6,7 @@ This code randomly generates a create that fills 3D space.
 
 The creature starts as a single cube. It then propogates out, branching, for a specified number of generations and potential branches. Each new branch can hinge from one of the far edges of the parent link or directly on its face. All joints are hinge joints. If a link and its parent are face to face, the joint may exist along the two other axes with a 50/50 chance. Each link dimension can be between 0.1 and 0.6 units. 
 
-The body does have the possibility to overlap on itself but I did this code before the full rubric came out and I have not had the time to change it effectively so I fully accept the point loss.
+The body does have the possibility to overlap on itself but I did this code before the full rubric came out and I have not had the time to change it effectively so I fully accept the point loss. I will fix it before the next assignment.
 
 ### Possible Body
 ![](https://i.imgur.com/PemdD3m.jpg)
