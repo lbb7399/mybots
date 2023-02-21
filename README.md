@@ -1,6 +1,6 @@
 # Assignment 7: Random 3D Creature
 
-
+This code randomly generates a create that fills 3D space.
 
 ## Creature Body Options
 
