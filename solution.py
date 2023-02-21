@@ -7,8 +7,9 @@ import constants as c
 from link import LINK
 
 class SOLUTION:
-    def __init__(self, myID):
+    def __init__(self, myID,myPopID):
         self.myID = myID
+        self.myPopID = myPopID
         self.Generate_Random_Body_and_Brain_3D()
         self.Create_Weights()
 
@@ -231,7 +232,7 @@ class SOLUTION:
             
         
     def Generate_Body(self):
-        pyrosim.Start_URDF("body.urdf")
+        pyrosim.Start_URDF(f"body{self.myPopID}.urdf")
         
         for i,linkname in enumerate(self.links):
             
@@ -244,7 +245,7 @@ class SOLUTION:
                 self.links[linkname].Send_Object()
         
         pyrosim.End()
-        while not os.path.exists("body.urdf"):
+        while not os.path.exists(f"body{self.myPopID}.urdf"):
             time.sleep(0.01)
 
     
