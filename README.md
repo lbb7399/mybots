@@ -27,6 +27,8 @@ This code requires the ```pybullet``` package. Download using ```pip3 install py
 
 ## Running the Code
  Type ```python3 search.py``` into the terminal. If you desire to change the number of brnaches and/or generations of brnaching, you can do so in ```constants.py```.
+ 
+ [Example bots](https://youtu.be/zERmQudesOE)
 
 
 ## Credit
