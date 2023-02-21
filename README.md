@@ -1,6 +1,6 @@
 # Assignment 7: Random 3D Creature
 
-MAKE SURE SIDEBARS ARE DISABLED
+
 
 ## Creature Body Options
 
@@ -8,14 +8,17 @@ The creature starts as a single cube. It then propogates out, branching, for a s
 
 The body does have the possibility to overlap on itself but I did this code before the full rubric came out and I have not had the time to change it effectively so I fully accept the point loss.
 
+### Possible Body
+![](https://i.imgur.com/PemdD3m.jpg)
 
-![alt text](https://i.imgur.com/PemdD3m.jpg)
+### Joint Options
 ![alt text](https://i.imgur.com/aLGn5QE.jpg)
 
 ## Creature Brain Options
 
 Each link has a 50/50 chance of having a sensor. Every sensor is connected to every motor in this case.
 
+### General Brain Map
 ![alt text](https://i.imgur.com/DTxsQwu.jpg)
 
 ## Required Installation
