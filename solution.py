@@ -9,7 +9,6 @@ from link import LINK
 class SOLUTION:
     def __init__(self, myID):
         self.myID = myID
-        #self.Generate_Random_Body_and_Brain()
         self.Generate_Random_Body_and_Brain_3D()
         self.Create_Weights()
 
@@ -222,63 +221,6 @@ class SOLUTION:
         for i,linkname in enumerate(self.links):
             self.links[linkname].Set_Link_Position()
             
-        
-    
-        
-    def Generate_Random_Body_and_Brain(self):
-        
-        # how many blocks? 3 - 12
-        self.numBlocks = random.randint(3,12)
-        
-        self.blocks = {}
-        self.dims = {}
-        self.numSensors = 0
-        self.numMotors = 0
-        self.sensorLinkNames = []
-        for i in range(self.numBlocks):
-            
-            # sensor?
-            type = random.randint(1,2)
-            if type == 1:
-                color = 'green'
-                self.numSensors += 1
-                self.sensorLinkNames.append(f"{i}")
-                
-            else:
-                color = 'blue'
-            
-            # type of joint
-            if i == 0:
-                joint1 = 0
-                joint2 = 0
-                numJoints = 0
-            else:
-                joint = random.randint(1,2)
-                if joint == 1:
-                    joint1 = "1 0 0"
-                    joint2 = 0
-                    numJoints = 1
-                    self.numMotors +=1
-                if joint == 2:
-                    joint1 = "0 0 1"
-                    joint2 = 0
-                    numJoints = 1
-                    self.numMotors +=1
-            
-            self.blocks[i] = [color,joint1, joint2, numJoints]
-            
-            # random dimensions
-            length = random.random()/2 + 0.1
-            width = random.random()/2 + 0.1
-            height = random.random()/2 + 0.1
-            
-            self.dims[i] = [length,width,height]
-        
-        # there needs to be at least one sensor
-        if self.numSensors == 0:
-            sensBlock = random.randint(0,self.numBlocks-1)
-            self.blocks[sensBlock][0] = 'green'
-            self.numSensors += 1
 
  
     
