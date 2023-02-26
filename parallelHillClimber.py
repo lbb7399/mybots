@@ -2,17 +2,18 @@ from solution import SOLUTION
 import constants as c
 import copy
 import os
+from numpy.random import SeedSequence, default_rng
 class PARALLEL_HILL_CLIMBER:
-    def __init__(self):
+    def __init__(self, ss):
         
         os.system("rm brain*.nndf")
         os.system("rm fitness*.txt")
         
-        
+        child_seeds = ss.spawn(c.populationSize)
         self.parents = {}
         self.nextAvailableID = 0
         for i in range(c.populationSize):
-            self.parents[i] = SOLUTION(self.nextAvailableID,i)
+            self.parents[i] = SOLUTION(self.nextAvailableID,i,child_seeds[i])
             self.nextAvailableID = self.nextAvailableID + 1
 
     

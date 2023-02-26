@@ -5,11 +5,14 @@ import os
 import time
 import constants as c
 from link import LINK
+#from numpy.random import SeedSequence, default_rng
 
 class SOLUTION:
-    def __init__(self, myID,myPopID):
+    def __init__(self, myID,myPopID,child_seed):
         self.myID = myID
         self.myPopID = myPopID
+        self.child_seed = child_seed
+        self.child_rng = np.random.default_rng(child_seed)
         self.numXBlocks = c.numXBlocks
         self.numYBlocks = c.numYBlocks
         self.numZBlocks = c.numZBlocks
@@ -25,7 +28,7 @@ class SOLUTION:
 
         self.Generate_Body()
         self.Generate_Brain()
-        os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} {str(self.myPopID)}")
+        os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} {str(self.myPopID)} 2&>1 &")
         
     def Wait_For_Simulation_To_End(self):
         while not os.path.exists(f"fitness{str(self.myID)}.txt"):
@@ -50,7 +53,7 @@ class SOLUTION:
             
     def Generate_Random_Body_and_Brain_3D(self):
         
-        while self.numLinks == 0:
+        while self.numLinks < 2:
             count = 0
             self.namelist = []
             self.OneBase = False
@@ -81,11 +84,11 @@ class SOLUTION:
         self.Define_Link_Position()
         
         
-        for i, linkname in enumerate(self.namelist):
-            print(f"\n")
-            print(f"Link: {linkname} Parent: {self.links[linkname].parentLink} Joint: {self.links[linkname].jointOrient} JointDir = {self.links[linkname].jointDir} ")
-            print(self.links[linkname].absLinkPos, self.links[linkname].abs_joint_position)
-            print(self.links[linkname].linkpos, self.links[linkname].joint_position)
+#        for i, linkname in enumerate(self.namelist):
+#            print(f"\n")
+#            print(f"Link: {linkname} Parent: {self.links[linkname].parentLink} Joint: {self.links[linkname].jointOrient} JointDir = {self.links[linkname].jointDir} ")
+#            print(self.links[linkname].absLinkPos, self.links[linkname].abs_joint_position)
+#            print(self.links[linkname].linkpos, self.links[linkname].joint_position)
             
 
 
@@ -96,17 +99,22 @@ class SOLUTION:
     def Create_Links(self):
         self.links = {}
         self.namelist0 = []
+        numPossibleLinks = self.numXBlocks*self.numYBlocks*self.numZBlocks
+        exist0 = self.child_rng.integers(low=0,high=2,size=(self.numXBlocks,self.numYBlocks,self.numZBlocks))
+        gchild_seeds = self.child_seed.spawn(numPossibleLinks)
+        count = 0
         for i in range(self.numXBlocks):
             for j in range(self.numYBlocks):
                 for k in range(self.numZBlocks):
                     name = f"{i}{j}{k}"
-                    exist0 = random.randint(0,1)
-                    if exist0 == 0:
+                    #exist0 = random.randint(0,1)
+                    if exist0[i][j][k] == 0:
                         exist = False
-                    elif exist0 == 1:
+                    elif exist0[i][j][k] == 1:
                         exist = True
                         self.namelist0.append(name)
-                    self.links[name] = LINK(name,exist,i,j,k)
+                    self.links[name] = LINK(name,exist,i,j,k,gchild_seeds[count])
+                    count += 1
         print("Original Name List 0")
         print(self.namelist0)
         
@@ -133,9 +141,10 @@ class SOLUTION:
                                         
                                         # defining if this connector link is the parent or child to current link
                                         if not name in self.namelist0:
-                                            print("hopefully that error is showing up")
-                                            print(self.namelist0)
-                                            print(self.namelist)
+                                            pass
+                                            #print("hopefully that error is showing up")
+                                            #print(self.namelist0)
+                                            #print(self.namelist)
                                         conIndex = self.namelist0.index(name)
                                         if conIndex < count+startindex:
                                             jointRelative = "parent"
@@ -178,6 +187,13 @@ class SOLUTION:
                 self.sensorNames.append(linkname)
         
         self.numSensors = len(self.sensorNames)
+        
+        if self.numSensors == 0:
+            sensor = self.child_rng.integers(low=0,high=self.numLinks)
+            self.links[self.namelist[sensor]].Switch_Sensor()
+            self.sensorNames.append(self.namelist[sensor])
+            self.numSensors = 1
+        
         
                             
                 
@@ -226,8 +242,11 @@ class SOLUTION:
  
     
     def Create_Weights(self):
-        self.weights = np.random.rand(self.numSensors,self.numMotors)
+        #self.weights = np.random.rand(self.numSensors,self.numMotors)
+        self.weights = self.child_rng.random((self.numSensors,self.numMotors))
         self.weights = 2*self.weights-1
+        
+        print(self.myID,self.weights)
             
             
         
@@ -274,9 +293,12 @@ class SOLUTION:
         
         
     def Mutate(self):
-        randRow = random.randint(0, self.numSensors - 1)
-        randCol = random.randint(0, self.numMotors - 1)
-        self.weights[randRow,randCol] = 2*random.random()-1
+        if self.numSensors == 1:
+            randRow = 0
+        else:
+            randRow = self.child_rng.integers(low=0, high=self.numSensors) # plus 1 bc exclusive (used to be -1 same for randCol)
+        randCol = self.child_rng.integers(low=0, high=self.numMotors)
+        self.weights[randRow,randCol] = 2*self.child_rng.random()-1
         
         
     def SET_ID(self, nextAvID):
