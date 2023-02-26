@@ -63,47 +63,71 @@ class LINK:
         if flip == 2:
             self.sensor = False
             self.color = "blue"
-            
-    def Switch_Sensor(self):
-        if self.sensor == True:
-            self.sensor = False
-            self.color = "blue"
-        else:
-            self.sensor = True
-            self.color = "green"
     
     def Set_Number(self,number):
         self.num = number
         
-    def Set_Joint_Axis(self):
-        axes = ["x","y","z"]
+    def Set_Parent(self):
         if self.num == 0:
             self.parentLink = "none"
-            self.joint_axis = "none"
             self.joint_name = "none"
             self.jointOrient = "none"
             self.jointDir = "none"
             
         else:
-            print(self.numPossibleParents)
             if self.numPossibleParents == 1:
                 self.parentLink = self.parentJointNames[0]
             else:
                 #index = random.randint(1,self.numPossibleParents) - 1
                 index = self.gchild_rng.integers(low=1,high=self.numPossibleParents+1) - 1
                 self.parentLink = self.parentJointNames[index]
+#self.connections[conName] = [jointRelative,jointOrient,jointDirRelativeToLink,axisRelativeToLink]
             self.jointOrient = self.connections[self.parentLink][1]
             self.jointDir = np.array(self.connections[self.parentLink][2])
+            self.jointDirAxis = np.array(self.connections[self.parentLink][3])
             self.joint_name = f"{self.parentLink}_{self.linkID}"
-            if self.connections[self.parentLink][1] == "face":
-                axisI = self.connections[self.parentLink][3].index(1)
-                axes.pop(axisI)
-                #axis = random.randint(0,1)
-                axis = self.gchild_rng.integers(low=0,high=2)
+        
+    def Set_Joint_Axis(self):
+        axes = ["x","y","z"]
+        indices = [0,1,2]
+        if self.num == 0:
+            self.joint_axis = "none"
+        else:
+            if self.jointOrient == "face":
+                edgeorface = self.gchild_rng.integers(low=0,high=5)
+                axisI = np.where(self.jointDirAxis==1)[0][0]
+                if edgeorface == 0:
+                    axes.pop(axisI)
+                    #axis = random.randint(0,1)
+                    axis = self.gchild_rng.integers(low=0,high=2)
+                    self.joint_axis = self.Return_Axis(axes[axis])
+                else:
+                    indices.pop(axisI)
+                    if edgeorface == 1:
+                        self.jointDir[indices[0]] = 1
+                        self.jointDirAxis[indices[0]] = 1
+                    elif edgeorface == 2:
+                        self.jointDir[indices[0]] = -1
+                        self.jointDirAxis[indices[0]] = 1
+                    elif edgeorface == 3:
+                        self.jointDir[indices[1]] = 1
+                        self.jointDirAxis[indices[1]] = 1
+                    elif edgeorface == 4:
+                        self.jointDir[indices[1]] = -1
+                        self.jointDirAxis[indices[1]] = 1
+                    axis = np.where(self.jointDirAxis==0)[0][0]
+                    self.joint_axis = self.Return_Axis(axes[axis])
+                
+            elif self.jointOrient == "hinge":
+                axis = np.where(self.jointDirAxis==0)[0][0]
                 self.joint_axis = self.Return_Axis(axes[axis])
-            elif self.connections[self.parentLink][1] == "hinge":
-                axis = self.connections[self.parentLink][3].index(0)
-                self.joint_axis = self.Return_Axis(axes[axis])
+    
+    def Set_Joint_Type(self):
+        flip = self.gchild_rng.integers(low=0,high=2)
+        if flip == 1:
+            self.joint_type = "revolute"
+        else:
+            self.joint_type = "continuous"
                 
     def Return_Axis(self,axis):
         if axis == "x":
@@ -148,7 +172,7 @@ class LINK:
             self.joint_position = self.abs_joint_position - parentAbs
             
     def Set_Link_Position(self):
-        print(self.linkID)
+        #print(self.linkID)
         if self.num == 0:
             self.linkpos = self.absLinkPos
             
@@ -161,7 +185,18 @@ class LINK:
         pyrosim.Send_Cube(name=self.linkID, pos=self.linkpos, size=self.dims, colorString=self.color)
         
     def Send_Joint(self):
-        pyrosim.Send_Joint(name=self.joint_name, parent=f"{self.parentLink}", child=self.linkID, type="revolute",position=self.joint_position, jointAxis=self.joint_axis)
+        if self.joint_type == "revolute":
+            pyrosim.Send_Joint(name=self.joint_name, parent=f"{self.parentLink}", child=self.linkID, type=f"{self.joint_type}",position=self.joint_position, jointAxis=self.joint_axis)
+        else:
+            pyrosim.Send_Joint(name=self.joint_name, parent=f"{self.parentLink}", child=self.linkID, type=f"{self.joint_type}",position=self.joint_position, jointAxis=self.joint_axis)
 
 
+## Mutations
 
+    def Switch_Sensor(self):
+        if self.sensor == True:
+            self.sensor = False
+            self.color = "blue"
+        else:
+            self.sensor = True
+            self.color = "green"

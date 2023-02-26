@@ -29,6 +29,7 @@ class SOLUTION:
         self.Generate_Body()
         self.Generate_Brain()
         os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} {str(self.myPopID)} 2&>1 &")
+        # 2&>1 &
         
     def Wait_For_Simulation_To_End(self):
         while not os.path.exists(f"fitness{str(self.myID)}.txt"):
@@ -78,7 +79,8 @@ class SOLUTION:
                     
                 
         self.Define_Sensors()
-        self.Define_Joint_Axis()
+        self.Define_Parent()
+        self.Define_Joint_Axis_and_Type()
         self.Define_Absolute_Link_Position()
         self.Define_Joint_Position()
         self.Define_Link_Position()
@@ -99,6 +101,7 @@ class SOLUTION:
     def Create_Links(self):
         self.links = {}
         self.namelist0 = []
+        self.namelistDNE = []
         numPossibleLinks = self.numXBlocks*self.numYBlocks*self.numZBlocks
         exist0 = self.child_rng.integers(low=0,high=2,size=(self.numXBlocks,self.numYBlocks,self.numZBlocks))
         gchild_seeds = self.child_seed.spawn(numPossibleLinks)
@@ -110,16 +113,18 @@ class SOLUTION:
                     #exist0 = random.randint(0,1)
                     if exist0[i][j][k] == 0:
                         exist = False
+                        self.namelistDNE.append(name)
                     elif exist0[i][j][k] == 1:
                         exist = True
                         self.namelist0.append(name)
                     self.links[name] = LINK(name,exist,i,j,k,gchild_seeds[count])
                     count += 1
-        print("Original Name List 0")
-        print(self.namelist0)
+        #print("Original Name List 0")
+        #print(self.namelist0)
         
         
     def Check_Link_Existence(self,startindex):
+        self.canExistButDoesnt = []
         for count,linkname in enumerate(self.namelist0[startindex:]):
             existance = 0
     
@@ -158,11 +163,15 @@ class SOLUTION:
                                             jointOrient = "hinge"
                                         
                                         self.links[linkname].Add_Joint(name, relativePos,jointRelative,jointOrient)
+                                    else:
+                                        if name not in self.canExistButDoesnt:
+                                            self.canExistButDoesnt.append(name)
             
 
             
             if existance == 0:
                 self.links[linkname].Set_Existance(False)
+                self.namelistDNE.append(linkname)
             else:
                 if self.links[linkname].numPossibleParents == 0 and self.counter != 0:
                     self.base2name = linkname
@@ -195,12 +204,15 @@ class SOLUTION:
             self.numSensors = 1
         
         
-                            
-                
-    def Define_Joint_Axis(self):
+    def Define_Parent(self):
+        for i,linkname in enumerate(self.namelist):
+            self.links[linkname].Set_Parent()
+            
+    def Define_Joint_Axis_and_Type(self):
         self.motorJointNames = []
         for i,linkname in enumerate(self.namelist):
             self.links[linkname].Set_Joint_Axis()
+            self.links[linkname].Set_Joint_Type()
             if i != 0:
                 self.motorJointNames.append(self.links[linkname].joint_name)
 
@@ -245,8 +257,7 @@ class SOLUTION:
         #self.weights = np.random.rand(self.numSensors,self.numMotors)
         self.weights = self.child_rng.random((self.numSensors,self.numMotors))
         self.weights = 2*self.weights-1
-        
-        print(self.myID,self.weights)
+        #print(self.myID,self.weights)
             
             
         
@@ -290,9 +301,23 @@ class SOLUTION:
         while not os.path.exists(f"brain{self.myID}.nndf"):
             time.sleep(0.01)
         
-        
-        
     def Mutate(self):
+        prob = self.child_rng.random()
+        if prob < c.section:
+            mutated = self.Mutate_Add_Block()
+            return mutated
+        elif c.section <= prob < 2*c.section:
+            mutated = self.Mutate_Sensor()
+            return mutated
+        elif 2*c.section <= prob < 3*c.section:
+            return True
+        elif 3*c.section <= prob < 4*c.section:
+            self.Mutate_A_Motor_Weight()
+            return True
+        else:
+            return True
+            
+    def Mutate_A_Motor_Weight(self):
         if self.numSensors == 1:
             randRow = 0
         else:
@@ -300,21 +325,40 @@ class SOLUTION:
         randCol = self.child_rng.integers(low=0, high=self.numMotors)
         self.weights[randRow,randCol] = 2*self.child_rng.random()-1
         
+    def Mutate_Sensor(self):
+        sensorI = self.child_rng.integers(low=0,high=self.numLinks)
+        sensor = self.namelist[sensorI]
+        self.links[sensor].Switch_Sensor()
+        print(f"Original weights: {self.weights}")
+        if self.links[sensor].sensor == True:
+            self.sensorNames.append(sensor)
+            self.numSensors += 1
+            self.weights_add0 = self.child_rng.random((1,self.numMotors))
+            self.weights_add = 2*self.weights_add0-1
+            self.weights = np.append(self.weights, self.weights_add, axis = 0)
+            print(f"New weights: {self.weights}")
+            return True
+        else:
+            if self.numSensors == 1:
+                return False
+            index = self.sensorNames.index(sensor)
+            
+            self.weights = np.delete(self.weights, index, 0)
+            
+            self.sensorNames.remove(sensor)
+            self.numSensors = self.numSensors - 1
+            print(f"New weights: {self.weights}")
+            return True
+    
+    def Mutate_Add_Block(self):
+        if len(self.canExistButDoesnt) == 0:
+            return False
+        else:
+            pass
+            return True
+        
         
     def SET_ID(self, nextAvID):
         self.myID = nextAvID
         
-    def Check_Direction(self, parentDirection, direction):
-        if parentDirection == "none":
-            return True
-        else:
-            if (parentDirection % 2) == 0:
-                badDirection = parentDirection - 1
-            else:
-                badDirection = parentDirection + 1
-            
-            if badDirection == direction:
-                return False
-            else:
-                return True
         
