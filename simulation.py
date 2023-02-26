@@ -6,7 +6,7 @@ import pyrosim.pyrosim as pyrosim
 import time
 import constants as c
 class SIMULATION:
-    def __init__(self, directOrGUI, solutionID):
+    def __init__(self, directOrGUI, solutionID, populationID):
         #self.physicsClient = p.connect(p.DIRECT)
         self.directOrGUI = directOrGUI
         if directOrGUI == "DIRECT":
@@ -24,7 +24,7 @@ class SIMULATION:
 
         self.world = WORLD()
 
-        self.robot = ROBOT(solutionID)
+        self.robot = ROBOT(solutionID,populationID)
 
         pyrosim.Prepare_To_Simulate(self.robot.robotId)
 

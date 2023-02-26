@@ -16,14 +16,14 @@
             <collision>
                 <geometry>
                  <box>
-                 <size>1 1 1</size>
+                 <size>0.1 0.1 0.1</size>
                  </box>
                 </geometry>
             </collision>
             <visual>
                 <geometry>
                  <box>
-                 <size>1 1 1</size>
+                 <size>0.1 0.1 0.1</size>
                  </box>
                 </geometry>
             </visual>
