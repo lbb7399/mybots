@@ -12,8 +12,8 @@ phaseOffsetFront = 0
 maxForceFront = 30
 
 
-numberOfGenerations = 1
-populationSize = 10
+numberOfGenerations = 10
+populationSize = 1
 
 #numSensorNeurons = 2
 #numMotorNeurons = 1
@@ -32,9 +32,9 @@ motorJointRange = 0.2
 
 
 # new random body constants
-numXBlocks = 2 # solution constructor
-numYBlocks = 2 # solution constructor
-numZBlocks = 2 # solution constructor
+numXBlocks = 3 # solution constructor
+numYBlocks = 3 # solution constructor
+numZBlocks = 3 # solution constructor
 
 # for now we are going to set the dimension size in link constructor and operate on the assumption that they are cubic and all the same. If they change (as in they are all different, equation in joint position and probs link position will need to be altered)
 scale = 1/2
@@ -47,3 +47,7 @@ x = 0
 y = 0
 z = zDim/2
 coord = [x,y,z]
+
+# runs/ run numbers
+runnumbers = [1,2,3,4,5]
+numRuns = len(runnumbers)
