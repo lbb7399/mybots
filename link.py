@@ -71,6 +71,8 @@ class LINK:
             self.parentLink = "none"
             self.joint_axis = "none"
             self.joint_name = "none"
+            self.jointOrient = "none"
+            self.jointDir = "none"
             
         else:
             print(self.numPossibleParents)
@@ -79,6 +81,8 @@ class LINK:
             else:
                 index = random.randint(1,self.numPossibleParents) - 1
                 self.parentLink = self.parentJointNames[index]
+            self.jointOrient = self.connections[self.parentLink][1]
+            self.jointDir = np.array(self.connections[self.parentLink][2])
             self.joint_name = f"{self.parentLink}_{self.linkID}"
             if self.connections[self.parentLink][1] == "face":
                 axisI = self.connections[self.parentLink][3].index(1)
@@ -112,11 +116,12 @@ class LINK:
         self.absLinkPos = [self.absx,self.absy,self.absz]
     
     
-    def Set_Joint_Position(self,type,parentAbsJoint):
+    def Set_Joint_Position(self,type,parentAbs):
         if type == "origin":
             self.joint_position = "none"
+            self.abs_joint_position = "none"
         elif type == "absolute":
-            centerCoords = c.coord.copy()
+            centerCoords = np.array(parentAbs)
             #print(f"Center: {centerCoords}")
             
             jointcoord = centerCoords + self.jointDir*-1*c.scale/2
@@ -128,13 +133,12 @@ class LINK:
         else:
             self.abs_joint_position = self.absLinkPos + self.jointDir*c.scale/2
 
-            self.joint_position = self.abs_joint_position - parentAbsJoint
-            self.abs_joint_position = self.joint_position
+            self.joint_position = self.abs_joint_position - parentAbs
             
     def Set_Link_Position(self):
         print(self.linkID)
         if self.num == 0:
-            self.linkpos = c.coord.copy()
+            self.linkpos = self.absLinkPos
             
         else:
             self.linkpos = self.absLinkPos - self.abs_joint_position

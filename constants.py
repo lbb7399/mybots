@@ -32,7 +32,7 @@ motorJointRange = 0.2
 
 
 # new random body constants
-numXBlocks = 3 # solution constructor
+numXBlocks = 2 # solution constructor
 numYBlocks = 2 # solution constructor
 numZBlocks = 2 # solution constructor
 

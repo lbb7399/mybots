@@ -83,8 +83,9 @@ class SOLUTION:
         
         for i, linkname in enumerate(self.namelist):
             print(f"\n")
-            print(linkname)
-            print(self.links[linkname].connections, self.links[linkname].parentLink)
+            print(f"Link: {linkname} Parent: {self.links[linkname].parentLink} Joint: {self.links[linkname].jointOrient} JointDir = {self.links[linkname].jointDir} ")
+            print(self.links[linkname].absLinkPos, self.links[linkname].abs_joint_position)
+            print(self.links[linkname].linkpos, self.links[linkname].joint_position)
             
 
 
@@ -197,14 +198,16 @@ class SOLUTION:
             
     def Define_Joint_Position(self):
         self.originName = self.namelist[0]
+        self.originLinkPos = self.links[self.originName].absLinkPos
         for i, linkname in enumerate(self.namelist):
             parentLink = self.links[linkname].parentLink
             if linkname == self.originName:
                 type = "origin"
                 parentabsJoint = "none"
+
             elif  parentLink== self.originName:
                 type = "absolute"
-                parentabsJoint = "none"
+                parentabsJoint = self.originLinkPos
             else:
                 type = "relative"
                 parentabsJoint = self.links[parentLink].abs_joint_position
