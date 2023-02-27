@@ -20,7 +20,7 @@ class MATERIAL:
             self.string2 = '    <color rgba="0.4 1 0.4 1"/>'
             
         else:
-            self.string1 = '<material name="Grey">'
+            self.string1 = '<material name="grey">'
 
             self.string2 = '    <color rgba="0.7 0.7 0.7 1.0"/>'
             

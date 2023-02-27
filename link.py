@@ -51,7 +51,6 @@ class LINK:
             self.childJointNames.append(conName)
         
         self.numPossibleParents = len(self.parentJointNames)
-        self.jointDir = np.array(jointDirRelativeToLink)
         self.connections[conName] = [jointRelative,jointOrient,jointDirRelativeToLink,axisRelativeToLink]
 
     def Set_Sensor(self):
@@ -81,6 +80,7 @@ class LINK:
                 #index = random.randint(1,self.numPossibleParents) - 1
                 index = self.gchild_rng.integers(low=1,high=self.numPossibleParents+1) - 1
                 self.parentLink = self.parentJointNames[index]
+
 #self.connections[conName] = [jointRelative,jointOrient,jointDirRelativeToLink,axisRelativeToLink]
             self.jointOrient = self.connections[self.parentLink][1]
             self.jointDir = np.array(self.connections[self.parentLink][2])
@@ -142,6 +142,7 @@ class LINK:
         self.connections = {}
         self.parentJointNames = []
         self.childJointNames = []
+        self.numPossibleParents = 0
     
     
     def Set_Absolute_Link_Position(self):

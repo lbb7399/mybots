@@ -19,16 +19,16 @@ class SOLUTION:
         self.numLinks = 0
         self.Generate_Random_Body_and_Brain_3D()
         self.Create_Weights()
+        print(self.weights)
+        print(self.namelist)
 
-        
-        
         
     def Start_Simulation(self, directOrGUIEv):
         self.Create_World()
 
         self.Generate_Body()
         self.Generate_Brain()
-        os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} {str(self.myPopID)} 2&>1 &")
+        os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} {str(self.myPopID)}")
         # 2&>1 &
         
     def Wait_For_Simulation_To_End(self):
@@ -84,6 +84,7 @@ class SOLUTION:
         self.Define_Absolute_Link_Position()
         self.Define_Joint_Position()
         self.Define_Link_Position()
+        #print(self.numSensors)
         
         
 #        for i, linkname in enumerate(self.namelist):
@@ -184,6 +185,101 @@ class SOLUTION:
         self.numLinks = self.counter
         self.OneBase = True
         
+    def New_Link_Connections(self, linkname, count):
+
+        xlist = [self.links[linkname].x-1, self.links[linkname].x,self.links[linkname].x+1]
+        ylist = [self.links[linkname].y-1, self.links[linkname].y,self.links[linkname].y+1]
+        zlist = [self.links[linkname].z-1, self.links[linkname].z,self.links[linkname].z+1]
+
+        for i, x in enumerate(xlist):
+            for j, y in enumerate(ylist):
+                for k, z in enumerate(zlist):
+                    name = f"{x}{y}{z}"
+                    relativePos = [i,j,k]
+                    conrelativePos0 = -1*np.array(relativePos)
+                    conrelativePos = conrelativePos0.tolist()
+                    if name in self.links.keys():
+                        if name != linkname:
+                            #print(name, linkname)
+                            if 1 in relativePos:
+                                if self.links[name].exist:
+                                    conIndex = self.namelist0.index(name)
+                                    if conIndex < count:
+                                        jointRelative = "parent"
+                                        conjointRelative = "child"
+                                    else:
+                                        jointRelative = "child"
+                                        conjointRelative = "parent"
+                                    
+                                    # diagonal or face to face joint
+                                    if relativePos.count(1) == 2:
+                                        jointOrient = "face"
+                                    else:
+                                        jointOrient = "hinge"
+                                    
+                                    self.links[linkname].Add_Joint(name, relativePos,jointRelative,jointOrient)
+                                    self.links[name].Add_Joint(linkname, conrelativePos,conjointRelative,jointOrient)
+                                else:
+                                    if name not in self.canExistButDoesnt:
+                                        self.canExistButDoesnt.append(name)
+
+            self.links[linkname].Set_Number(self.counter)
+            self.counter += 1
+    
+    def Removed_Link_Existence_Check(self,startindex):
+        removedBlock = self.removedBlocks[0]
+        self.canExistButDoesnt = []
+        for count,linkname in enumerate(self.namelist0[startindex:]):
+            self.links[linkname].Reset_Lists()
+            existance = 0
+            xlist = [self.links[linkname].x-1, self.links[linkname].x,self.links[linkname].x+1]
+            ylist = [self.links[linkname].y-1, self.links[linkname].y,self.links[linkname].y+1]
+            zlist = [self.links[linkname].z-1, self.links[linkname].z,self.links[linkname].z+1]
+
+            for i, x in enumerate(xlist):
+                for j, y in enumerate(ylist):
+                    for k, z in enumerate(zlist):
+                        name = f"{x}{y}{z}"
+                        relativePos = [i,j,k]
+                        if name in self.links.keys():
+                            if name != linkname:
+                                #print(name, linkname)
+                                if 1 in relativePos:
+                                    if self.links[name].exist:
+                                        existance += 1 # this link has connections and therefore will exist
+                                        conIndex = self.namelist0.index(name)
+                                        if conIndex < count+startindex:
+                                            jointRelative = "parent"
+                                        else:
+                                            jointRelative = "child"
+                                        
+                                        # diagonal or face to face joint
+                                        if relativePos.count(1) == 2:
+                                            jointOrient = "face"
+                                        else:
+                                            jointOrient = "hinge"
+                                        
+                                        self.links[linkname].Add_Joint(name, relativePos,jointRelative,jointOrient)
+                                    else:
+                                        if name not in self.canExistButDoesnt:
+                                            self.canExistButDoesnt.append(name)
+            
+            if existance == 0:
+                self.links[linkname].Set_Existance(False)
+                self.namelistDNE.append(linkname)
+                self.removedBlocks.append(linkname)
+            else:
+                if self.links[linkname].numPossibleParents == 0 and self.counter != 0:
+                    self.base2name = linkname
+                    self.base2index = count+startindex
+                    return
+                self.namelist.append(linkname)
+                self.links[linkname].Set_Number(self.counter)
+                self.counter += 1
+        
+        self.numLinks = self.counter
+        self.OneBase = True
+
                 
                 
     
@@ -233,7 +329,7 @@ class SOLUTION:
                 type = "origin"
                 parentabsJoint = "none"
 
-            elif  parentLink== self.originName:
+            elif parentLink == self.originName:
                 type = "absolute"
                 parentabsJoint = self.originLinkPos
             else:
@@ -247,16 +343,18 @@ class SOLUTION:
         for i,linkname in enumerate(self.namelist):
             self.links[linkname].Set_Link_Position()
                     
-
-
-
-
  
     
     def Create_Weights(self):
         #self.weights = np.random.rand(self.numSensors,self.numMotors)
-        self.weights = self.child_rng.random((self.numSensors,self.numMotors))
-        self.weights = 2*self.weights-1
+        weights0 = self.child_rng.random((self.numSensors,self.numMotors))
+        weights0 = 2*weights0-1
+        exist = self.child_rng.integers(low=0,high=2,size=(self.numSensors,self.numMotors))
+        for i in range(self.numSensors):
+            for j in range(self.numMotors):
+                if exist[i][j] == 0:
+                    weights0[i][j] = 0
+        self.weights = weights0
         #print(self.myID,self.weights)
             
             
@@ -302,28 +400,44 @@ class SOLUTION:
             time.sleep(0.01)
         
     def Mutate(self):
+        self.mutated = False
         prob = self.child_rng.random()
         if prob < c.section:
-            mutated = self.Mutate_Add_Block()
-            return mutated
-        elif c.section <= prob < 2*c.section:
-            mutated = self.Mutate_Sensor()
-            return mutated
-        elif 2*c.section <= prob < 3*c.section:
-            return True
-        elif 3*c.section <= prob < 4*c.section:
-            self.Mutate_A_Motor_Weight()
-            return True
-        else:
-            return True
+            self.Add_Dimension()
+            self.mutNum = 1
+#        elif c.section <= prob < 2*c.section:
+#            self.Mutate_Sensor()
+#            self.mutNum = 2
+#        elif 2*c.section <= prob < 3*c.section:
+#            self.Mutate_Add_Block()
+#            self.mutNum = 3
+#        elif 3*c.section <= prob < 4*c.section:
+#            self.Mutate_A_Motor_Weight()
+#            self.mutNum = 4
+#        elif *c.section <= prob < 4*c.section:
+#            self.Mutate_Remove_Block()
+#            self.mutnum = 5
+#        else:
+#
             
     def Mutate_A_Motor_Weight(self):
         if self.numSensors == 1:
             randRow = 0
         else:
             randRow = self.child_rng.integers(low=0, high=self.numSensors) # plus 1 bc exclusive (used to be -1 same for randCol)
-        randCol = self.child_rng.integers(low=0, high=self.numMotors)
-        self.weights[randRow,randCol] = 2*self.child_rng.random()-1
+        if self.numMotors == 1:
+            randCol = 0
+        else:
+            randCol = self.child_rng.integers(low=0, high=self.numMotors)
+        if self.weights[randRow,randCol] == 0:
+            self.weights[randRow,randCol] = 2*self.child_rng.random()-1
+        else:
+            flip = self.child_rng.integers(low=0, high=2)
+            if flip == 0:
+                self.weights[randRow,randCol] == 0
+            else:
+                self.weights[randRow,randCol] = 2*self.child_rng.random()-1
+        self.mutated = True
         
     def Mutate_Sensor(self):
         sensorI = self.child_rng.integers(low=0,high=self.numLinks)
@@ -333,32 +447,160 @@ class SOLUTION:
         if self.links[sensor].sensor == True:
             self.sensorNames.append(sensor)
             self.numSensors += 1
-            self.weights_add0 = self.child_rng.random((1,self.numMotors))
-            self.weights_add = 2*self.weights_add0-1
-            self.weights = np.append(self.weights, self.weights_add, axis = 0)
-            print(f"New weights: {self.weights}")
-            return True
+            self.Add_Remove_Weight_Obj("add","none","none")
+            self.mutated = True
         else:
             if self.numSensors == 1:
-                return False
-            index = self.sensorNames.index(sensor)
-            
-            self.weights = np.delete(self.weights, index, 0)
-            
-            self.sensorNames.remove(sensor)
-            self.numSensors = self.numSensors - 1
-            print(f"New weights: {self.weights}")
-            return True
+                self.mutated = False
+                self.links[sensor].Switch_Sensor()
+            else:
+                index = self.sensorNames.index(sensor)
+                self.Add_Remove_Weight_Obj("remove",index,0)
+                self.sensorNames.remove(sensor)
+                self.numSensors = self.numSensors - 1
+                print(f"New weights: {self.weights}")
+                self.mutated = True
     
     def Mutate_Add_Block(self):
-        if len(self.canExistButDoesnt) == 0:
-            return False
+        print(f"start {self.weights}")
+        availableBlocks = len(self.canExistButDoesnt)
+        if availableBlocks == 0:
+            self.mutated = False
         else:
-            pass
-            return True
+            if availableBlocks == 1:
+                index = 0
+            else:
+                index = self.child_rng.integers(low=0, high=availableBlocks)
+            linkname = self.canExistButDoesnt[index]
+            self.namelist.append(linkname)
+            self.namelist0.append(linkname)
+            self.canExistButDoesnt.remove(linkname)
+            self.links[linkname].Set_Existance(True)
+            self.numLinks += 1
+            count = self.numLinks-1
+            
+            self.New_Link_Connections(linkname,count)
+            self.links[linkname].Set_Sensor()
+            #print(self.links[linkname].sensor)
+            if self.links[linkname].sensor is True:
+                self.sensorNames.append(linkname)
+                self.numSensors += 1
+                self.Add_Remove_Weight_Obj("add","none",0)
+            self.links[linkname].Set_Parent()
+            self.links[linkname].Set_Joint_Axis()
+            self.links[linkname].Set_Joint_Type()
+            self.motorJointNames.append(self.links[linkname].joint_name)
+            self.numMotors += 1
+            self.Add_Remove_Weight_Obj("add","none",1)
+            self.links[linkname].Set_Absolute_Link_Position()
+            parentLink = self.links[linkname].parentLink
+            if  parentLink== self.originName:
+                type = "absolute"
+                parentabsJoint = self.originLinkPos
+            else:
+                type = "relative"
+                parentabsJoint = self.links[parentLink].abs_joint_position
+            
+            self.links[linkname].Set_Joint_Position(type,parentabsJoint)
+            self.links[linkname].Set_Link_Position()
+            print(self.numLinks)
+            print(self.weights)
+            
+            
+            self.mutated = True
+            
+    def Mutate_Remove_Block(self):
+        failed = False
+        if self.numLinks <= 2:
+            self.mutated = False
+            failed = True
+        else:
+            index = self.child_rng.integers(low=0, high=self.numLinks)
+            rlinkname = self.namelist[index]
+            
+            self.namelist.remove(rlinkname)
+            self.namelist0 = self.namelist.copy()
+            self.namelist = []
+            self.namelistDNE.append(rlinkname)
+            self.links[rlinkname].Set_Existance(False)
+            self.removedBlocks = [rlinkname]
+            self.counter = 0
+            count = 0
+            self.OneBase = False
+            startindex = 0
+            while self.OneBase is False:
+                self.Removed_Link_Existence_Check(startindex)
+                if self.OneBase is False:
+                    self.namelist0.remove(self.base2name)
+                    self.namelist0.append(self.base2name)
+                    startindex = self.base2index
+                    count += 1
+                if count > 20:
+                    self.mutated = False
+                    failed = True
+                    break
+            if self.numLinks <= 2:
+                self.mutated = False
+                failed = True
+           
+            sensorNames = []
+            print(rlinkname)
+            
+            for i, linkname in enumerate(self.namelist):
+                if self.links[linkname].sensor is True:
+                    sensorNames.append(linkname)
+            numSensors = len(sensorNames)
+            if self.numSensors == 0:
+                self.mutated = False # cannot have only 1 sensor
+                failed = True
+            else:
+                self.sensorNames = sensorNames
+                self.numSensors = numSensors
+            
+            motorJointNames = []
+            for i, linkname in enumerate(self.namelist):
+                if self.links[linkname].parentLink in self.removedBlocks:
+                    self.links[linkname].Set_Parent()
+                    self.links[linkname].Set_Joint_Axis()
+                if i != 0:
+                    motorJointNames.append(self.links[linkname].joint_name)
+            
+            self.motorJointNames = motorJointNames
+            self.numMotors = len(self.motorJointNames)
+            self.Define_Joint_Position()
+            self.Define_Link_Position()
+            print(self.namelist)
+            if failed is not True:
+                self.mutated = True
+                
+    def Add_Dimension(self):
         
         
     def SET_ID(self, nextAvID):
         self.myID = nextAvID
+    
+    def Add_Remove_Weight_Obj(self,operation,index,axis):
+        if operation == "add":
+            if axis == 0:
+                weights_add0 = self.child_rng.random((1,self.numMotors))
+                weights_add = 2*weights_add0-1
+                exist = self.child_rng.integers(low=0, high=2, size=(1,self.numMotors))
+                for i in range(self.numMotors):
+                    if exist[0][i] == 0:
+                        weights_add0[i] = 0
+            else:
+                weights_add0 = self.child_rng.random((self.numSensors,1))
+                weights_add = 2*weights_add0-1
+                exist = self.child_rng.integers(low=0, high=2, size=(self.numSensors,1))
+                for i in range(self.numSensors):
+                    if exist[i] == 0:
+                        weights_add0[i] = 0
+            self.weights = np.append(self.weights, weights_add, axis)
+        else:
+            self.weights = np.delete(self.weights, index, axis)
+            
+    def New_Seed(self,seed):
+        self.child_seed = seed
+        self.child_rng = np.random.default_rng(seed)
         
         

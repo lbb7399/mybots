@@ -3,6 +3,7 @@ from numpy.random import SeedSequence, default_rng
 from os import system
 import constants as c
 
+system("rm data/fitnesscurve*.npy")
 for i, runNum in enumerate(c.runnumbers):
     seedNumber = runNum*100
     ss = SeedSequence(seedNumber)

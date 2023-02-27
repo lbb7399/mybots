@@ -10,7 +10,8 @@ class PARALLEL_HILL_CLIMBER:
         os.system("rm brain*.nndf")
         os.system("rm fitness*.txt")
         os.system("rm body*.urdf")
-        
+
+        self.ss = ss
         child_seeds = ss.spawn(c.populationSize)
         self.runNumber = runNumber
         self.allFitness = np.zeros(c.numberOfGenerations+1)
@@ -57,16 +58,29 @@ class PARALLEL_HILL_CLIMBER:
     
     def Spawn(self):
         self.children = {}
+
+
         for key in self.parents:
             self.children[key] = copy.deepcopy(self.parents[key])
             self.children[key].SET_ID(self.nextAvailableID)
             self.nextAvailableID = self.nextAvailableID + 1
+
         
     def Mutate(self):
+
         for key in self.children:
             mutated = False
+            copyofSolution = copy.deepcopy(self.children[key])
             while mutated == False:
-                mutated = self.children[key].Mutate()
+                self.children[key].Mutate()
+                mutated = self.children[key].mutated
+                mutNum = self.children[key].mutNum
+                if mutated is False and mutNum in c.problemMutations:
+                    self.children[key] = copyofSolution
+                elif mutated is True:
+                    del copyofSolution
+                else:
+                    print("cycle")
             
     def Evaluate(self, solutions):
         
@@ -87,16 +101,21 @@ class PARALLEL_HILL_CLIMBER:
         print(f"\n")
     
     def Select(self):
+        child2_seeds = self.ss.spawn(c.populationSize)
+        count = 0
         for key in self.parents:
-            if self.children[key].fitness < self.parents[key].fitness:
+            if self.children[key].fitness > self.parents[key].fitness:
                 self.parents[key] = self.children[key]
+            else:
+                self.parents[key].New_Seed(child2_seeds[count])
+            count += 1
                 
     def Pick_Fitness(self):
         for i, key in enumerate(self.parents.keys()):
             if i == 0:
                 bestfit = self.parents[key].fitness
                 bestfitkey = key
-            if self.parents[key].fitness < bestfit:
+            if self.parents[key].fitness > bestfit:
                 bestfit = self.parents[key].fitness
                 bestfitkey = key
         bestfitness = self.parents[bestfitkey].fitness
@@ -110,7 +129,7 @@ class PARALLEL_HILL_CLIMBER:
             if i == 0:
                 bestfit = self.parents[key].fitness
                 bestfitkey = key
-            if self.parents[key].fitness < bestfit:
+            if self.parents[key].fitness > bestfit:
                 bestfit = self.parents[key].fitness
                 bestfitkey = key
             else:

@@ -1,5 +1,4 @@
 import numpy as np
-import random
 stepsiter = 1000
 
 amplitudeBack = 4*np.pi/16
@@ -13,7 +12,7 @@ phaseOffsetFront = 0
 maxForceFront = 30
 
 
-numberOfGenerations = 1
+numberOfGenerations = 3
 populationSize = 1
 
 #numSensorNeurons = 2
@@ -34,7 +33,7 @@ motorJointRange = 0.2
 
 # new random body constants
 numXBlocks = 3 # solution constructor
-numYBlocks = 2 # solution constructor
+numYBlocks = 3 # solution constructor
 numZBlocks = 2 # solution constructor
 
 # for now we are going to set the dimension size in link constructor and operate on the assumption that they are cubic and all the same. If they change (as in they are all different, equation in joint position and probs link position will need to be altered)
@@ -50,9 +49,13 @@ z = zDim/2
 coord = [x,y,z]
 
 # runs/ run numbers
-runnumbers = [random.randint(1,200)]
+runnumbers = [9]
 numRuns = len(runnumbers)
 
 # mutation stuff. Equal weighting for now
-numberMutations = 2
+numberMutations = 1
 section = 1/numberMutations
+problemMutations = [5] # phc Mutate
+maxDim = 6
+
+
