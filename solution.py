@@ -403,7 +403,7 @@ class SOLUTION:
         self.mutated = False
         prob = self.child_rng.random()
         if prob < c.section:
-            self.Add_Dimension()
+            self.Change_Link_Dimension()
             self.mutNum = 1
 #        elif c.section <= prob < 2*c.section:
 #            self.Mutate_Sensor()
@@ -573,8 +573,17 @@ class SOLUTION:
             if failed is not True:
                 self.mutated = True
                 
-    def Add_Dimension(self):
-        
+    def Change_Link_Dimension(self):
+        newDim = self.child_rng.integers(low=1, high=11)*0.1
+        whichDim = self.child_rng.integers(low=0, high=3)
+        for i, linkname in enumerate(self.namelist):
+            self.links[linkname].Change_A_Dimension(newDim,whichDim)
+        self.Define_Absolute_Link_Position()
+        self.Define_Joint_Position()
+        self.Define_Link_Position()
+        print("HELLO")
+        print(self.links[linkname].dims)
+        self.mutated = True
         
     def SET_ID(self, nextAvID):
         self.myID = nextAvID

@@ -12,7 +12,7 @@ phaseOffsetFront = 0
 maxForceFront = 30
 
 
-numberOfGenerations = 3
+numberOfGenerations = 1
 populationSize = 1
 
 #numSensorNeurons = 2
@@ -40,7 +40,7 @@ numZBlocks = 2 # solution constructor
 scale = 1/2
 xDim = scale
 yDim = scale
-zDim = scale
+zDim = 0.5
 
 # Starting coordinates used in link.py in Joint Position
 x = 0

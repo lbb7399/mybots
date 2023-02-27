@@ -17,10 +17,10 @@ class LINK:
         self.parentJointNames = []
         self.childJointNames = []
         
-        self.xDim = c.xDim
-        self.yDim = c.yDim
-        self.zDim = c.zDim
-        self.dims = [self.xDim,self.yDim,self.zDim]
+#        self.xDim = c.xDim
+#        self.yDim = c.yDim
+#        self.zDim = c.zDim
+        self.dims = [c.xDim,c.yDim,c.zDim]
 #        self.parentID = parentID
 #        self.numChildren = numChildren
 #        self.joint_name = f"{parentID}_{linkID}"
@@ -146,9 +146,9 @@ class LINK:
     
     
     def Set_Absolute_Link_Position(self):
-        self.absx = self.x*c.scale
-        self.absy = self.y*c.scale
-        self.absz = self.z*c.scale + self.zDim/2
+        self.absx = self.x*self.dims[0]
+        self.absy = self.y*self.dims[1]
+        self.absz = self.z*self.dims[2] + self.dims[2]/2
         
         self.absLinkPos = [self.absx,self.absy,self.absz]
     
@@ -158,17 +158,23 @@ class LINK:
             self.joint_position = "none"
             self.abs_joint_position = "none"
         elif type == "absolute":
+            delta = np.zeros(3)
+            for i in range(3):
+                delta[i] = self.jointDir[i]*self.dims[i]/2
             centerCoords = np.array(parentAbs)
             #print(f"Center: {centerCoords}")
             
-            jointcoord = centerCoords + self.jointDir*-1*c.scale/2
+            jointcoord = centerCoords + -1*delta
 
 
             self.joint_position = jointcoord
             self.abs_joint_position = self.joint_position
 
         else:
-            self.abs_joint_position = self.absLinkPos + self.jointDir*c.scale/2
+            delta = np.zeros(3)
+            for i in range(3):
+                delta[i] = self.jointDir[i]*self.dims[i]/2
+            self.abs_joint_position = self.absLinkPos + delta
 
             self.joint_position = self.abs_joint_position - parentAbs
             
@@ -201,3 +207,6 @@ class LINK:
         else:
             self.sensor = True
             self.color = "green"
+    
+    def Change_A_Dimension(self,newDim,whichDim):
+        self.dims[whichDim] = newDim
