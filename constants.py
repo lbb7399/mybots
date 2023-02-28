@@ -12,8 +12,8 @@ phaseOffsetFront = 0
 maxForceFront = 30
 
 
-numberOfGenerations = 1
-populationSize = 1
+numberOfGenerations = 100
+populationSize = 5
 
 #numSensorNeurons = 2
 #numMotorNeurons = 1
@@ -33,13 +33,13 @@ motorJointRange = 0.2
 
 # new random body constants
 numXBlocks = 3 # solution constructor
-numYBlocks = 3 # solution constructor
-numZBlocks = 2 # solution constructor
+numYBlocks = 4 # solution constructor
+numZBlocks = 3 # solution constructor
 
 # for now we are going to set the dimension size in link constructor and operate on the assumption that they are cubic and all the same. If they change (as in they are all different, equation in joint position and probs link position will need to be altered)
 scale = 1/2
-xDim = scale
-yDim = scale
+xDim = 0.5
+yDim = 0.5
 zDim = 0.5
 
 # Starting coordinates used in link.py in Joint Position
@@ -49,11 +49,11 @@ z = zDim/2
 coord = [x,y,z]
 
 # runs/ run numbers
-runnumbers = [9]
+runnumbers = [1,2,3,4,5]
 numRuns = len(runnumbers)
 
 # mutation stuff. Equal weighting for now
-numberMutations = 1
+numberMutations = 5
 section = 1/numberMutations
 problemMutations = [5] # phc Mutate
 maxDim = 6

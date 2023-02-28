@@ -12,7 +12,9 @@ for i, runNum in enumerate(c.runnumbers):
         sleep(0.01)
     loadedfile  = np.load(f)
     plt.plot(loadedfile, label = f"{runNum}")
-
+plt.title("Fitness Evolution")
+plt.xlabel("Generations")
+plt.ylabel("Distance from Origin in -x Direction")
 plt.legend()
 plt.show()
-
+plt.savefig("Evolution Curve")

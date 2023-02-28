@@ -104,7 +104,7 @@ class PARALLEL_HILL_CLIMBER:
         child2_seeds = self.ss.spawn(c.populationSize)
         count = 0
         for key in self.parents:
-            if self.children[key].fitness > self.parents[key].fitness:
+            if self.children[key].fitness < self.parents[key].fitness:
                 self.parents[key] = self.children[key]
             else:
                 self.parents[key].New_Seed(child2_seeds[count])
@@ -115,11 +115,11 @@ class PARALLEL_HILL_CLIMBER:
             if i == 0:
                 bestfit = self.parents[key].fitness
                 bestfitkey = key
-            if self.parents[key].fitness > bestfit:
+            if self.parents[key].fitness < bestfit:
                 bestfit = self.parents[key].fitness
                 bestfitkey = key
         bestfitness = self.parents[bestfitkey].fitness
-        self.allFitness[self.currentGen] = bestfitness
+        self.allFitness[self.currentGen] = abs(bestfitness)
         
             
     def Show_Best(self):
@@ -129,7 +129,7 @@ class PARALLEL_HILL_CLIMBER:
             if i == 0:
                 bestfit = self.parents[key].fitness
                 bestfitkey = key
-            if self.parents[key].fitness > bestfit:
+            if self.parents[key].fitness < bestfit:
                 bestfit = self.parents[key].fitness
                 bestfitkey = key
             else:

@@ -53,6 +53,7 @@ class LINK:
         self.numPossibleParents = len(self.parentJointNames)
         self.connections[conName] = [jointRelative,jointOrient,jointDirRelativeToLink,axisRelativeToLink]
 
+
     def Set_Sensor(self):
         #flip = random.randint(1,2)
         flip = self.gchild_rng.integers(low=1, high=3)
