@@ -6,7 +6,7 @@ import os
 
 
 
-for i, runNum in enumerate(c.runnumbers):
+for i, runNum in enumerate(c.runnumberstot):
     f = f"data/fitnesscurve{runNum}.npy"
     while not os.path.exists(f):
         sleep(0.01)
@@ -17,4 +17,4 @@ plt.xlabel("Generations")
 plt.ylabel("Distance from Origin in -x Direction")
 plt.legend()
 plt.show()
-plt.savefig("Evolution Curve")
+plt.savefig("Evolution Curve.png")

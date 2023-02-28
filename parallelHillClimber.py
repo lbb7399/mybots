@@ -4,12 +4,14 @@ import copy
 import os
 from numpy.random import SeedSequence, default_rng
 import numpy as np
+import pickle
 class PARALLEL_HILL_CLIMBER:
     def __init__(self, ss, runNumber):
         
         os.system("rm brain*.nndf")
         os.system("rm fitness*.txt")
         os.system("rm body*.urdf")
+        
 
         self.ss = ss
         child_seeds = ss.spawn(c.populationSize)
@@ -20,6 +22,8 @@ class PARALLEL_HILL_CLIMBER:
         for i in range(c.populationSize):
             self.parents[i] = SOLUTION(self.nextAvailableID,i,child_seeds[i])
             self.nextAvailableID = self.nextAvailableID + 1
+            
+        
 
     
     def Evolve(self):
@@ -67,7 +71,7 @@ class PARALLEL_HILL_CLIMBER:
 
         
     def Mutate(self):
-
+        
         for key in self.children:
             mutated = False
             copyofSolution = copy.deepcopy(self.children[key])
@@ -76,7 +80,11 @@ class PARALLEL_HILL_CLIMBER:
                 mutated = self.children[key].mutated
                 mutNum = self.children[key].mutNum
                 if mutated is False and mutNum in c.problemMutations:
-                    self.children[key] = copyofSolution
+                    new_seed = self.ss.spawn(1)
+                    self.children[key] = copy.deepcopy(copyofSolution)
+                    self.children[key].New_Seed(new_seed[0])
+                    print("copied")
+                    print(self.children[key].namelist)
                 elif mutated is True:
                     del copyofSolution
                 else:
@@ -109,6 +117,7 @@ class PARALLEL_HILL_CLIMBER:
             else:
                 self.parents[key].New_Seed(child2_seeds[count])
             count += 1
+        pickle.dump(self.parents, open(f"save_parents{self.currentGen}.p", "wb"))
                 
     def Pick_Fitness(self):
         for i, key in enumerate(self.parents.keys()):
@@ -121,7 +130,10 @@ class PARALLEL_HILL_CLIMBER:
         bestfitness = self.parents[bestfitkey].fitness
         self.allFitness[self.currentGen] = abs(bestfitness)
         
-            
+        
+    def Load_Pickle(self,parents):
+        self.parents = parents
+        
     def Show_Best(self):
 #        self.parent.Evaluate("GUI")
 
@@ -134,6 +146,8 @@ class PARALLEL_HILL_CLIMBER:
                 bestfitkey = key
             else:
                 pass
+        
+        pickle.dump(self.parents, open(f"save_parentsfinal{self.runNumber}.p", "wb"))
         self.parents[bestfitkey].Start_Simulation("GUI")
         print(f"Best fit: {bestfit}")
         

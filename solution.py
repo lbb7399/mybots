@@ -68,9 +68,9 @@ class SOLUTION:
                     self.namelist0.append(self.base2name)
                     startindex = self.base2index
                     self.links[self.base2name].Reset_Lists()
-                    print("THIS IS WORKING")
-                    print(self.counter, self.base2name)
-                    print(self.namelist0[startindex:])
+                    #print("THIS IS WORKING")
+                    #print(self.counter, self.base2name)
+                    #print(self.namelist0[startindex:])
                     count += 1
                 if count > 20:
                     self.OneBase = True
@@ -520,6 +520,13 @@ class SOLUTION:
         else:
             index = self.child_rng.integers(low=0, high=self.numLinks)
             rlinkname = self.namelist[index]
+            print("original")
+            print(self.namelist)
+            print(rlinkname)
+            if self.links[rlinkname].num == 0:
+                isorigin = True
+            else:
+                isorigin = False
 
             self.namelist.remove(rlinkname)
             self.namelist0 = self.namelist.copy()
@@ -545,7 +552,9 @@ class SOLUTION:
             if self.numLinks <= 2:
                 self.mutated = False
                 failed = True
-            if failed is False:
+            print("after attempt")
+            print(self.namelist)
+            if failed == False:
                 oldsensorNames = self.sensorNames
                 sensorNames = []
                 print(rlinkname)
@@ -570,8 +579,8 @@ class SOLUTION:
                     if len(sensorindices0) == 1:
                         self.Add_Remove_Weight_Obj("remove",sensorindices0[0],0)
                     else:
-                        sensorindices = sensorindices0.sort(reverse=True)
-                        for i, sensorIndex in enumerate(sensorindices):
+                        sensorindices0.sort(reverse=True)
+                        for i, sensorIndex in enumerate(sensorindices0):
                             self.Add_Remove_Weight_Obj("remove",sensorIndex,0)
                     
                 self.numSensors = numSensors
@@ -581,7 +590,7 @@ class SOLUTION:
                 motorJointNames = []
                 for i, linkname in enumerate(self.namelist):
                     if self.links[linkname].parentLink not in self.links[linkname].parentJointNames:
-                        print("parent change",linkname)
+                        print("    parent change",linkname)
                         self.links[linkname].Set_Parent()
                         self.links[linkname].Set_Joint_Axis()
                     if i != 0:
@@ -589,19 +598,26 @@ class SOLUTION:
 
                 removedjoints = []
                 for i, linkname in enumerate(self.removedBlocks):
-                    removedjoints.append(f"{self.links[linkname].parentLink}_{linkname}")
+                    if linkname == rlinkname and isorigin:
+                        removedjoints.append(oldmotorJointNames[0])
+                    else:
+                        removedjoints.append(f"{self.links[linkname].parentLink}_{linkname}")
+                
 
                 motorindices0 = []
+
                 for i, motor in enumerate(removedjoints):
                     index = oldmotorJointNames.index(motor)
+                    
                     motorindices0.append(index)
-
+                
 
                 if len(motorindices0) == 1:
                     self.Add_Remove_Weight_Obj("remove",motorindices0[0],1)
                 else:
-                    motorindices = motorindices0.sort(reverse=True)
-                    for i, motorIndex in enumerate(motorindices):
+                    motorindices0.sort(reverse=True)
+                
+                    for motorIndex in motorindices0:
                         self.Add_Remove_Weight_Obj("remove",motorIndex,1)
 
 
@@ -612,14 +628,14 @@ class SOLUTION:
                 self.numMotors = len(self.motorJointNames)
                 self.Define_Joint_Position()
                 self.Define_Link_Position()
-                print(self.namelist)
+                #print(self.namelist)
                 if failed is not True:
                     self.mutated = True
 #                print(self.sensorNames)
 #                print(len(self.sensorNames))
 #                print(self.numSensors)
 #                print(self.weights)
-                print(self.myID)
+                
                 
                 
                     
@@ -627,13 +643,13 @@ class SOLUTION:
         print("change dim")
         newDim = self.child_rng.integers(low=1, high=11)*0.1
         whichDim = self.child_rng.integers(low=0, high=3)
-        for i, linkname in enumerate(self.namelist):
+        for linkname in self.links:
             self.links[linkname].Change_A_Dimension(newDim,whichDim)
         self.Define_Absolute_Link_Position()
         self.Define_Joint_Position()
         self.Define_Link_Position()
-        print("HELLO")
-        print(self.links[linkname].dims)
+        #print("HELLO")
+        #print(self.links[linkname].dims)
         self.mutated = True
         
     def SET_ID(self, nextAvID):
