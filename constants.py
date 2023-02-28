@@ -12,7 +12,7 @@ phaseOffsetFront = 0
 maxForceFront = 30
 
 
-numberOfGenerations = 50
+numberOfGenerations = 0
 populationSize = 5
 
 #numSensorNeurons = 2
@@ -50,7 +50,7 @@ coord = [x,y,z]
 
 # runs/ run numbers
 runnumberstot = [1,2,3,4,5]
-runnumbers = [4,5]
+runnumbers = [1,2,3,4,5]
 numRuns = len(runnumbers)
 
 # mutation stuff. Equal weighting for now

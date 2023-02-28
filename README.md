@@ -48,7 +48,7 @@ A random synapse is chosen from all possible synapses. If the synapse is unconne
 
 ## Results
 
-[YouTube Video]()
+[YouTube Video](https://youtu.be/4cRhPYPOVTA)
 
 Resulting fitness graph for 5 runs:
 ![alt text](https://i.imgur.com/sy8NNoa.png)
