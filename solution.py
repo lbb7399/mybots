@@ -31,11 +31,11 @@ class SOLUTION:
         # 2&>1 &
         
     def Wait_For_Simulation_To_End(self):
-        while not os.path.exists(f"fitness{str(self.myID)}.txt"):
+        while not os.path.exists(f"files/fitness{str(self.myID)}.txt"):
             time.sleep(0.01)
-        f = open(f"fitness{str(self.myID)}.txt", "r")
+        f = open(f"files/fitness{str(self.myID)}.txt", "r")
         self.fitness = float(f.read())
-        os.system(f"rm fitness{self.myID}.txt")
+        os.system(f"rm files/fitness{self.myID}.txt")
         #print(f"FITNESS: {self.fitness}")
         
     def Create_World(self):
@@ -359,7 +359,7 @@ class SOLUTION:
             
         
     def Generate_Body(self):
-        pyrosim.Start_URDF(f"body{self.myPopID}.urdf")
+        pyrosim.Start_URDF(f"files/body{self.myPopID}.urdf")
         
         for i,linkname in enumerate(self.namelist):
             
@@ -372,13 +372,13 @@ class SOLUTION:
                 self.links[linkname].Send_Object()
         
         pyrosim.End()
-        while not os.path.exists(f"body{self.myPopID}.urdf"):
+        while not os.path.exists(f"files/body{self.myPopID}.urdf"):
             time.sleep(0.01)
 
     
         
     def Generate_Brain(self):
-        pyrosim.Start_NeuralNetwork(f"brain{self.myID}.nndf")
+        pyrosim.Start_NeuralNetwork(f"files/brain{self.myID}.nndf")
         
         for i, lName in enumerate(self.sensorNames):
             pyrosim.Send_Sensor_Neuron(name = i , linkName = f"{lName}")
@@ -395,7 +395,7 @@ class SOLUTION:
         
 
         pyrosim.End()
-        while not os.path.exists(f"brain{self.myID}.nndf"):
+        while not os.path.exists(f"files/brain{self.myID}.nndf"):
             time.sleep(0.01)
         
     def Mutate(self):

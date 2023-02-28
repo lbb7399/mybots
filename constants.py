@@ -12,7 +12,7 @@ phaseOffsetFront = 0
 maxForceFront = 30
 
 
-numberOfGenerations = 0
+numberOfGenerations = 1
 populationSize = 5
 
 #numSensorNeurons = 2

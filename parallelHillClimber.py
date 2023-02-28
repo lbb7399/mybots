@@ -8,9 +8,9 @@ import pickle
 class PARALLEL_HILL_CLIMBER:
     def __init__(self, ss, runNumber):
         
-        os.system("rm brain*.nndf")
-        os.system("rm fitness*.txt")
-        os.system("rm body*.urdf")
+        os.system("rm files/brain*.nndf")
+        os.system("rm files/fitness*.txt")
+        os.system("rm files/body*.urdf")
         
 
         self.ss = ss
@@ -117,7 +117,7 @@ class PARALLEL_HILL_CLIMBER:
             else:
                 self.parents[key].New_Seed(child2_seeds[count])
             count += 1
-        pickle.dump(self.parents, open(f"save_parents{self.currentGen}.p", "wb"))
+        pickle.dump(self.parents, open(f"pickles/save_parents{self.currentGen}.p", "wb"))
                 
     def Pick_Fitness(self):
         for i, key in enumerate(self.parents.keys()):
@@ -147,7 +147,7 @@ class PARALLEL_HILL_CLIMBER:
             else:
                 pass
         
-        pickle.dump(self.parents, open(f"save_parentsfinal{self.runNumber}.p", "wb"))
+        pickle.dump(self.parents[bestfitkey], open(f"pickles/save_bestfinal{self.runNumber}-{self.currentGen}.p", "wb"))
         self.parents[bestfitkey].Start_Simulation("GUI")
         print(f"Best fit: {bestfit}")
         

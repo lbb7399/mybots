@@ -8,10 +8,10 @@ import os
 import constants as c
 class ROBOT:
     def __init__(self, solutionID, populationID):
-        self.robotId = p.loadURDF(f"body{populationID}.urdf")
-        self.nn = NEURAL_NETWORK(f"brain{solutionID}.nndf")
+        self.robotId = p.loadURDF(f"files/body{populationID}.urdf")
+        self.nn = NEURAL_NETWORK(f"files/brain{solutionID}.nndf")
 
-        os.system(f"rm brain{solutionID}.nndf")
+        os.system(f"rm files/brain{solutionID}.nndf")
         self.solutionID = solutionID
         
         
@@ -51,8 +51,8 @@ class ROBOT:
         #print(stateOfLinkZero)
         #print(positionOfLinkZero)
         #print(xCoordinateOfLinkZero)
-        f = open(f"tmp{self.solutionID}.txt", "w")
+        f = open(f"files/tmp{self.solutionID}.txt", "w")
         f.write(str(xPosition))
         f.close()
-        os.system(f"mv tmp{self.solutionID}.txt fitness{self.solutionID}.txt")
+        os.system(f"mv files/tmp{self.solutionID}.txt files/fitness{self.solutionID}.txt")
         
