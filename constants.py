@@ -49,8 +49,8 @@ z = zDim/2
 coord = [x,y,z]
 
 # runs/ run numbers
-runnumberstot = [1,2,3,4,5]
-runnumbers = [1,2,3,4,5]
+runnumberstot = [1,2,3,4,5] #only in analyze.py
+runnumbers = [1] #runs search.py
 numRuns = len(runnumbers)
 
 # mutation stuff. Equal weighting for now
