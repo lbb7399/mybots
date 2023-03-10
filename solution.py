@@ -31,8 +31,14 @@ class SOLUTION:
         # 2&>1 &
         
     def Wait_For_Simulation_To_End(self):
+        start_time = time.time()
         while not os.path.exists(f"files/fitness{str(self.myID)}.txt"):
             time.sleep(0.01)
+            time_now = time.time()
+            diff = time_now-start_time
+            if diff > 120:
+                print("fitness file now loading")
+                exit()
         f = open(f"files/fitness{str(self.myID)}.txt", "r")
         self.fitness = float(f.read())
         os.system(f"rm files/fitness{self.myID}.txt")
@@ -185,7 +191,7 @@ class SOLUTION:
         self.OneBase = True
         
     def New_Link_Connections(self, linkname, count):
-
+        self.links[linkname].Reset_Lists()
         xlist = [self.links[linkname].x-1, self.links[linkname].x,self.links[linkname].x+1]
         ylist = [self.links[linkname].y-1, self.links[linkname].y,self.links[linkname].y+1]
         zlist = [self.links[linkname].z-1, self.links[linkname].z,self.links[linkname].z+1]
@@ -221,9 +227,25 @@ class SOLUTION:
                                 else:
                                     if name not in self.canExistButDoesnt:
                                         self.canExistButDoesnt.append(name)
-
-            self.links[linkname].Set_Number(self.counter)
-            self.counter += 1
+        
+#        DNEanymore = []
+#        for key in self.links[linkname].connections:
+#            if not key in self.namelist:
+#                DNEanymore.append(key)
+#
+#        if DNEanymore:
+#            for i, key in enumerate(DNEanymore):
+#                del self.links[linkname].connections[key]
+#                if key in self.links[linkname].parentJointNames:
+#                    self.links[linkname].parentJointNames.remove(key)
+#
+#                elif key in self.links[linkname].childJointNames:
+#                    self.links[linkname].childJointNames.remove(key)
+                
+        
+        
+        self.links[linkname].Set_Number(self.counter)
+        self.counter += 1
     
     def Removed_Link_Existence_Check(self,startindex):
         removedBlock = self.removedBlocks[0]
@@ -400,18 +422,19 @@ class SOLUTION:
         
     def Mutate(self):
         self.mutated = False
+        self.mutation = "none"
         prob = self.child_rng.random()
-        if prob < c.section:
-            self.Change_Link_Dimension()
+        if prob < 0.25:
+            self.Mutate_A_Motor_Weight()
             self.mutNum = 1
-        elif c.section <= prob < 2*c.section:
+        elif 0.25 <= prob < 0.5:
             self.Mutate_Sensor()
             self.mutNum = 2
-        elif 2*c.section <= prob < 3*c.section:
+        elif 0.5 <= prob < 4*0.5/3:
             self.Mutate_Add_Block()
             self.mutNum = 3
-        elif 3*c.section <= prob < 4*c.section:
-            self.Mutate_A_Motor_Weight()
+        elif 4*0.5/3 <= prob < 5*0.5/3:
+            self.Change_Link_Dimension()
             self.mutNum = 4
         else:
             self.Mutate_Remove_Block()
@@ -420,7 +443,7 @@ class SOLUTION:
 #
             
     def Mutate_A_Motor_Weight(self):
-        print("mutate synapses")
+        
         if self.numSensors == 1:
             randRow = 0
         else:
@@ -429,6 +452,7 @@ class SOLUTION:
             randCol = 0
         else:
             randCol = self.child_rng.integers(low=0, high=self.numMotors)
+        original = self.weights[randRow,randCol]
         if self.weights[randRow,randCol] == 0:
             self.weights[randRow,randCol] = 2*self.child_rng.random()-1
         else:
@@ -437,10 +461,18 @@ class SOLUTION:
                 self.weights[randRow,randCol] == 0
             else:
                 self.weights[randRow,randCol] = 2*self.child_rng.random()-1
+        new = self.weights[randRow,randCol]
         self.mutated = True
+        print("mutate synapses")
+        self.mutation = f"Mutated sensor: {randRow}, Mutated Motor {randCol}, Old: {original}, New: {new}"
         
     def Mutate_Sensor(self):
-        print("mutate sensor")
+        #print(self.namelist)
+        #print(self.weights)
+        #print(len(self.weights),len(self.weights[0]))
+        #print(self.sensorNames,self.numSensors,len(self.sensorNames))
+        
+        #print(self.motorJointNames,self.numMotors,len(self.motorJointNames))
         sensorI = self.child_rng.integers(low=0,high=self.numLinks)
         sensor = self.namelist[sensorI]
         self.links[sensor].Switch_Sensor()
@@ -450,6 +482,8 @@ class SOLUTION:
             self.numSensors += 1
             self.Add_Remove_Weight_Obj("add","none",0)
             self.mutated = True
+            print("mutate sensor")
+            self.mutation = f"Sensor {sensor} turned on"
         else:
             if self.numSensors == 1:
                 self.mutated = False
@@ -461,10 +495,12 @@ class SOLUTION:
                 self.numSensors = self.numSensors - 1
                 #print(f"New weights: {self.weights}")
                 self.mutated = True
+                print("mutate sensor")
+                self.mutation = f"Sensor {sensor} turned off"
     
     def Mutate_Add_Block(self):
         #print(f"start {self.weights}")
-        print("add block")
+        
         availableBlocks = len(self.canExistButDoesnt)
         if availableBlocks == 0:
             self.mutated = False
@@ -474,14 +510,19 @@ class SOLUTION:
             else:
                 index = self.child_rng.integers(low=0, high=availableBlocks)
             linkname = self.canExistButDoesnt[index]
+            #print("added block", linkname)
+            #print("original name list",self.namelist)
             self.namelist.append(linkname)
             self.namelist0.append(linkname)
             self.canExistButDoesnt.remove(linkname)
             self.links[linkname].Set_Existance(True)
+            #print("name list after existance stuff", self.namelist)
             self.numLinks += 1
             count = self.numLinks-1
             
             self.New_Link_Connections(linkname,count)
+            #for i , linknamex in enumerate(self.namelist):
+                #print(self.links[linknamex].connections)
             self.links[linkname].Set_Sensor()
             #print(self.links[linkname].sensor)
             if self.links[linkname].sensor is True:
@@ -508,26 +549,32 @@ class SOLUTION:
             #print(self.numLinks)
             #print(self.weights)
             
-            
+            print(f"add block {linkname}")
             self.mutated = True
+            self.mutation = f"Link {linkname} added. Parent link {parentLink}"
             
-    def Mutate_Remove_Block(self):
-        print("remove block")
+    def Mutate_Remove_Block(self,link = "default"):
+        
         failed = False
         if self.numLinks <= 2:
             self.mutated = False
             failed = True
         else:
-            index = self.child_rng.integers(low=0, high=self.numLinks)
-            rlinkname = self.namelist[index]
-            print("original")
-            print(self.namelist)
+            if link == "default":
+                index0 = self.child_rng.integers(low=0, high=self.numLinks)
+                rlinkname = self.namelist[index]
+            else:
+                rlinkname = link
+                index0 = self.namelist.index(rlinkname)
+            #print("original")
+            #print(self.namelist)
             print(rlinkname)
-            if self.links[rlinkname].num == 0:
+            #print(f"\n")
+            if index0 == 0:
                 isorigin = True
             else:
                 isorigin = False
-
+            oldnamelist = self.namelist.copy()
             self.namelist.remove(rlinkname)
             self.namelist0 = self.namelist.copy()
             self.namelist = []
@@ -552,12 +599,12 @@ class SOLUTION:
             if self.numLinks <= 2:
                 self.mutated = False
                 failed = True
-            print("after attempt")
-            print(self.namelist)
+            #print("after attempt")
+            #print(self.namelist)
             if failed == False:
                 oldsensorNames = self.sensorNames
                 sensorNames = []
-                print(rlinkname)
+                #print(rlinkname)
                 
                 for i, linkname in enumerate(self.namelist):
                     if self.links[linkname].sensor is True:
@@ -588,22 +635,43 @@ class SOLUTION:
 
                 oldmotorJointNames = self.motorJointNames
                 motorJointNames = []
+                changes = []
                 for i, linkname in enumerate(self.namelist):
-                    if self.links[linkname].parentLink not in self.links[linkname].parentJointNames:
-                        print("    parent change",linkname)
-                        self.links[linkname].Set_Parent()
-                        self.links[linkname].Set_Joint_Axis()
-                    if i != 0:
-                        motorJointNames.append(self.links[linkname].joint_name)
 
+                    if i != 0:
+                        if self.links[linkname].parentLink not in self.links[linkname].parentJointNames:
+                            old = self.links[linkname].parentLink
+                            print("    parent change",linkname)
+                            self.links[linkname].Set_Parent()
+                            self.links[linkname].Set_Joint_Axis()
+                            changes.append(f"Link: {linkname}, Old Parent: {old}, New Parent: {self.links[linkname].parentLink}")
+                        motorJointNames.append(self.links[linkname].joint_name)
+                
+#                origins = []
+#                for i, linkname in enumerate(self.removedBlocks):
+#                
+#                    if index0 == 0:
+#                        isorigin = True
+#                    else:
+#                        isorigin = False
+                        
+                    
+                print("hello")
+                print(self.removedBlocks)
                 removedjoints = []
                 for i, linkname in enumerate(self.removedBlocks):
-                    if linkname == rlinkname and isorigin:
-                        removedjoints.append(oldmotorJointNames[0])
-                    else:
-                        removedjoints.append(f"{self.links[linkname].parentLink}_{linkname}")
-                
 
+                    if linkname == rlinkname and isorigin:
+                            removedjoints.append(oldmotorJointNames[0])
+                    else:
+                        if self.links[linkname].parentLink != "none":
+                            removedjoints.append(f"{self.links[linkname].parentLink}_{linkname}")
+#                print(self.namelist)
+#                for i, linkname in enumerate(self.namelist):
+#                    print(f"\n")
+#                    print(linkname, self.links[linkname].connections)
+                #print(self.removedBlocks)
+                #print(removedjoints)
                 motorindices0 = []
 
                 for i, motor in enumerate(removedjoints):
@@ -611,7 +679,7 @@ class SOLUTION:
                     
                     motorindices0.append(index)
                 
-
+                #print(motorindices0)
                 if len(motorindices0) == 1:
                     self.Add_Remove_Weight_Obj("remove",motorindices0[0],1)
                 else:
@@ -631,6 +699,8 @@ class SOLUTION:
                 #print(self.namelist)
                 if failed is not True:
                     self.mutated = True
+                    print(f"remove block {rlinkname}")
+                    self.mutation = f"Removed link {rlinkname}. Changes: {changes}"
 #                print(self.sensorNames)
 #                print(len(self.sensorNames))
 #                print(self.numSensors)
@@ -640,9 +710,12 @@ class SOLUTION:
                 
                     
     def Change_Link_Dimension(self):
-        print("change dim")
-        newDim = self.child_rng.integers(low=1, high=11)*0.1
         whichDim = self.child_rng.integers(low=0, high=3)
+        old = self.links[self.namelist[0]].dims[whichDim]
+        newDim = 0
+        while newDim != old:
+            newDim = self.child_rng.integers(low=1, high=11)*0.1
+
         for linkname in self.links:
             self.links[linkname].Change_A_Dimension(newDim,whichDim)
         self.Define_Absolute_Link_Position()
@@ -651,6 +724,8 @@ class SOLUTION:
         #print("HELLO")
         #print(self.links[linkname].dims)
         self.mutated = True
+        print("change dim")
+        self.mutation = f"Changed dim: {whichDim}, Old: {old}, New = {newDim}"
         
     def SET_ID(self, nextAvID):
         self.myID = nextAvID
