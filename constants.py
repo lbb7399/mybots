@@ -12,8 +12,8 @@ phaseOffsetFront = 0
 maxForceFront = 30
 
 
-numberOfGenerations = 1
-populationSize = 5
+numberOfGenerations = 500
+populationSize = 10
 
 #numSensorNeurons = 2
 #numMotorNeurons = 1
@@ -49,8 +49,8 @@ z = zDim/2
 coord = [x,y,z]
 
 # runs/ run numbers
-runnumberstot = [1,2,3,4,5] #only in analyze.py
-runnumbers = [1] #runs search.py
+runnumberstot = [1,2,3,4,5,6,7,8,9,10] #only in analyze.py
+runnumbers = [2,3,4,5,6,7,8,9,10] #runs search.py
 numRuns = len(runnumbers)
 
 # mutation stuff. Equal weighting for now

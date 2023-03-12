@@ -6,7 +6,10 @@ import constants as c
 
 for i, runNum in enumerate(c.runnumbers):
     system(f"rm data/fitnesscurve{runNum}.npy")
-    seedNumber = runNum*100
+    if runNum <= 5:
+        seedNumber = runNum*100
+    else:
+        seedNumber = (runNum - 5)*100
     ss = SeedSequence(seedNumber)
 
     phc = PARALLEL_HILL_CLIMBER(ss,runNum)

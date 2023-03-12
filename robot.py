@@ -8,6 +8,9 @@ import os
 import constants as c
 class ROBOT:
     def __init__(self, solutionID, populationID):
+    
+        while not os.path.exists(f"files/body{populationID}.urdf"):
+            time.sleep(0.01)
         self.robotId = p.loadURDF(f"files/body{populationID}.urdf")
         self.nn = NEURAL_NETWORK(f"files/brain{solutionID}.nndf")
 

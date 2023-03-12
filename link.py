@@ -67,26 +67,38 @@ class LINK:
     def Set_Number(self,number):
         self.num = number
         
-    def Set_Parent(self):
-        if self.num == 0:
-            self.parentLink = "none"
-            self.joint_name = "none"
-            self.jointOrient = "none"
-            self.jointDir = "none"
-            
-        else:
-            if self.numPossibleParents == 1:
-                self.parentLink = self.parentJointNames[0]
+    def Set_Parent(self,parent="default"):
+        if parent != "default":
+            self.parentLink = parent
+            if parent == "none":
+                self.joint_name = "none"
+                self.jointOrient = "none"
+                self.jointDir = "none"
             else:
-                #index = random.randint(1,self.numPossibleParents) - 1
-                index = self.gchild_rng.integers(low=1,high=self.numPossibleParents+1) - 1
-                self.parentLink = self.parentJointNames[index]
+                self.jointOrient = self.connections[self.parentLink][1]
+                self.jointDir = np.array(self.connections[self.parentLink][2])
+                self.jointDirAxis = np.array(self.connections[self.parentLink][3])
+                self.joint_name = f"{self.parentLink}_{self.linkID}"
+        else:
+            if self.num == 0:
+                self.parentLink = "none"
+                self.joint_name = "none"
+                self.jointOrient = "none"
+                self.jointDir = "none"
+                
+            else:
+                if self.numPossibleParents == 1:
+                    self.parentLink = self.parentJointNames[0]
+                else:
+                    #index = random.randint(1,self.numPossibleParents) - 1
+                    index = self.gchild_rng.integers(low=1,high=self.numPossibleParents+1) - 1
+                    self.parentLink = self.parentJointNames[index]
 
-#self.connections[conName] = [jointRelative,jointOrient,jointDirRelativeToLink,axisRelativeToLink]
-            self.jointOrient = self.connections[self.parentLink][1]
-            self.jointDir = np.array(self.connections[self.parentLink][2])
-            self.jointDirAxis = np.array(self.connections[self.parentLink][3])
-            self.joint_name = f"{self.parentLink}_{self.linkID}"
+    #self.connections[conName] = [jointRelative,jointOrient,jointDirRelativeToLink,axisRelativeToLink]
+                self.jointOrient = self.connections[self.parentLink][1]
+                self.jointDir = np.array(self.connections[self.parentLink][2])
+                self.jointDirAxis = np.array(self.connections[self.parentLink][3])
+                self.joint_name = f"{self.parentLink}_{self.linkID}"
         
     def Set_Joint_Axis(self):
         axes = ["x","y","z"]

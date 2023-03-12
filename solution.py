@@ -209,6 +209,7 @@ class SOLUTION:
                             if 1 in relativePos:
                                 if self.links[name].exist:
                                     conIndex = self.namelist0.index(name)
+                                    #print(name,conIndex,count)
                                     if conIndex < count:
                                         jointRelative = "parent"
                                         conjointRelative = "child"
@@ -419,7 +420,8 @@ class SOLUTION:
         pyrosim.End()
         while not os.path.exists(f"files/brain{self.myID}.nndf"):
             time.sleep(0.01)
-        
+            
+            
     def Mutate(self):
         self.mutated = False
         self.mutation = "none"
@@ -434,6 +436,33 @@ class SOLUTION:
             self.Mutate_Add_Block()
             self.mutNum = 3
         elif 4*0.5/3 <= prob < 5*0.5/3:
+            self.Change_Link_Dimension()
+            self.mutNum = 4
+        else:
+            self.Mutate_Remove_Block()
+            self.mutNum = 5
+            
+        
+    def Mutate_Mind(self):
+        self.mutated = False
+        self.mutation = "none"
+        prob = self.child_rng.random()
+        if prob < 0.5:
+            self.Mutate_A_Motor_Weight()
+            self.mutNum = 1
+        else:
+            self.Mutate_Sensor()
+            self.mutNum = 2
+
+            
+    def Mutate_Body(self):
+        self.mutated = False
+        self.mutation = "none"
+        prob = self.child_rng.random()
+        if prob < 1/3:
+            self.Mutate_Add_Block()
+            self.mutNum = 3
+        elif 1/3 <= prob < 2/3:
             self.Change_Link_Dimension()
             self.mutNum = 4
         else:
@@ -498,18 +527,22 @@ class SOLUTION:
                 print("mutate sensor")
                 self.mutation = f"Sensor {sensor} turned off"
     
-    def Mutate_Add_Block(self):
+    def Mutate_Add_Block(self,link="default"):
         #print(f"start {self.weights}")
         
         availableBlocks = len(self.canExistButDoesnt)
         if availableBlocks == 0:
             self.mutated = False
         else:
-            if availableBlocks == 1:
-                index = 0
+            if link != "default":
+                linkname = link
             else:
-                index = self.child_rng.integers(low=0, high=availableBlocks)
-            linkname = self.canExistButDoesnt[index]
+                if availableBlocks == 1:
+                    index = 0
+                else:
+                    index = self.child_rng.integers(low=0, high=availableBlocks)
+                linkname = self.canExistButDoesnt[index]
+            print(linkname)
             #print("added block", linkname)
             #print("original name list",self.namelist)
             self.namelist.append(linkname)
@@ -517,10 +550,12 @@ class SOLUTION:
             self.canExistButDoesnt.remove(linkname)
             self.links[linkname].Set_Existance(True)
             #print("name list after existance stuff", self.namelist)
-            self.numLinks += 1
-            count = self.numLinks-1
+            self.numLinks = len(self.namelist)
+            #print(self.numLinks)
+            count = self.numLinks
             
             self.New_Link_Connections(linkname,count)
+            #print(self.links["000"].connections)
             #for i , linknamex in enumerate(self.namelist):
                 #print(self.links[linknamex].connections)
             self.links[linkname].Set_Sensor()
@@ -561,16 +596,16 @@ class SOLUTION:
             failed = True
         else:
             if link == "default":
-                index0 = self.child_rng.integers(low=0, high=self.numLinks)
+                index = self.child_rng.integers(low=0, high=self.numLinks)
                 rlinkname = self.namelist[index]
             else:
                 rlinkname = link
-                index0 = self.namelist.index(rlinkname)
+                index = self.namelist.index(rlinkname)
             #print("original")
             #print(self.namelist)
             print(rlinkname)
             #print(f"\n")
-            if index0 == 0:
+            if index == 0:
                 isorigin = True
             else:
                 isorigin = False
@@ -636,45 +671,62 @@ class SOLUTION:
                 oldmotorJointNames = self.motorJointNames
                 motorJointNames = []
                 changes = []
+                oldparentsjoints = []
                 for i, linkname in enumerate(self.namelist):
 
                     if i != 0:
                         if self.links[linkname].parentLink not in self.links[linkname].parentJointNames:
                             old = self.links[linkname].parentLink
-                            print("    parent change",linkname)
+                            #print("    parent change",linkname)
                             self.links[linkname].Set_Parent()
                             self.links[linkname].Set_Joint_Axis()
                             changes.append(f"Link: {linkname}, Old Parent: {old}, New Parent: {self.links[linkname].parentLink}")
+                            oldparentsjoints.append(f"{old}_{linkname}")
                         motorJointNames.append(self.links[linkname].joint_name)
-                
-#                origins = []
-#                for i, linkname in enumerate(self.removedBlocks):
-#                
-#                    if index0 == 0:
-#                        isorigin = True
-#                    else:
-#                        isorigin = False
-                        
-                    
-                print("hello")
-                print(self.removedBlocks)
-                removedjoints = []
-                for i, linkname in enumerate(self.removedBlocks):
-
-                    if linkname == rlinkname and isorigin:
-                            removedjoints.append(oldmotorJointNames[0])
                     else:
                         if self.links[linkname].parentLink != "none":
-                            removedjoints.append(f"{self.links[linkname].parentLink}_{linkname}")
+                            old = self.links[linkname].parentLink
+                            #print("    parent change",linkname)
+                            self.links[linkname].Set_Parent(parent="none")
+                            changes.append(f"Link: {linkname}, Old Parent: {old}, New Parent: none")
+                
+                        
+                    
+                
+                #print(self.removedBlocks)
+                removedjoints = []
+                #print("old weights",len(self.weights),len(self.weights[0]))
+                #print("old joints",oldmotorJointNames,len(oldmotorJointNames))
+                #print("new joints",self.motorJointNames,len(motorJointNames))
+                #print("num motors", self.numMotors)
+                for i,joint in enumerate(oldmotorJointNames):
+                    if joint not in motorJointNames:
+                        if joint not in oldparentsjoints:
+                            removedjoints.append(joint)
+                            
+#                for i, linkname in enumerate(self.removedBlocks):
+#
+#
+#                    if True in origins:
+#                        if linkname == rlinkname and origins[i] == True:
+#                            removedjoints.append(oldmotorJointNames[0])
+#
+#                    else:
+#                        if self.links[linkname].parentLink != "none":
+#                            removedjoints.append(f"{self.links[linkname].parentLink}_{linkname}")
+
+
 #                print(self.namelist)
 #                for i, linkname in enumerate(self.namelist):
 #                    print(f"\n")
 #                    print(linkname, self.links[linkname].connections)
                 #print(self.removedBlocks)
+                #print(oldparentsjoints)
                 #print(removedjoints)
                 motorindices0 = []
 
                 for i, motor in enumerate(removedjoints):
+                    
                     index = oldmotorJointNames.index(motor)
                     
                     motorindices0.append(index)
@@ -705,6 +757,8 @@ class SOLUTION:
 #                print(len(self.sensorNames))
 #                print(self.numSensors)
 #                print(self.weights)
+                #print("new num motors",self.numMotors)
+                #print("new weights",len(self.weights),len(self.weights[0]))
                 
                 
                 
