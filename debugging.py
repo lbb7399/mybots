@@ -35,12 +35,17 @@ for i, runNum in enumerate(c.runnumberstot):
     minFitness = np.zeros(c.numberOfGenerations+1)
     medFitness = np.zeros(c.numberOfGenerations+1)
     avgFitness = np.zeros(c.numberOfGenerations+1)
+    allFitness = {}
+    for i in range(c.populationSize):
+        allFitness[i] = []
 
     for currentGeneration in range(c.numberOfGenerations+1):
         currentGen = currentGeneration
         parents = pickle.load( open( f"pickles/{runNum}/save_parents{runNum}-{currentGen}.p", "rb" ) )
         fitnesses = []
         for i, key in enumerate(parents.keys()):
+            if currentGen != 0:
+                allFitness[key].append(parents[key].fitness)
             fitnesses.append(parents[key].fitness)
             if i == 0:
                 bestfit = parents[key].fitness
@@ -69,18 +74,27 @@ for i, runNum in enumerate(c.runnumberstot):
     np.save(minfilename, minFitness)
     np.save(medianfilename, medFitness)
     np.save(avgfilename, avgFitness)
+    
+    muts = pickle.load( open( f"pickles/{runNum}/save_mutations{runNum}-{c.numberOfGenerations}.p", "rb" ) )
+    for i in range(c.populationSize):
+        muts[f"{i}Fit"] = allFitness[i]
+    
+    pickle.dump(muts, open(f"pickles/{runNum}/save_mutations{runNum}-{c.numberOfGenerations}-fit.p", "wb"))
+    
+
 
 
 rand_fitness = []
 rand_best_fit = []
 seq_fitness = []
 seq_best_fit = []
+best_fit_keys = {}
 for i, runNum in enumerate(c.runnumberstot):
     parents = pickle.load( open( f"pickles/{runNum}/save_parents{runNum}-{c.numberOfGenerations}.p", "rb" ) )
     if runNum <= 5:
-        for i,key in enumerate(parents.keys()):
+        for j,key in enumerate(parents.keys()):
             rand_fitness.append(parents[key].fitness)
-            if i == 0:
+            if j == 0:
                 bestfit = parents[key].fitness
                 bestfitkey = key
             if parents[key].fitness < bestfit:
@@ -88,16 +102,19 @@ for i, runNum in enumerate(c.runnumberstot):
                 bestfitkey = key
         rand_best_fit.append(bestfit)
     else:
-        for key in parents.keys():
+        for j,key in enumerate(parents.keys()):
             seq_fitness.append(parents[key].fitness)
-            if i == 0:
+            if j == 0:
                 bestfit = parents[key].fitness
                 bestfitkey = key
             if parents[key].fitness < bestfit:
                 bestfit = parents[key].fitness
                 bestfitkey = key
         seq_best_fit.append(bestfit)
-            
+    best_fit_keys[runNum] = bestfitkey
+
+pickle.dump(best_fit_keys, open(f"pickles/save_bestkeys.p", "wb"))
             
 print(ttest_ind(a=rand_fitness,b=seq_fitness,equal_var=False))
 print(ttest_ind(a=rand_best_fit,b=seq_best_fit,equal_var=False))
+print(best_fit_keys)

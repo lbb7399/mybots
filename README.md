@@ -1,6 +1,29 @@
-# Assignment 8: Evolved Random 3D Creatures
+# Final Project
 
-This code randomly generates a create that fills 3D space then evolves it to move further in the -x direction. 
+This code randomly generates a creature that fills 3D space then evolves it to move further in the -x direction. Two methods of evolution are evaluated.
+
+## Hypothesis
+My hypothesis is inspired by the work of Josh Bongard. In his work, the brain of a robot is evolved until it meets a specific goal. Once the robot meets this goal, the brain is placed on a robot with an altered body and this pattern continues throughout the run. It is claimed that this method makes a better and more resilient final robot. 
+
+To be consistent across runs within time constraints, rather than letting the brain evolve to meet a certain goal, it and the body will evolve separately and sequentially for a set number of generations each. 
+
+Hypothesis: Evolution will progess faster if mutations are blocked (referred to as sequential in code) where 50 generations of brain mutations will occur then 50 generations of body mutations.
+
+Null: Random selection of a body or brain mutation each generation. The probability of a given mutation is the same in both evolutionary runs. 
+
+https://www.pnas.org/doi/10.1073/pnas.1015390108 add citation
+
+## Experimental Design
+
+
+
+
+![Random Diagram]()
+
+![Blocked Diagram]()
+
+
+
 
 ## Creature Body Options
 
@@ -62,8 +85,13 @@ This code requires the ```pybullet``` package. Download using ```pip3 install py
 
 ## Running the Code
  Type ```python3 search.py``` into the terminal. If you desire to change the number of genrations, population size, dimension limits, etc, you can do so in ```constants.py```.
+ 
+ This code it currently set up to run on a Mac with Linux os commands. These show up as os.system() in ```search.py```, ```parallelHillClimber.py``` in the constructor and Select, ```solution.py``` in Start_Simulation and Wait_For_Simulation_To_End, and ```robot.py``` in the constructor and Get_Fitness. If you are using another os, the commands in these lines (not the file names!) may need to be changed.
 
 
 ## Credit
 
 Basis of this code is from the [r/ludobots](https://www.reddit.com/r/ludobots/) course and this [pyrosim](https://github.com/jbongard/pyrosim) package.
+
+## Additional Notes
+1. The windows when running the GUI still appear as on my computer at least it causes the simulation to blip in and out of existence without running it. If you would like to try to turn them off, you can do so in ```simulation.py``` in its constructor by uncommenting ```p.configureDebugVisualizer(pybullet.COV_ENABLE_GUI,0)```.

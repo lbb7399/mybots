@@ -26,10 +26,10 @@ plt.xlabel("Generations")
 plt.ylabel("Distance from Origin in -x Direction")
 plt.legend()
 #plt.show()
-plt.savefig("Evolution Curve.png")
+plt.savefig("figures/Evolution Curve.png")
 
 x = np.arange(c.numberOfGenerations+1)
-stats = ["max","min","med"]
+stats = ["max","min","median"]
 for i,color in enumerate(colors):
     plt.figure(num=count)
     count += 1
@@ -56,5 +56,16 @@ for i,color in enumerate(colors):
     plt.xlabel("Generations")
     plt.ylabel("Distance from Origin in -x Direction")
     plt.legend()
-    plt.show()
-    plt.savefig(f"Seed {i+1} Evolution Curve.png")
+    #plt.show()
+    plt.savefig(f"figures/Seed {i+1} Evolution Curve.png")
+    
+    plt.figure(num=count)
+    count += 1
+    plt.plot(loadfile1[0], style1,label = "Random")
+    plt.plot(loadfile2[0], style2,label = "Sequential")
+    plt.title(f"Largest Fitness: Seed {i+1} (Runs {i+1} and {i+6})")
+    plt.xlabel("Generations")
+    plt.ylabel("Distance from Origin in -x Direction")
+    plt.legend()
+    #plt.show()
+    plt.savefig(f"figures/Seed {i+1} Max Evolution Curve.png")

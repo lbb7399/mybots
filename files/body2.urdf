@@ -1,12 +1,12 @@
 <robot name = "robot">
-    <link name="010">
+    <link name="002">
         <inertial>
-            <origin xyz="0.0 0.5 0.25" rpy="0 0 0"/>
+            <origin xyz="0.0 0.0 1.25" rpy="0 0 0"/>
             <mass value="1" />
             <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
         </inertial>
         <visual>
-            <origin xyz="0.0 0.5 0.25" rpy="0 0 0"/>
+            <origin xyz="0.0 0.0 1.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
@@ -15,20 +15,20 @@
             </material>
         </visual>
         <collision>
-            <origin xyz="0.0 0.5 0.25" rpy="0 0 0"/>
+            <origin xyz="0.0 0.0 1.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
         </collision>
     </link>
-    <joint name="010_020" type="continuous">
-       <parent link="010"/>
-       <child  link="020"/>
-       <origin rpy="0 0 0" xyz="0.0 0.75 0.5" />
+    <joint name="002_011" type="continuous">
+       <parent link="002"/>
+       <child  link="011"/>
+       <origin rpy="0 0 0" xyz="0.0 0.25 1.0" />
      <axis xyz="1 0 0"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
-    <link name="020">
+    <link name="011">
         <inertial>
             <origin xyz="0.0 0.25 -0.25" rpy="0 0 0"/>
             <mass value="1" />
@@ -50,50 +50,79 @@
             </geometry>
         </collision>
     </link>
-    <joint name="020_031" type="revolute">
-       <parent link="020"/>
-       <child  link="031"/>
+    <joint name="011_012" type="revolute">
+       <parent link="011"/>
+       <child  link="012"/>
+       <origin rpy="0 0 0" xyz="0.0 0.0 0.0" />
+     <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="012">
+        <inertial>
+            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="011_021" type="revolute">
+       <parent link="011"/>
+       <child  link="021"/>
+       <origin rpy="0 0 0" xyz="0.0 0.5 -0.5" />
+     <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="021">
+        <inertial>
+            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="021_030" type="revolute">
+       <parent link="021"/>
+       <child  link="030"/>
        <origin rpy="0 0 0" xyz="0.0 0.5 0.0" />
      <axis xyz="1 0 0"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
-    <link name="031">
+    <link name="030">
         <inertial>
-            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <origin xyz="0.0 0.25 -0.25" rpy="0 0 0"/>
             <mass value="1" />
             <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
         </inertial>
         <visual>
-            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
-            <geometry>
-                <box size="0.5 0.5 0.5" />
-            </geometry>
-            <material name="Cyan">
-                <color rgba="0 1.0 1.0 1.0"/>
-            </material>
-        </visual>
-        <collision>
-            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
-            <geometry>
-                <box size="0.5 0.5 0.5" />
-            </geometry>
-        </collision>
-    </link>
-    <joint name="010_100" type="continuous">
-       <parent link="010"/>
-       <child  link="100"/>
-       <origin rpy="0 0 0" xyz="0.25 0.25 0.25" />
-     <axis xyz="0 0 1"/>
-       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
-    </joint>
-    <link name="100">
-        <inertial>
-            <origin xyz="0.25 -0.25 0.0" rpy="0 0 0"/>
-            <mass value="1" />
-            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
-        </inertial>
-        <visual>
-            <origin xyz="0.25 -0.25 0.0" rpy="0 0 0"/>
+            <origin xyz="0.0 0.25 -0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
@@ -102,85 +131,143 @@
             </material>
         </visual>
         <collision>
-            <origin xyz="0.25 -0.25 0.0" rpy="0 0 0"/>
+            <origin xyz="0.0 0.25 -0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
         </collision>
     </link>
-    <joint name="020_110" type="continuous">
-       <parent link="020"/>
+    <joint name="021_032" type="continuous">
+       <parent link="021"/>
+       <child  link="032"/>
+       <origin rpy="0 0 0" xyz="0.0 0.5 0.5" />
+     <axis xyz="1 0 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="032">
+        <inertial>
+            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+            <material name="Green">
+                <color rgba="0.4 1 0.4 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="002_101" type="revolute">
+       <parent link="002"/>
+       <child  link="101"/>
+       <origin rpy="0 0 0" xyz="0.25 0.0 1.0" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="101">
+        <inertial>
+            <origin xyz="0.25 0.0 -0.25" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0.25 0.0 -0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.25 0.0 -0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="011_110" type="continuous">
+       <parent link="011"/>
        <child  link="110"/>
-       <origin rpy="0 0 0" xyz="0.25 0.0 -0.25" />
-     <axis xyz="0 0 1"/>
+       <origin rpy="0 0 0" xyz="0.25 0.25 -0.5" />
+     <axis xyz="0 1 0"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
     <link name="110">
         <inertial>
-            <origin xyz="0.25 -0.25 0.0" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 -0.25" rpy="0 0 0"/>
             <mass value="1" />
             <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
         </inertial>
         <visual>
-            <origin xyz="0.25 -0.25 0.0" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 -0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
-            <material name="Cyan">
-                <color rgba="0 1.0 1.0 1.0"/>
+            <material name="Green">
+                <color rgba="0.4 1 0.4 1"/>
             </material>
         </visual>
         <collision>
-            <origin xyz="0.25 -0.25 0.0" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 -0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
         </collision>
     </link>
-    <joint name="010_111" type="continuous">
-       <parent link="010"/>
+    <joint name="110_111" type="revolute">
+       <parent link="110"/>
        <child  link="111"/>
-       <origin rpy="0 0 0" xyz="0.25 0.5 0.5" />
-     <axis xyz="0 1 0"/>
+       <origin rpy="0 0 0" xyz="0.25 0.0 0.0" />
+     <axis xyz="1 0 0"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
     <link name="111">
         <inertial>
-            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
+            <origin xyz="0.0 0.0 0.25" rpy="0 0 0"/>
             <mass value="1" />
             <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
         </inertial>
         <visual>
-            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
+            <origin xyz="0.0 0.0 0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
-            <material name="Green">
-                <color rgba="0.4 1 0.4 1"/>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
             </material>
         </visual>
         <collision>
-            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
+            <origin xyz="0.0 0.0 0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
         </collision>
     </link>
-    <joint name="111_112" type="continuous">
-       <parent link="111"/>
+    <joint name="011_112" type="continuous">
+       <parent link="011"/>
        <child  link="112"/>
-       <origin rpy="0 0 0" xyz="0.25 -0.25 0.5" />
-     <axis xyz="1 0 0"/>
+       <origin rpy="0 0 0" xyz="0.25 0.25 0.0" />
+     <axis xyz="0 1 0"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
     <link name="112">
         <inertial>
-            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
             <mass value="1" />
             <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
         </inertial>
         <visual>
-            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
@@ -189,27 +276,27 @@
             </material>
         </visual>
         <collision>
-            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
         </collision>
     </link>
-    <joint name="110_121" type="revolute">
-       <parent link="110"/>
-       <child  link="121"/>
-       <origin rpy="0 0 0" xyz="0.25 0.0 0.25" />
-     <axis xyz="1 0 0"/>
+    <joint name="021_122" type="continuous">
+       <parent link="021"/>
+       <child  link="122"/>
+       <origin rpy="0 0 0" xyz="0.25 0.25 0.5" />
+     <axis xyz="0 1 0"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
-    <link name="121">
+    <link name="122">
         <inertial>
-            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
             <mass value="1" />
             <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
         </inertial>
         <visual>
-            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
@@ -218,56 +305,56 @@
             </material>
         </visual>
         <collision>
-            <origin xyz="0.0 0.25 0.25" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
         </collision>
     </link>
-    <joint name="121_130" type="continuous">
-       <parent link="121"/>
+    <joint name="030_130" type="revolute">
+       <parent link="030"/>
        <child  link="130"/>
-       <origin rpy="0 0 0" xyz="0.0 0.5 0.0" />
-     <axis xyz="1 0 0"/>
+       <origin rpy="0 0 0" xyz="0.25 0.25 0.0" />
+     <axis xyz="0 1 0"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
     <link name="130">
         <inertial>
-            <origin xyz="0.0 0.25 -0.25" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 -0.25" rpy="0 0 0"/>
             <mass value="1" />
             <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
         </inertial>
         <visual>
-            <origin xyz="0.0 0.25 -0.25" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 -0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
-            <material name="Cyan">
-                <color rgba="0 1.0 1.0 1.0"/>
+            <material name="Green">
+                <color rgba="0.4 1 0.4 1"/>
             </material>
         </visual>
         <collision>
-            <origin xyz="0.0 0.25 -0.25" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 -0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
         </collision>
     </link>
-    <joint name="031_131" type="revolute">
-       <parent link="031"/>
+    <joint name="030_131" type="continuous">
+       <parent link="030"/>
        <child  link="131"/>
-       <origin rpy="0 0 0" xyz="0.25 0.25 0.25" />
+       <origin rpy="0 0 0" xyz="0.25 0.25 0.0" />
      <axis xyz="0 1 0"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
     <link name="131">
         <inertial>
-            <origin xyz="0.25 0.0 0.0" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
             <mass value="1" />
             <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
         </inertial>
         <visual>
-            <origin xyz="0.25 0.0 0.0" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
@@ -276,27 +363,27 @@
             </material>
         </visual>
         <collision>
-            <origin xyz="0.25 0.0 0.0" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
         </collision>
     </link>
-    <joint name="100_200" type="continuous">
-       <parent link="100"/>
+    <joint name="110_200" type="revolute">
+       <parent link="110"/>
        <child  link="200"/>
-       <origin rpy="0 0 0" xyz="0.5 -0.5 0.0" />
+       <origin rpy="0 0 0" xyz="0.5 -0.25 -0.25" />
      <axis xyz="0 0 1"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
     <link name="200">
         <inertial>
-            <origin xyz="0.25 0.25 0.0" rpy="0 0 0"/>
+            <origin xyz="0.25 -0.25 0.0" rpy="0 0 0"/>
             <mass value="1" />
             <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
         </inertial>
         <visual>
-            <origin xyz="0.25 0.25 0.0" rpy="0 0 0"/>
+            <origin xyz="0.25 -0.25 0.0" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
@@ -305,16 +392,16 @@
             </material>
         </visual>
         <collision>
-            <origin xyz="0.25 0.25 0.0" rpy="0 0 0"/>
+            <origin xyz="0.25 -0.25 0.0" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
         </collision>
     </link>
-    <joint name="112_202" type="continuous">
+    <joint name="112_202" type="revolute">
        <parent link="112"/>
        <child  link="202"/>
-       <origin rpy="0 0 0" xyz="0.25 0.0 0.25" />
+       <origin rpy="0 0 0" xyz="0.5 -0.25 0.25" />
      <axis xyz="0 0 1"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
@@ -340,43 +427,14 @@
             </geometry>
         </collision>
     </link>
-    <joint name="200_210" type="revolute">
-       <parent link="200"/>
-       <child  link="210"/>
-       <origin rpy="0 0 0" xyz="0.0 0.5 0.0" />
-     <axis xyz="0 0 1"/>
-       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
-    </joint>
-    <link name="210">
-        <inertial>
-            <origin xyz="0.25 0.25 0.0" rpy="0 0 0"/>
-            <mass value="1" />
-            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
-        </inertial>
-        <visual>
-            <origin xyz="0.25 0.25 0.0" rpy="0 0 0"/>
-            <geometry>
-                <box size="0.5 0.5 0.5" />
-            </geometry>
-            <material name="Cyan">
-                <color rgba="0 1.0 1.0 1.0"/>
-            </material>
-        </visual>
-        <collision>
-            <origin xyz="0.25 0.25 0.0" rpy="0 0 0"/>
-            <geometry>
-                <box size="0.5 0.5 0.5" />
-            </geometry>
-        </collision>
-    </link>
-    <joint name="112_212" type="revolute">
+    <joint name="112_211" type="continuous">
        <parent link="112"/>
-       <child  link="212"/>
-       <origin rpy="0 0 0" xyz="0.25 0.25 0.5" />
+       <child  link="211"/>
+       <origin rpy="0 0 0" xyz="0.5 0.0 0.0" />
      <axis xyz="0 1 0"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
-    <link name="212">
+    <link name="211">
         <inertial>
             <origin xyz="0.25 0.0 -0.25" rpy="0 0 0"/>
             <mass value="1" />
@@ -387,8 +445,8 @@
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
-            <material name="Cyan">
-                <color rgba="0 1.0 1.0 1.0"/>
+            <material name="Green">
+                <color rgba="0.4 1 0.4 1"/>
             </material>
         </visual>
         <collision>
@@ -398,14 +456,14 @@
             </geometry>
         </collision>
     </link>
-    <joint name="212_221" type="revolute">
-       <parent link="212"/>
-       <child  link="221"/>
+    <joint name="211_220" type="continuous">
+       <parent link="211"/>
+       <child  link="220"/>
        <origin rpy="0 0 0" xyz="0.25 0.25 -0.5" />
      <axis xyz="1 0 0"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
-    <link name="221">
+    <link name="220">
         <inertial>
             <origin xyz="0.0 0.25 -0.25" rpy="0 0 0"/>
             <mass value="1" />
@@ -413,6 +471,35 @@
         </inertial>
         <visual>
             <origin xyz="0.0 0.25 -0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+            <material name="Green">
+                <color rgba="0.4 1 0.4 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.25 -0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="112_222" type="continuous">
+       <parent link="112"/>
+       <child  link="222"/>
+       <origin rpy="0 0 0" xyz="0.5 0.25 0.25" />
+     <axis xyz="0 0 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="222">
+        <inertial>
+            <origin xyz="0.25 0.25 0.0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="0.25 0.25 0.0" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
@@ -421,56 +508,27 @@
             </material>
         </visual>
         <collision>
-            <origin xyz="0.0 0.25 -0.25" rpy="0 0 0"/>
+            <origin xyz="0.25 0.25 0.0" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
         </collision>
     </link>
-    <joint name="221_222" type="continuous">
-       <parent link="221"/>
-       <child  link="222"/>
-       <origin rpy="0 0 0" xyz="0.0 0.25 0.0" />
-     <axis xyz="1 0 0"/>
-       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
-    </joint>
-    <link name="222">
-        <inertial>
-            <origin xyz="0.0 0.0 0.25" rpy="0 0 0"/>
-            <mass value="1" />
-            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
-        </inertial>
-        <visual>
-            <origin xyz="0.0 0.0 0.25" rpy="0 0 0"/>
-            <geometry>
-                <box size="0.5 0.5 0.5" />
-            </geometry>
-            <material name="Green">
-                <color rgba="0.4 1 0.4 1"/>
-            </material>
-        </visual>
-        <collision>
-            <origin xyz="0.0 0.0 0.25" rpy="0 0 0"/>
-            <geometry>
-                <box size="0.5 0.5 0.5" />
-            </geometry>
-        </collision>
-    </link>
-    <joint name="131_230" type="continuous">
-       <parent link="131"/>
+    <joint name="130_230" type="continuous">
+       <parent link="130"/>
        <child  link="230"/>
-       <origin rpy="0 0 0" xyz="0.5 0.0 -0.25" />
-     <axis xyz="0 1 0"/>
+       <origin rpy="0 0 0" xyz="0.5 -0.25 -0.25" />
+     <axis xyz="0 0 1"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
     <link name="230">
         <inertial>
-            <origin xyz="0.25 0.0 -0.25" rpy="0 0 0"/>
+            <origin xyz="0.25 0.25 0.0" rpy="0 0 0"/>
             <mass value="1" />
             <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
         </inertial>
         <visual>
-            <origin xyz="0.25 0.0 -0.25" rpy="0 0 0"/>
+            <origin xyz="0.25 0.25 0.0" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
@@ -479,16 +537,16 @@
             </material>
         </visual>
         <collision>
-            <origin xyz="0.25 0.0 -0.25" rpy="0 0 0"/>
+            <origin xyz="0.25 0.25 0.0" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
         </collision>
     </link>
-    <joint name="222_231" type="revolute">
+    <joint name="222_231" type="continuous">
        <parent link="222"/>
        <child  link="231"/>
-       <origin rpy="0 0 0" xyz="0.0 0.25 0.0" />
+       <origin rpy="0 0 0" xyz="0.25 0.5 -0.25" />
      <axis xyz="1 0 0"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
@@ -503,8 +561,8 @@
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
-            <material name="Green">
-                <color rgba="0.4 1 0.4 1"/>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
             </material>
         </visual>
         <collision>
@@ -514,21 +572,21 @@
             </geometry>
         </collision>
     </link>
-    <joint name="202_102" type="revolute">
-       <parent link="202"/>
-       <child  link="102"/>
-       <origin rpy="0 0 0" xyz="0.0 -0.25 0.0" />
+    <joint name="231_232" type="continuous">
+       <parent link="231"/>
+       <child  link="232"/>
+       <origin rpy="0 0 0" xyz="-0.25 0.25 0.0" />
      <axis xyz="0 1 0"/>
        <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
     </joint>
-    <link name="102">
+    <link name="232">
         <inertial>
-            <origin xyz="-0.25 0.0 0.0" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
             <mass value="1" />
             <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
         </inertial>
         <visual>
-            <origin xyz="-0.25 0.0 0.0" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>
@@ -537,7 +595,94 @@
             </material>
         </visual>
         <collision>
-            <origin xyz="-0.25 0.0 0.0" rpy="0 0 0"/>
+            <origin xyz="0.25 0.0 0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="200_100" type="revolute">
+       <parent link="200"/>
+       <child  link="100"/>
+       <origin rpy="0 0 0" xyz="0.0 -0.25 -0.25" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="100">
+        <inertial>
+            <origin xyz="-0.25 0.0 0.25" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.25 0.0 0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+            <material name="Green">
+                <color rgba="0.4 1 0.4 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.25 0.0 0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="131_121" type="continuous">
+       <parent link="131"/>
+       <child  link="121"/>
+       <origin rpy="0 0 0" xyz="0.5 -0.25 0.25" />
+     <axis xyz="0 0 1"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="121">
+        <inertial>
+            <origin xyz="-0.25 -0.25 0.0" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.25 -0.25 0.0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.25 -0.25 0.0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+        </collision>
+    </link>
+    <joint name="101_102" type="continuous">
+       <parent link="101"/>
+       <child  link="102"/>
+       <origin rpy="0 0 0" xyz="0.5 0.0 0.0" />
+     <axis xyz="0 1 0"/>
+       <limit effort="0.0" lower="-3.14159" upper="3.14159" velocity="0.0"/>
+    </joint>
+    <link name="102">
+        <inertial>
+            <origin xyz="-0.25 0.0 0.25" rpy="0 0 0"/>
+            <mass value="1" />
+            <inertia ixx="100" ixy="0" ixz="0" iyy="100" iyz="0" izz="100" />
+        </inertial>
+        <visual>
+            <origin xyz="-0.25 0.0 0.25" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.5 0.5 0.5" />
+            </geometry>
+            <material name="Cyan">
+                <color rgba="0 1.0 1.0 1.0"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="-0.25 0.0 0.25" rpy="0 0 0"/>
             <geometry>
                 <box size="0.5 0.5 0.5" />
             </geometry>

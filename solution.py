@@ -27,7 +27,7 @@ class SOLUTION:
         self.Create_World()
         self.Generate_Body()
         self.Generate_Brain()
-        os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} {str(self.myPopID)}")
+        os.system(f"python3 simulate.py {directOrGUIEv} {str(self.myID)} {str(self.myPopID)} 2&>1 &")
         # 2&>1 &
         
     def Wait_For_Simulation_To_End(self):
