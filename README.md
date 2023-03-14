@@ -19,11 +19,11 @@ https://www.pnas.org/doi/10.1073/pnas.1015390108 add citation
 
 The first five runs were random. In ```parallelHillClimber.Mutate()```, every solution is sent to ```solution.Mutate()``` in which it has a 50% chance to chose one of two brian mutations or a 50% chance to chose one of three body mutations.
 
-![Random Diagram]()
+![Random Diagram](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Random%20Diagram.jpeg?raw=true)
 
 The last five runs were blocked. In ```parallelHillClimber.Evolve()``` a counter tracks whether a mutation should be a brain mutation (count <= 50) or a body mutation (50 < count <= 100). This is passed into ```parallelHillClimber.Mutate()``` where the solutions are either sent to ```solution.Mutate_Mind()```, where there is a 50/50 chance for the two brain mutations, or ```solution.Mutate_Body()```, where there is a 1/3 chance for each of the body mutations, depending on the count. Additionally, while the run numbers for these were 6, 7, 8, 9, and 10, respectively, for clarity, their seed numbers were the same as their corresponding random runs (ie runs 1 and 6 had the same random seed). This means that when comparing the two evolutions, they had the same starting point.
 
-![Blocked Diagram]()
+![Blocked Diagram](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Blocked%20Diagram.jpeg?raw=true)
 
 The robots were all tracked by how far in the -x direction they could travel. All mutations, successful and unsuccessful, were recorded.
 
@@ -38,16 +38,21 @@ The robots were all tracked by how far in the -x direction they could travel. Al
 ## Creature Body Options
 
 The creature has the ability to be 3 links x 4 links x 3 links. Initially, links are selected with a 50/50 chance to exist. Once this process is complete, the links are searched to ensure that they are all connected (see adding block mutation for criteria). If jointed links are face to face, they may either have a joint on their face in either of the two direction perpendicular to their axis or a joint on one of their four touching edges. If the links are connected by an edge, they are connected along that edge. A joint can either be revolute or continuous. Each creature must have at least two links and at least one sensor. Initial dimensions of links are 0.5x0.5x0.5.
+### Joint Options
+![alt text](https://i.imgur.com/zTpHEXP.jpg)
+![alt text](https://i.imgur.com/Mj4LHCl.jpg)
 
 All visuals used for description from run 9, population 9.
 
 ## Initial Body Generation
-![Body Creation Video]()
+![Body Creation Video](https://github.com/lbb7399/mybots/blob/final-project/Body%20Generation.m4v)
+![Genotype](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Genotype.jpeg?raw=true)
+![Initial Joint Tree](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Initial%20Link%20Tree.jpeg)
+
+![Final Joint Tree](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Final%20Link%20Tree.jpeg?raw=true)
 
 
-### Joint Options
-![alt text](https://i.imgur.com/zTpHEXP.jpg)
-![alt text](https://i.imgur.com/Mj4LHCl.jpg)
+
 
 ## Creature Brain Options
 
