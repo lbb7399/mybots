@@ -63,9 +63,9 @@ class PARALLEL_HILL_CLIMBER:
                 counter = 1
 
             
-        #fitfilename = f"data/fitnesscurve{self.runNumber}.npy"
-        #np.save(fitfilename, self.allFitness)
-        #pickle.dump(self.mutations, open(f"pickles/{self.runNumber}/save_mutations{self.runNumber}-{self.currentGen}.p", "wb"))
+        fitfilename = f"data/fitnesscurve{self.runNumber}.npy"
+        np.save(fitfilename, self.allFitness)
+        pickle.dump(self.mutations, open(f"pickles/{self.runNumber}/save_mutations{self.runNumber}-{self.currentGen}.p", "wb"))
 
             
     def Evolve_For_One_Generation(self):
@@ -79,7 +79,6 @@ class PARALLEL_HILL_CLIMBER:
         self.Print()
         self.Select()
         self.Pick_Fitness()
-        #pickle.dump(self.mutations, open(f"pickles/save_mutations{self.runNumber}-{self.currentGen}.p", "wb"))
     
     def Spawn(self):
         self.children = {}

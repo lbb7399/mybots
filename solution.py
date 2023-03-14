@@ -66,6 +66,8 @@ class SOLUTION:
             self.counter = 0
             startindex = 0
             self.Create_Links()
+
+            
             while self.OneBase is False:
                 self.Check_Link_Existence(startindex)
                 if self.OneBase is False:
@@ -81,6 +83,8 @@ class SOLUTION:
                 if count > 20:
                     self.OneBase = True
                     self.numLinks == 0
+            #print(self.namelist)
+            
                     
                 
         self.Define_Sensors()

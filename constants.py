@@ -50,7 +50,7 @@ coord = [x,y,z]
 
 # runs/ run numbers
 runnumberstot = [1,2,3,4,5,6,7,8,9,10] #only in analyze.py
-runnumbers = [2,3,4,5,6,7,8,9,10] #runs search.py
+runnumbers = [1,2,3,4,5,6,7,8,9,10] #runs search.py
 numRuns = len(runnumbers)
 
 # mutation stuff. Equal weighting for now
