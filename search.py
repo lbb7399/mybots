@@ -19,5 +19,5 @@ for i, runNum in enumerate(c.runnumbers):
 
 # out of loop
 
-
+system("python3 analysis.py")
 system("python3 analyze.py")
