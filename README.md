@@ -50,7 +50,11 @@ All visuals used for description from run 9, population 9.
 
 ## Initial Body Generation
 
-https://user-images.githubusercontent.com/116473746/225168533-ea14ed0e-108f-44c6-8a2e-0aee5d17e802.mp4
+
+https://user-images.githubusercontent.com/116473746/225168636-8472a355-1db6-4db4-ac4f-f53f9a4d6af1.mp4
+
+
+
 ![Genotype](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Genotype.jpeg?raw=true)
 ![Initial Joint Tree](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Initial%20Link%20Tree.jpeg)
 
