@@ -146,7 +146,18 @@ While the hypothesis does beat the null 3/5 times, this is not statistically sig
 ![Seed 4 med](https://github.com/lbb7399/mybots/blob/final-project/figures/Seed%204%20Evolution%20Curve.png?raw=true)
 ![Seed 5 med](https://github.com/lbb7399/mybots/blob/final-project/figures/Seed%205%20Evolution%20Curve.png?raw=true)
 
-As seen in the plots above, when considering the range of fitnesses in each run
+As seen in the plots above, when considering the range of fitnesses in each run the populations are extremely similar. Running a t-test across all populations, they are 97% similar. Therefore the hypothesis is false, at least for this set of mutations.
+
+## Discussion
+
+While the hypothesis failed, there is still something to be learned from this experiment.
+
+### Number of links and fitness
+
+
+
+
+(see pickles/mutationsTrue.xlsx for the successful mutations of the most successful line in each run)
 
 ## Required Installation
 
