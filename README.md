@@ -72,6 +72,8 @@ https://user-images.githubusercontent.com/116473746/225168636-8472a355-1db6-4db4
 
 As stated before, links can only be children to links that are higher on the list of links than them, therefore preserving one base. Below is the initial joint configuration of run 9-9.
 
+Link list: '021', '022', '030', '032', '112', '121', '211', '212', '231', '232', '200', '100'
+
 ![Initial Joint Tree](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Initial%20Link%20Tree.jpeg)
 
 
@@ -81,8 +83,9 @@ Added links: 110, 130, 111
 
 Removed links: 212, 112, 032, 232, 022
 
-![Final Joint Tree](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Final%20Link%20Tree.jpeg?raw=true)
+Link list: '021', '030', '121', '211', '231', '200', '100', '110', '130', '111'
 
+![Final Joint Tree](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Final%20Link%20Tree.jpeg?raw=true)
 
 
 
@@ -124,13 +127,26 @@ A random synapse is chosen from all possible synapses. If the synapse is unconne
 
 ## Results
 
-[YouTube Video](https://youtu.be/4cRhPYPOVTA)
+### Max Fitness of each run
+![Total max](https://github.com/lbb7399/mybots/blob/final-project/figures/Evolution%20Curve.png?raw=true)
 
-Resulting fitness graph for 5 runs:
-![alt text](https://i.imgur.com/sy8NNoa.png)
+### Max Fitness Curves for Each Seed
+![Seed 1 max](https://github.com/lbb7399/mybots/blob/final-project/figures/Seed%201%20Max%20Evolution%20Curve.png?raw=true)
+![Seed 2 max](https://github.com/lbb7399/mybots/blob/final-project/figures/Seed%202%20Max%20Evolution%20Curve.png?raw=true)
+![Seed 3 max](https://github.com/lbb7399/mybots/blob/final-project/figures/Seed%203%20Max%20Evolution%20Curve.png?raw=true)
+![Seed 4 max](https://github.com/lbb7399/mybots/blob/final-project/figures/Seed%204%20Max%20Evolution%20Curve.png?raw=true)
+![Seed 5 max](https://github.com/lbb7399/mybots/blob/final-project/figures/Seed%205%20Max%20Evolution%20Curve.png?raw=true)
 
-While these creatures do evolve, they do not evolve well and fall more in the Leaning Tower category than anything else. The only run that did not fall over was trial 5, which had the lowest fitness. Future development would include working more on joint options and connection as well as adding in different link shapes.
+While the hypothesis does beat the null 3/5 times, this is not statistically significant and a t-test on just these ten values found a p-value of 0.75.
 
+### Median Fitness Curves with Total Range
+![Seed 1 med](https://github.com/lbb7399/mybots/blob/final-project/figures/Seed%201%20Evolution%20Curve.png?raw=true)
+![Seed 2 med](https://github.com/lbb7399/mybots/blob/final-project/figures/Seed%202%20Evolution%20Curve.png?raw=true)
+![Seed 3 med](https://github.com/lbb7399/mybots/blob/final-project/figures/Seed%203%20Evolution%20Curve.png?raw=true)
+![Seed 4 med](https://github.com/lbb7399/mybots/blob/final-project/figures/Seed%204%20Evolution%20Curve.png?raw=true)
+![Seed 5 med](https://github.com/lbb7399/mybots/blob/final-project/figures/Seed%205%20Evolution%20Curve.png?raw=true)
+
+As seen in the plots above, when considering the range of fitnesses in each run
 
 ## Required Installation
 
