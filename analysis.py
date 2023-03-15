@@ -116,7 +116,7 @@ plt.figure()
 plt.scatter(best_links,best_fit)
 plt.xlabel("Number of Links")
 plt.ylabel("Distance from Origin in -x Direction")
-plt.savefig("Links-fitness-scatter.png")
+plt.savefig("figures/Links-fitness-scatter.png")
 
 corr_matrix = np.corrcoef(best_links, best_fit)
 corr = corr_matrix[0,1]
