@@ -30,7 +30,7 @@ gen = 500
 parents = pickle.load( open( f"pickles/{num}/save_parents{num}-{gen}.p", "rb" ) )
 
 #parents[best].Start_Simulation("GUI")
-#print(parents[9].namelist,parents[best].numLinks)
+print(parents[best].namelist,parents[best].numLinks)
 #
 #print(parents[9].sensorNames,parents[9].numSensors)
 #print(parents[9].motorJointNames,parents[9].numMotors)
