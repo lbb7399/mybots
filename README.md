@@ -2,8 +2,19 @@
 
 This code randomly generates a creature that fills 3D space then evolves it to move further in the -x direction. Two methods of evolution are evaluated.
 
+### Gif preview
+Both robots start with the same random seed and therefore same body and brain but the robot in run 4 is randomly evolved and the robot in run 9 is sequentially evolved. Run 9 had the best fitness over all runs.
+
+![final](https://user-images.githubusercontent.com/116473746/225198178-68ecf23a-a157-43d5-a1e1-61029dbd39b6.gif)
+
+### Video Summary
+
+The file is too large to place in the read me or the repository so here is the [YouTube link](https://youtu.be/6ksTQy0KhNM).
+
+
+
 ## Hypothesis
-My hypothesis is inspired by the work of Josh Bongard. In his work, the brain of a robot is evolved until it meets a specific goal. Once the robot meets this goal, the brain is placed on a robot with an altered body and this pattern continues throughout the run. It is claimed that this method makes a better and more resilient final robot. 
+My hypothesis is inspired by the work of Josh Bongard. In his [work](https://www.pnas.org/doi/10.1073/pnas.1015390108), the brain of a robot is evolved until it meets a specific goal. Once the robot meets this goal, the brain is placed on a robot with an altered body and this pattern continues throughout the run. It is claimed that this method makes a better and more resilient final robot. 
 
 To be consistent across runs within time constraints, rather than letting the brain evolve to meet a certain goal, it and the body will evolve separately and sequentially for a set number of generations each. 
 
@@ -11,7 +22,6 @@ Hypothesis: Evolution will progess faster if mutations are blocked (referred to 
 
 Null: Random selection of a body or brain mutation each generation. The probability of a given mutation is the same in both evolutionary runs. 
 
-https://www.pnas.org/doi/10.1073/pnas.1015390108 add citation
 
 ## Experimental Design
 
@@ -46,17 +56,30 @@ The creature has the ability to be 3 links x 4 links x 3 links. Initially, links
 ![alt text](https://i.imgur.com/zTpHEXP.jpg)
 ![alt text](https://i.imgur.com/Mj4LHCl.jpg)
 
-All visuals used for description from run 9, population 9.
+All visuals used for description from run 9, population 9 (9-9).
 
 ## Initial Body Generation
+### Genotype
+![Genotype](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Genotype.jpeg?raw=true)
 
+### Phenotype
 
+Process for creating 9-9, initial body:
 https://user-images.githubusercontent.com/116473746/225168636-8472a355-1db6-4db4-ac4f-f53f9a4d6af1.mp4
 
 
+### Initial Joint Tree
 
-![Genotype](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Genotype.jpeg?raw=true)
+As stated before, links can only be children to links that are higher on the list of links than them, therefore preserving one base. Below is the initial joint configuration of run 9-9.
+
 ![Initial Joint Tree](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Initial%20Link%20Tree.jpeg)
+
+
+### Final Joint Tree
+
+Added links: 110, 130, 111
+
+Removed links: 212, 112, 032, 232, 022
 
 ![Final Joint Tree](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Final%20Link%20Tree.jpeg?raw=true)
 
