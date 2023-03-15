@@ -31,6 +31,10 @@ The robots were all tracked by how far in the -x direction they could travel. Al
 
 
 
+
+
+
+
 ![PHC Diagram]()
 
 
@@ -45,7 +49,8 @@ The creature has the ability to be 3 links x 4 links x 3 links. Initially, links
 All visuals used for description from run 9, population 9.
 
 ## Initial Body Generation
-![Body Creation Video](https://github.com/lbb7399/mybots/blob/final-project/Body%20Generation.m4v)
+
+https://user-images.githubusercontent.com/116473746/225168533-ea14ed0e-108f-44c6-8a2e-0aee5d17e802.mp4
 ![Genotype](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Genotype.jpeg?raw=true)
 ![Initial Joint Tree](https://github.com/lbb7399/mybots/blob/final-project/diagrams/Initial%20Link%20Tree.jpeg)
 
