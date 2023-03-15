@@ -31,11 +31,11 @@ for i, runNum in enumerate(c.runnumberstot):
         currentGen = currentGeneration
         parents = pickle.load( open( f"pickles/{runNum}/save_parents{runNum}-{currentGen}.p", "rb" ) )
         fitnesses = []
-        for i, key in enumerate(parents.keys()):
+        for j, key in enumerate(parents.keys()):
             if currentGen != 0:
                 allFitness[key].append(parents[key].fitness)
             fitnesses.append(parents[key].fitness)
-            if i == 0:
+            if j == 0:
                 bestfit = parents[key].fitness
                 worstfit = parents[key].fitness
                 bestfitkey = key
